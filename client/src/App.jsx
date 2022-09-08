@@ -1,25 +1,41 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import create from 'zustand'
+
+const useBearStore = create((set) => ({
+  bears: 0,
+  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
+  decreasePopulation: () => set((state) => ({ bears: state.bears - 1 })),
+  removeAllBears: () => set({ bears: 0 }),
+}))
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const bears = useBearStore((state) => state.bears)
+  const increasePopulation = useBearStore((state) => state.increasePopulation)
+  const decreasePopulation = useBearStore((state) => state.decreasePopulation)
+  const removeAllBears = useBearStore((state) => state.removeAllBears)
+
 
   return (
     <div className="App">
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        
       </div>
-      <h1>Vite + React</h1>
+      <h1>🐻BEAR!</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <h1>{bears} around here ...</h1>
+        <button onClick={increasePopulation}>
+          Bear up
         </button>
+        <button onClick={decreasePopulation}>
+          Bear down
+        </button>
+        <button onClick={removeAllBears}>
+          Bear gone
+        </button>
+
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
