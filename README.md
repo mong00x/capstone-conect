@@ -3,8 +3,6 @@ This is a web app that allows students to pick their prjects for HIT401 Capstone
 ### Installation and setup
 Clone down this repository. You will need `node` and `npm` installed globally on your machine.
 
-Clone the repo
-
 Navigate to the `client` directory
 
 Then intall the dependencies:
