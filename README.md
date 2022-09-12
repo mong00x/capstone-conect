@@ -11,7 +11,7 @@ npm install
 ```
 To Run the app:
 ```bash
-num run dev
+npm run dev
 ```
 Project should run in browser at `localhost:5173`
 
