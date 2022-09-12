@@ -13,7 +13,7 @@ To Run the app:
 ```bash
 npm run dev
 ```
-Project should run in browser at `localhost:5173`
+Projct is now running locally on port `5173`, open your browser and navigate to `localhost:5173` to access it.
 
 
 ### Packages used
