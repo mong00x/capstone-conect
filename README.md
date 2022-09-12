@@ -1,5 +1,5 @@
-## This is the client of the HIT401 Web App
-This is a web app that allows students to pick their prjects for HIT401 Capstone Project. The client is built using ReactJS + Vite.
+## This is the Repo of the HIT401 Web App
+This is a web app that allows students to pick their prjects for HIT401 Capstone Project, and for supervisors to manage their projects and student requests. The project is built using React + PHP.
 ### Installation and setup
 Clone down this repository. You will need `node` and `npm` installed globally on your machine.
 
