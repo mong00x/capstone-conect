@@ -1,9 +1,7 @@
 ## This is the Repo of the HIT401 Web App
-This is a web app that allows students to pick their prjects for HIT401 Capstone Project, and for supervisors to manage their projects and student requests. The project is built using React + PHP.
+This is a web app that allows students to pick their projects for HIT401 Capstone Project, and for supervisors to manage their projects and students' requests. The project is built using React + PHP.
 ### Installation and setup
 Clone down this repository. You will need `node` and `npm` installed globally on your machine.
-
-Clone the repo
 
 Navigate to the `client` directory
 
@@ -13,9 +11,9 @@ npm install
 ```
 To Run the app:
 ```bash
-num run dev
+npm run dev
 ```
-Project should run in browser at `localhost:5173`
+Projct is now running locally on port `5173`, open your browser and navigate to `localhost:5173` to access it.
 
 
 ### Packages used
