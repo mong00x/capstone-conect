@@ -3,6 +3,11 @@ import reactLogo from "./assets/react.svg";
 import "./App.css";
 import create from "zustand";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import { Box, Flex, Text } from "@chakra-ui/react";
+
 import NavBar from "./components/NavBar";
 import SideMenu from "./components/SideMenu";
 import Content from "./components/Content";
@@ -14,6 +19,8 @@ const useBearStore = create((set) => ({
   removeAllBears: () => set({ bears: 0 }),
 }));
 
+const queryClient = new QueryClient();
+
 function App() {
   const bears = useBearStore((state) => state.bears);
   const increasePopulation = useBearStore((state) => state.increasePopulation);
@@ -23,8 +30,13 @@ function App() {
   return (
     <div className="App">
       <NavBar />
-      <SideMenu />
-      <Content />
+      <QueryClientProvider client={queryClient}>
+        <Flex flexDir="row" wdith="100%">
+          <SideMenu />
+          <Content />
+        </Flex>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </div>
   );
 }
