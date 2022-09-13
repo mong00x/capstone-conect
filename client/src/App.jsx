@@ -9,8 +9,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 import NavBar from "./components/NavBar";
-import SideMenu from "./components/SideMenu";
-import Content from "./components/Content";
+import SideMenu from "./components/SideMenu/SideMenu";
+import MainContent from "./components/MainContent/MainContent";
 
 const useBearStore = create((set) => ({
   bears: 0,
@@ -33,7 +33,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Flex flexDir="row" wdith="100%">
           <SideMenu />
-          <Content />
+          <MainContent />
         </Flex>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
