@@ -40,7 +40,7 @@ export const Card = memo(function Card({ id, text, moveCard, findCard }) {
     }),
     [findCard, moveCard]
   );
-  const opacity = isDragging ? 0 : 1;
+  const opacity = isDragging ? 0.5 : 1;
   return (
     <div ref={(node) => drag(drop(node))} style={{ ...style, opacity }}>
       {text}

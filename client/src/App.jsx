@@ -28,16 +28,22 @@ function App() {
   const removeAllBears = useBearStore((state) => state.removeAllBears);
 
   return (
-    <div className="App">
+    <Flex
+      className="App"
+      display="flex"
+      flexDir="column"
+      height="100%"
+      overflow="hidden"
+    >
       <NavBar />
       <QueryClientProvider client={queryClient}>
-        <Flex flexDir="row" wdith="100%">
+        <Flex flexDir="row" wdith="100%" height="100%">
           <SideMenu />
           <MainContent />
         </Flex>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </div>
+    </Flex>
   );
 }
 

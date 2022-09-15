@@ -4,23 +4,12 @@ import { useDrop } from "react-dnd";
 import { Card } from "./Cards";
 import { ItemTypes } from "./ItemTypes";
 const style = {
-  width: 400,
+  width: "100%",
 };
-const ITEMS = [
-  {
-    id: 1,
-    text: "Machine learning approaches for Cyber Security",
-  },
-  {
-    id: 2,
-    text: "Enhancing airport screening using a deep neural network algorithm",
-  },
-  {
-    id: 3,
-    text: "Augmented Reality System on Improving Safety of Young Drivers",
-  },
-];
-export const Container = memo(function Container() {
+
+//  get item data from store
+const ITEMS = [];
+const Container = memo(function Container() {
   const [cards, setCards] = useState(ITEMS);
   const findCard = useCallback(
     (id) => {
@@ -47,7 +36,7 @@ export const Container = memo(function Container() {
     [findCard, cards, setCards]
   );
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
-  return (
+  return ITEMS == [] ? (
     <div ref={drop} style={style}>
       {cards.map((card) => (
         <Card
@@ -59,5 +48,9 @@ export const Container = memo(function Container() {
         />
       ))}
     </div>
+  ) : (
+    <div>Your selections will appear here</div>
   );
 });
+
+export default Container;

@@ -1,13 +1,28 @@
 import React from "react";
+import ProjectCard from "./ProjectCard";
+import { Box, Flex, Grid } from "@chakra-ui/react";
+import SearchFilter from "./SearchFilter";
 
 const MainContent = () => {
   // register project to store
   return (
-    <div>
-      <button>project 1</button>
-      <button>project 2</button>
-      <button>project 3</button>
-    </div>
+    <Flex flexDir="column" w="100%" h="100%" color="DarkShades" bg="ContentBG">
+      <SearchFilter />
+      <Grid
+        templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+        gap={8}
+        p="32px 32px 120px 32px"
+        justifyContent="space-between"
+        overflow={"auto"}
+      >
+        <ProjectCard />
+        <ProjectCard />
+        <ProjectCard />
+        <ProjectCard />
+        <ProjectCard />
+        <ProjectCard />
+      </Grid>
+    </Flex>
   );
 };
 

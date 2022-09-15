@@ -2,35 +2,40 @@ import React, { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 
 // drag and drop stuff
-import Example from "./Example";
+import Container from "./Container";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 const SideMenu = () => {
-  // get state student name from store
-  const [studentName, setStudentName] = useState("John Doe");
-
   return (
     <Flex
-      minW="240px"
-      height="100%"
+      w="280px"
+      h="100%"
       bg="BG"
       color="DarsShades"
       flexDirection="column"
+      borderRight="1px solid #E2E8F0"
     >
-      <Box py="2rem" bg="DarkShades" textAlign="center">
-        {/* avatar */}
+      <Box p="1rem" bg="DarkShades" textAlign="center" width="100%">
         <Text fontSize="1rem" fontWeight="bold" color="LightShades">
-          Hi, {studentName}
+          Rank your project based on interest
         </Text>
       </Box>
-      <Box mt="2rem" p="1rem">
+      <Box p="1rem">
         <DndProvider backend={HTML5Backend}>
-          <Example />
+          <Container />
         </DndProvider>
       </Box>
 
-      <Button m="1rem">Submit</Button>
+      <Button
+        className="submit-btn"
+        m="1rem"
+        bg="AccentMain.default"
+        color="LightShades"
+        borderRadius={50}
+      >
+        Submit
+      </Button>
     </Flex>
   );
 };
