@@ -15,12 +15,12 @@ const MainContent = () => {
         justifyContent="space-between"
         overflow={"auto"}
       >
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
+        <ProjectCard id={1} />
+        <ProjectCard id={2} />
+        <ProjectCard id={3} />
+        <ProjectCard id={4} />
+        <ProjectCard id={5} />
+        <ProjectCard id={6} />
       </Grid>
     </Flex>
   );
