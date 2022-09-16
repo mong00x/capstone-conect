@@ -9,8 +9,11 @@ import {
   Badge,
 } from "@chakra-ui/react";
 
-const ProjectCard = ({ id }) => {
+const ProjectCard = ({ project }) => {
   const [checked, setChecked] = useState(false);
+  const abstraction =
+    project.description && project.description.toString().slice(0, 110) + "...";
+  console.log(project.keywords && project.keywords[0]);
   const handleCheck = (e) => {
     setChecked(e.target.checked);
     // save checked card id to store
@@ -26,7 +29,7 @@ const ProjectCard = ({ id }) => {
       flexDir="column"
       p="16px"
       gap="20px"
-      height="400px"
+      height="420px"
       w="100%"
       borderRadius={12}
       bg="BG"
@@ -35,18 +38,20 @@ const ProjectCard = ({ id }) => {
       borderColor={checked ? "AccentMain.default" : "transparent"}
     >
       <Flex flexDir="column" gap={2}>
-        <Flex flexDir="row" justifyContent="space-between" alignItems="center">
-          <Checkbox size="lg" borderColor="#888" onChange={handleCheck} id={id}>
-            <Text fontSize="1.2rem" fontWeight="bold" lineHeight={6}>
-              Machine learning approaches for Cyber Security
+        <Flex
+          flexDir="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          minH="50px"
+        >
+          <Checkbox size="lg" borderColor="#888" onChange={handleCheck}>
+            <Text fontSize="1rem" fontWeight="bold" lineHeight={6}>
+              {project.topic}
             </Text>
           </Checkbox>
         </Flex>
-        <Text>
-          As we use internet more, the data produced by us is enormous. But are
-          these data being secure? The goal of applying machine learning or
-          intelligence is to better ...
-        </Text>
+        {/* regex to lookup first 2 sentence in description  */}
+        <Text>{abstraction}</Text>
         <Flex flexDir="row" justifyContent="flex-end" alignItems="center">
           <Button size="sm" bg="none">
             Read more
@@ -55,16 +60,19 @@ const ProjectCard = ({ id }) => {
       </Flex>
 
       <Flex flexDir="column" gap={4}>
-        <Flex flexDir="row" gap={1} flexWrap="wrap">
-          <Badge>CS</Badge>
-          <Badge>IS&DS</Badge>
-          <Badge>SE</Badge>
-          <Badge>Internal</Badge>
-          <Badge>External</Badge>
+        <Flex flexDir="row" gap={2} flexWrap="wrap">
+          {project.keywords.map((keyword) => (
+            <Badge key={keyword} borderRadius="full" px="2">
+              {keyword}
+            </Badge>
+          ))}
         </Flex>
         <Flex flexDir="column" flexWrap="wrap" gap={1}>
-          <Text fontSize="sm">Dr. Bharanidharan Shanmugam</Text>
-          <Text fontSize="sm">Dr. Sami Azam</Text>
+          {project.supervisors.map((supervisor) => (
+            <Text key={supervisor} fontSize="sm">
+              {supervisor}
+            </Text>
+          ))}
         </Flex>
       </Flex>
     </Flex>
