@@ -1,7 +1,26 @@
-import React from "react";
-import { Flex, Box, Text, Checkbox, Button, Badge } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Flex,
+  Box,
+  Text,
+  Checkbox,
+  useCheckbox,
+  Button,
+  Badge,
+} from "@chakra-ui/react";
 
-const ProjectCard = () => {
+const ProjectCard = ({ id }) => {
+  const [checked, setChecked] = useState(false);
+  const handleCheck = (e) => {
+    setChecked(e.target.checked);
+    // save checked card id to store
+    if (e.target.checked) {
+      // add to store
+    } else {
+      // remove from store
+    }
+    console.log(localStorage);
+  };
   return (
     <Flex
       flexDir="column"
@@ -12,10 +31,12 @@ const ProjectCard = () => {
       borderRadius={12}
       bg="BG"
       justifyContent="space-between"
+      border="3px inset #E2E8F0"
+      borderColor={checked ? "AccentMain.default" : "transparent"}
     >
       <Flex flexDir="column" gap={2}>
         <Flex flexDir="row" justifyContent="space-between" alignItems="center">
-          <Checkbox size="lg" borderColor="#888">
+          <Checkbox size="lg" borderColor="#888" onChange={handleCheck} id={id}>
             <Text fontSize="1.2rem" fontWeight="bold" lineHeight={6}>
               Machine learning approaches for Cyber Security
             </Text>
@@ -27,21 +48,23 @@ const ProjectCard = () => {
           intelligence is to better ...
         </Text>
         <Flex flexDir="row" justifyContent="flex-end" alignItems="center">
-          <Button size="sm">Read more</Button>
+          <Button size="sm" bg="none">
+            Read more
+          </Button>
         </Flex>
       </Flex>
 
-      <Flex flexDir="column" gap={2}>
-        <Flex flexDir="row" gap={2} flexWrap="wrap">
+      <Flex flexDir="column" gap={4}>
+        <Flex flexDir="row" gap={1} flexWrap="wrap">
           <Badge>CS</Badge>
           <Badge>IS&DS</Badge>
           <Badge>SE</Badge>
           <Badge>Internal</Badge>
           <Badge>External</Badge>
         </Flex>
-        <Flex flexDir="row" flexWrap="wrap">
-          <Text>Dr. Bharanidharan Shanmugam</Text>
-          <Text>Dr. Sami Azam</Text>
+        <Flex flexDir="column" flexWrap="wrap" gap={1}>
+          <Text fontSize="sm">Dr. Bharanidharan Shanmugam</Text>
+          <Text fontSize="sm">Dr. Sami Azam</Text>
         </Flex>
       </Flex>
     </Flex>
