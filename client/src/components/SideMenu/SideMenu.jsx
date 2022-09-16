@@ -18,15 +18,14 @@ const SideMenu = () => {
     >
       <Box p="1rem" bg="DarkShades" textAlign="center" width="100%">
         <Text fontSize="1rem" fontWeight="bold" color="LightShades">
-          Rank your project based on interest
+          My selections
         </Text>
       </Box>
       <Box p="1rem">
         <DndProvider backend={HTML5Backend}>
-          <Container />
+          <Container height="300px" />
         </DndProvider>
       </Box>
-
       <Button
         className="submit-btn"
         m="1rem"

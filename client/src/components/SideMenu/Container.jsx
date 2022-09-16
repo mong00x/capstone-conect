@@ -49,7 +49,7 @@ const Container = memo(function Container() {
       ))}
     </div>
   ) : (
-    <div>Your selections will appear here</div>
+    <div style={style}>Please select up to 3 projects</div>
   );
 });
 
