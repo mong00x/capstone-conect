@@ -1,15 +1,18 @@
 import { memo } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
-const style = {
-  border: "1px dashed gray",
-  padding: "0.5rem 1rem",
-  marginBottom: ".5rem",
-  backgroundColor: "white",
-  cursor: "move",
-};
+import PropTypes from "prop-types";
 
-export const Card = memo(function Card({ id, text, moveCard, findCard }) {
+import { Flex, Text, Box } from "@chakra-ui/react";
+import { DragHandleIcon } from "@chakra-ui/icons";
+
+export const Card = memo(function Card({
+  id,
+  text,
+  supervisors,
+  moveCard,
+  findCard,
+}) {
   const originalIndex = findCard(id).index;
   const [{ isDragging }, drag] = useDrag(
     () => ({
@@ -42,8 +45,37 @@ export const Card = memo(function Card({ id, text, moveCard, findCard }) {
   );
   const opacity = isDragging ? 0.5 : 1;
   return (
-    <div ref={(node) => drag(drop(node))} style={{ ...style, opacity }}>
-      {text}
-    </div>
+    <Flex
+      flexDir="row"
+      ref={(node) => drag(drop(node))}
+      opacity={opacity}
+      alignItems="center"
+      borderRadius="md"
+      my={2}
+      p={2}
+      gap={4}
+      bg="gray.200"
+      cursor="move"
+    >
+      <DragHandleIcon />
+      <Flex flexDir="column" gap={2}>
+        <Text fontWeight="bold" lineHeight="20px">
+          {text && text}
+        </Text>
+        <Box>
+          {supervisors &&
+            supervisors.map((supervisor) => (
+              <Text fontSize="sm">{supervisor}</Text>
+            ))}
+        </Box>
+      </Flex>
+    </Flex>
   );
 });
+
+Card.propTypes = {
+  id: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+  moveCard: PropTypes.func.isRequired,
+  findCard: PropTypes.func.isRequired,
+};
