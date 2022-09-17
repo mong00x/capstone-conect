@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 
 // drag and drop stuff
@@ -9,23 +9,27 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 const SideMenu = () => {
   return (
     <Flex
-      w="280px"
-      h="100%"
+      w="380px"
+      h="90%"
       bg="BG"
       color="DarsShades"
       flexDirection="column"
       borderRight="1px solid #E2E8F0"
+      justifyContent="space-between"
     >
-      <Box p="1rem" bg="DarkShades" textAlign="center" width="100%">
-        <Text fontSize="1rem" fontWeight="bold" color="LightShades">
-          My selections
-        </Text>
-      </Box>
-      <Box p="1rem">
-        <DndProvider backend={HTML5Backend}>
-          <Container height="300px" />
-        </DndProvider>
-      </Box>
+      <Flex flexDir="column">
+        <Box p="1rem" bg="DarkShades" textAlign="center" width="100%">
+          <Text fontSize="1rem" fontWeight="bold" color="LightShades">
+            My selections
+          </Text>
+        </Box>
+        <Box p="1rem">
+          <DndProvider backend={HTML5Backend}>
+            <Container height="300px" />
+          </DndProvider>
+        </Box>
+      </Flex>
+
       <Button
         className="submit-btn"
         m="1rem"
