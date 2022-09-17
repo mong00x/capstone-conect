@@ -1,28 +1,36 @@
-import React, { useState } from "react";
-import {
-  Flex,
-  Box,
-  Text,
-  Checkbox,
-  useCheckbox,
-  Button,
-  Badge,
-} from "@chakra-ui/react";
+/* eslint-disable quotes */
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Flex, Text, Checkbox, Button, Badge } from "@chakra-ui/react";
+
+import useStore from "../../store";
 
 const ProjectCard = ({ project }) => {
+  // useeffect to store listen if checked, create a new Rank once checked and remove a rank if unchecked
+
   const [checked, setChecked] = useState(false);
-  const abstraction =
+  const description =
     project.description && project.description.toString().slice(0, 110) + "...";
-  console.log(project.keywords && project.keywords[0]);
+  const Rank = useStore((state) => state.Rank);
+
+  useEffect(() => {
+    //useEffect that listens to the ranks array in the store and if the project is not in the ranks array, then setChecked to false
+    if (!Rank.some((e) => e.id === project.id)) {
+      setChecked(false);
+    }
+  }, [Rank]);
+
+  const addRank = useStore((state) => state.addRank); // addRank is a function that takes in a project and adds it to the ranks array in the store (global state)
+  const removeRank = useStore((state) => state.removeRank);
+  //when rank is removed, the check also needs to be removed, how to do this? maybe a
+
   const handleCheck = (e) => {
     setChecked(e.target.checked);
-    // save checked card id to store
     if (e.target.checked) {
-      // add to store
+      addRank(project.id, project.topic, project.supervisors);
     } else {
-      // remove from store
+      removeRank(project.id);
     }
-    console.log(localStorage);
   };
   return (
     <Flex
@@ -44,14 +52,19 @@ const ProjectCard = ({ project }) => {
           alignItems="flex-start"
           minH="50px"
         >
-          <Checkbox size="lg" borderColor="#888" onChange={handleCheck}>
+          <Checkbox
+            size="lg"
+            borderColor="#888"
+            checked={checked}
+            onChange={handleCheck}
+          >
             <Text fontSize="1rem" fontWeight="bold" lineHeight={6}>
               {project.topic}
             </Text>
           </Checkbox>
         </Flex>
         {/* regex to lookup first 2 sentence in description  */}
-        <Text>{abstraction}</Text>
+        <Text>{description}</Text>
         <Flex flexDir="row" justifyContent="flex-end" alignItems="center">
           <Button size="sm" bg="none">
             Read more
@@ -77,6 +90,10 @@ const ProjectCard = ({ project }) => {
       </Flex>
     </Flex>
   );
+};
+
+ProjectCard.propTypes = {
+  project: PropTypes.object.isRequired,
 };
 
 export default ProjectCard;
