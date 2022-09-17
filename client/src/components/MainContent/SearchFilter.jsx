@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Text, Input, Button } from "@chakra-ui/react";
+import { Flex, Input, Button } from "@chakra-ui/react";
 
 const SearchFilter = () => {
   return (
@@ -11,7 +11,7 @@ const SearchFilter = () => {
         flexWrap="wrap"
         gap="12px"
       >
-        <Flex flexDir="row" alignItems="center" gap={4} width="40%">
+        <Flex flexDir="row" alignItems="center" gap={4} minWidth="40%">
           <Input
             className="search-input"
             placeholder="Search the projects"
@@ -19,7 +19,6 @@ const SearchFilter = () => {
             borderRadius={50}
             minW="300px"
             bg="BG"
-            shadow="md"
           />
           <Button className="search-btn" bg="DarkShades" color="LightShades">
             Search

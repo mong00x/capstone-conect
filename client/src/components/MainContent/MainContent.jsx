@@ -1,6 +1,6 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
-import { Box, Flex, Grid } from "@chakra-ui/react";
+import { Flex, Grid } from "@chakra-ui/react";
 import SearchFilter from "./SearchFilter";
 
 import useStore from "../../store";
