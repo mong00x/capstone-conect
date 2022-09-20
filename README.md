@@ -19,4 +19,5 @@ Projct is now running locally on port `5173`, open your browser and navigate to 
 ### Packages used
 1. UI Library: [Chakra UI](https://chakra-ui.com/)
 2. State management: [React Query(server)](https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com/) and [Zustand(client global)](https://github.com/pmndrs/zustand)
+3. Routing: [React Router](https://reactrouter.com/en/main)
 
