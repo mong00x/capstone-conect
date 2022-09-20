@@ -19,14 +19,18 @@ const Container = memo(function Container() {
   useStore.subscribe(
     (state) => {
       setCards(state.Rank);
+      console.log(cards);
     },
     (state) => state.Rank
   );
 
   const findCard = useCallback(
-    // useCallback is a hook that returns a memoized version of the callback that only changes if one of the dependencies has changed. the function will only be called if one of the dependencies has changed.
+    // useCallback is a hook that returns a memoized version of the callback that only changes if one of the dependencies has changed
+    // the function will only be called if one of the dependencies has changed.
     (id) => {
-      const card = cards.filter((c) => `${c.id}` === id)[0]; // filter returns an array of all elements that pass the test implemented by the provided function. [0] returns the first element of the array.
+      const card = cards.filter((c) => c.id === id)[0];
+      // filter returns an array of all elements that pass the test implemented by the provided function.
+      // [0] returns the first element of the array.
       return {
         card,
         index: cards.indexOf(card),
@@ -37,6 +41,7 @@ const Container = memo(function Container() {
   const moveCard = useCallback(
     (id, atIndex) => {
       const { card, index } = findCard(id);
+      console.log("finding card", card, index);
       setCards(
         update(cards, {
           $splice: [
@@ -53,8 +58,8 @@ const Container = memo(function Container() {
     <div ref={drop} style={style}>
       {cards.map((card) => (
         <Card
-          key={card.id}
-          id={card.id}
+          key={card.id && card.id}
+          id={card.id && card.id}
           text={card.topic}
           supervisors={card.supervisors}
           moveCard={moveCard}
