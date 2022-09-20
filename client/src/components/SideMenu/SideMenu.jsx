@@ -10,7 +10,8 @@ const SideMenu = () => {
   return (
     <Flex
       w="380px"
-      h="90%"
+      maxH="90%"
+      overflow="hidden"
       bg="BG"
       color="DarsShades"
       flexDirection="column"
@@ -25,14 +26,13 @@ const SideMenu = () => {
         </Box>
         <Box p="1rem">
           <DndProvider backend={HTML5Backend}>
-            <Container height="300px" />
+            <Container />
           </DndProvider>
         </Box>
       </Flex>
 
       <Button
         className="submit-btn"
-        m="1rem"
         bg="AccentMain.default"
         color="LightShades"
         borderRadius={50}
