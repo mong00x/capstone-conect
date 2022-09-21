@@ -40,25 +40,30 @@ const Container = memo(function Container() {
   );
   const moveCard = useCallback(
     (id, atIndex) => {
-      const { card, index } = findCard(id);
+      // id is the id of the card, atIndex is the drop index of the card
+      const { card, index } = findCard(id); // find current card and card index
       console.log("finding card", card, index);
       setCards(
+        // update the cards array
         update(cards, {
+          // update is a function that returns a new cards Object based on the original object passed as the first argument,
+          // the path to the value to be changed as the second argument,
+          // and an object describing how to update the value as the third argument.
           $splice: [
-            [index, 1],
-            [atIndex, 0, card],
+            [index, 1], // remove the card from the array
+            [atIndex, 0, card], // insert the card at the new index
           ],
         })
       );
     },
-    [findCard, cards, setCards]
+    [findCard, cards, setCards] // dependencies
   );
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
   return (
     <div ref={drop} style={style}>
       {cards.map((card) => (
         <Card
-          key={card.id && card.id}
+          key={card.rank}
           id={card.id && card.id}
           text={card.topic}
           supervisors={card.supervisors}
