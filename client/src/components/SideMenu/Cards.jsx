@@ -57,7 +57,9 @@ export const Card = memo(function Card({
       bg="gray.200"
       cursor="move"
     >
-      <DragHandleIcon />
+      <Box>
+        <DragHandleIcon />
+      </Box>
       <Flex flexDir="column" gap={2}>
         <Text fontWeight="bold" lineHeight="20px">
           {text && text}
