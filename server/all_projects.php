@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once 'includes.php';
 
 
-$query = "SELECT * FROM projects ORDER BY project_id DESC";
+$query = "SELECT * FROM projects ORDER BY project_id ASC";
 connectDB();
 $result = mysqli_query($_SESSION['db'], $query);
 closeDB();
