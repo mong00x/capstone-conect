@@ -33,6 +33,7 @@ const SideMenu = () => {
 
       <Button
         className="submit-btn"
+        mx="1rem"
         bg="AccentMain.default"
         color="LightShades"
         borderRadius={50}
