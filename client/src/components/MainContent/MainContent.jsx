@@ -3,13 +3,35 @@ import ProjectCard from "./ProjectCard";
 import { Flex, Grid } from "@chakra-ui/react";
 import SearchFilter from "./SearchFilter";
 
-import useStore from "../../store";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const MainContent = () => {
+  const fetchProjects = async () => {
+    const { data } = await axios.get("http://localhost/all_projects.php");
+    return data.projects;
+    //error handling
+  };
+
+  const { isLoading, isError, isSuccess, data, error } = useQuery(
+    ["projects"],
+    fetchProjects
+  );
+
   // register project to store
-  const projects = useStore((state) => state.projects);
-  console.log(projects);
-  return (
+
+  isError && console.log("Error: ", error.message);
+
+  return isLoading ? (
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      width="100vw"
+    >
+      <h1>Loading...</h1>
+    </Flex>
+  ) : (
     <Flex flexDir="column" w="100%" h="100%" color="DarkShades" bg="ContentBG">
       <SearchFilter />
       <Grid
@@ -19,9 +41,10 @@ const MainContent = () => {
         justifyContent="space-between"
         overflow={"auto"}
       >
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+        {data &&
+          data.map((project) => (
+            <ProjectCard key={project.project_id} project={project} />
+          ))}
       </Grid>
     </Flex>
   );
