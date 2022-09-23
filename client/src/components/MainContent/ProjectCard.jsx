@@ -6,30 +6,30 @@ import { Flex, Text, Checkbox, Button, Badge } from "@chakra-ui/react";
 import useStore from "../../store";
 
 const ProjectCard = ({ project }) => {
-  // useeffect to store listen if checked, create a new Rank once checked and remove a rank if unchecked
-
   const [checked, setChecked] = useState(false);
   const description =
-    project.description && project.description.toString().slice(0, 110) + "...";
-  const Rank = useStore((state) => state.Rank);
+    project.project_description &&
+    project.project_description.toString().slice(0, 110) + "...";
 
-  useEffect(() => {
-    //useEffect that listens to the ranks array in the store and if the project is not in the ranks array, then setChecked to false
-    if (!Rank.some((e) => e.id === project.id)) {
-      setChecked(false);
-    }
-  }, [Rank]);
+  // useEffect(() => {
+  //   if (!Rank.some((e) => e.id === project.project_id)) {
+  //     setChecked(false);
+  //   }
+  // }, [Rank]);
 
-  const addRank = useStore((state) => state.addRank); // addRank is a function that takes in a project and adds it to the ranks array in the store (global state)
+  const addRank = useStore((state) => state.addRank);
   const removeRank = useStore((state) => state.removeRank);
-  //when rank is removed, the check also needs to be removed, how to do this? maybe a
 
   const handleCheck = (e) => {
     setChecked(e.target.checked);
     if (e.target.checked) {
-      addRank(project.id, project.topic, project.supervisors);
+      addRank(
+        project.project_id,
+        project.project_topic,
+        project.project_supervisors
+      );
     } else {
-      removeRank(project.id);
+      removeRank(project.project_id);
     }
   };
   return (
@@ -59,7 +59,7 @@ const ProjectCard = ({ project }) => {
             onChange={handleCheck}
           >
             <Text fontSize="1rem" fontWeight="bold" lineHeight={6}>
-              {project.topic}
+              {project.project_topic}
             </Text>
           </Checkbox>
         </Flex>
@@ -74,18 +74,20 @@ const ProjectCard = ({ project }) => {
 
       <Flex flexDir="column" gap={4}>
         <Flex flexDir="row" gap={2} flexWrap="wrap">
-          {project.keywords.map((keyword) => (
-            <Badge key={keyword} borderRadius="full" px="2">
-              {keyword}
-            </Badge>
-          ))}
+          {project.project_discipline &&
+            project.project_discipline.map((project_discipline) => (
+              <Badge key={project_discipline} borderRadius="full" px="2">
+                {project_discipline}
+              </Badge>
+            ))}
         </Flex>
         <Flex flexDir="column" flexWrap="wrap" gap={1}>
-          {project.supervisors.map((supervisor) => (
-            <Text key={supervisor} fontSize="sm">
-              {supervisor}
-            </Text>
-          ))}
+          {project.project_supervisors &&
+            project.project_supervisors.map((project_supervisors) => (
+              <Text key={project_supervisors} fontSize="sm">
+                {project_supervisors}
+              </Text>
+            ))}
         </Flex>
       </Flex>
     </Flex>
