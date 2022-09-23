@@ -44,6 +44,7 @@ const ProjectCard = ({ project }) => {
       justifyContent="space-between"
       border="3px inset #E2E8F0"
       borderColor={checked ? "AccentMain.default" : "transparent"}
+      transition="all .3s ease"
     >
       <Flex flexDir="column" gap={2}>
         <Flex
