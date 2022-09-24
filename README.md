@@ -36,4 +36,6 @@ Refresh your Client site and now you should be able to see and manipulate your s
 1. UI Library: [Chakra UI](https://chakra-ui.com/)
 2. State management: [React Query(server)](https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com/) and [Zustand(client global)](https://github.com/pmndrs/zustand)
 3. Routing: [React Router](https://reactrouter.com/en/main)
+4. Data fetching: [Axios](https://axios-http.com/docs/intro)
+5. Drag and Drop: [React DnD](https://react-dnd.github.io/react-dnd/)
 
