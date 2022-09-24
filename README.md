@@ -14,7 +14,7 @@ To Run the client:
 ```bash
 npm run dev
 ```
-The clienr is now running locally on port `5173`, open your browser and navigate to `localhost:5173` to access it.
+The client is now running locally on port `5173`, open your browser and navigate to `localhost:5173` to access it.
 
 #### 2. Server side
 To run the server, you will need `PHP` and `XAMPP` installed on your machine. 
@@ -29,7 +29,7 @@ Then in XAMPP, start the MySQL database and create the test database by executin
 
 Your test server should be running on https://localhost
 
-Refresh your Client site and now you should see and manipulate your server data. 👌 
+Refresh your Client site and now you should be able to see and manipulate your server data. 👌 
 
 
 ### NPM Packages used
