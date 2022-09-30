@@ -19,7 +19,7 @@ const Container = memo(function Container() {
   useStore.subscribe(
     (state) => {
       setCards(state.Rank);
-      console.log(cards);
+      // console.log(cards);
     },
     (state) => state.Rank
   );
@@ -63,10 +63,11 @@ const Container = memo(function Container() {
     <div ref={drop} style={style}>
       {cards.map((card) => (
         <Card
-          key={card.rank}
+          key={card.id && parseInt(card.id)}
           id={card.id && card.id}
           text={card.topic}
           supervisors={card.supervisors}
+          rank={card.rank}
           moveCard={moveCard}
           findCard={findCard}
         />
