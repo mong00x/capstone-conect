@@ -1,26 +1,40 @@
 /* eslint-disable quotes */
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
-import { Flex, Text, Checkbox, Button, Badge } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Checkbox,
+  Button,
+  Badge,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 
-import useStore from "../../store";
+import { useStore } from "../../store";
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = React.memo(({ project }) => {
   const [checked, setChecked] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const checkRef = useRef(null);
+
   const description =
     project.project_description &&
     project.project_description.toString().slice(0, 110) + "...";
-
-  // useEffect(() => {
-  //   if (!Rank.some((e) => e.id === project.project_id)) {
-  //     setChecked(false);
-  //   }
-  // }, [Rank]);
 
   const addRank = useStore((state) => state.addRank);
   const removeRank = useStore((state) => state.removeRank);
 
   const handleCheck = (e) => {
+    //if function is writen as normal function, it needs to be called with arrow function
+    // otherwise it will be called when the page is loaded, not when the checkbox is clicked
     setChecked(e.target.checked);
     if (e.target.checked) {
       addRank(
@@ -33,67 +47,93 @@ const ProjectCard = ({ project }) => {
     }
   };
   return (
-    <Flex
-      flexDir="column"
-      p="16px"
-      gap="20px"
-      height="420px"
-      w="100%"
-      borderRadius={12}
-      bg="BG"
-      justifyContent="space-between"
-      border="3px inset #E2E8F0"
-      borderColor={checked ? "AccentMain.default" : "transparent"}
-      transition="all .3s ease"
-    >
-      <Flex flexDir="column" gap={2}>
-        <Flex
-          flexDir="row"
-          justifyContent="space-between"
-          alignItems="flex-start"
-          minH="50px"
-        >
-          <Checkbox
-            size="lg"
-            borderColor="#888"
-            checked={checked}
-            onChange={handleCheck}
+    <>
+      <Flex
+        flexDir="column"
+        p="16px"
+        gap="20px"
+        height="420px"
+        w="100%"
+        borderRadius={12}
+        bg="BG"
+        justifyContent="space-between"
+        border="3px inset #E2E8F0"
+        borderColor={checked ? "AccentMain.default" : "transparent"}
+        transition="all .3s ease"
+      >
+        <Flex flexDir="column" gap={2}>
+          <Flex
+            flexDir="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            minH="50px"
           >
-            <Text fontSize="1rem" fontWeight="bold" lineHeight={6}>
-              {project.project_topic}
-            </Text>
-          </Checkbox>
+            <Checkbox
+              ref={checkRef}
+              size="lg"
+              borderColor="#888"
+              checked={checked}
+              onChange={handleCheck}
+            >
+              <Text fontSize="1rem" fontWeight="bold" lineHeight={6}>
+                {project.project_topic}
+              </Text>
+            </Checkbox>
+          </Flex>
+          <Text>{description}</Text>
+          <Flex flexDir="row" justifyContent="flex-end" alignItems="center">
+            <Button size="sm" bg="none" onClick={onOpen}>
+              Read more
+            </Button>
+          </Flex>
         </Flex>
-        {/* regex to lookup first 2 sentence in description  */}
-        <Text>{description}</Text>
-        <Flex flexDir="row" justifyContent="flex-end" alignItems="center">
-          <Button size="sm" bg="none">
-            Read more
-          </Button>
+
+        <Flex flexDir="column" gap={4}>
+          <Flex flexDir="row" gap={2} flexWrap="wrap">
+            {project.project_discipline &&
+              project.project_discipline.map((project_discipline) => (
+                <Badge key={project_discipline} borderRadius="full" px="2">
+                  {project_discipline}
+                </Badge>
+              ))}
+          </Flex>
+          <Flex flexDir="column" flexWrap="wrap" gap={1}>
+            {project.project_supervisors &&
+              project.project_supervisors.map((project_supervisors) => (
+                <Text key={project_supervisors} fontSize="sm">
+                  {project_supervisors}
+                </Text>
+              ))}
+          </Flex>
         </Flex>
       </Flex>
 
-      <Flex flexDir="column" gap={4}>
-        <Flex flexDir="row" gap={2} flexWrap="wrap">
-          {project.project_discipline &&
-            project.project_discipline.map((project_discipline) => (
-              <Badge key={project_discipline} borderRadius="full" px="2">
-                {project_discipline}
-              </Badge>
-            ))}
-        </Flex>
-        <Flex flexDir="column" flexWrap="wrap" gap={1}>
-          {project.project_supervisors &&
-            project.project_supervisors.map((project_supervisors) => (
-              <Text key={project_supervisors} fontSize="sm">
-                {project_supervisors}
-              </Text>
-            ))}
-        </Flex>
-      </Flex>
-    </Flex>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{project.project_topic}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>{project.project_description}</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              colorScheme="purple"
+              onClick={() => {
+                console.log("clicked");
+                checkRef.current.click();
+                onClose();
+              }}
+            >
+              {checked ? "Unselect this topic" : "Select this topic"}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
-};
+});
 
 ProjectCard.propTypes = {
   project: PropTypes.object.isRequired,
