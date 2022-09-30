@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import { Card } from "./Cards";
 import { ItemTypes } from "./ItemTypes";
 
-import useStore from "../../store";
+import { useStore } from "../../store";
 
 const style = {
   width: "100%",
