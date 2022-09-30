@@ -1,6 +1,6 @@
 import create from "zustand";
 
-const useStore = create((set) => ({
+export const useStore = create((set) => ({
   Rank: [],
   // addRank function will add selcted project topic and supervisor to Rank array
   addRank: (id, topic, supervisors) =>
@@ -14,4 +14,12 @@ const useStore = create((set) => ({
     set((state) => ({ Rank: state.Rank.filter((i) => i.id !== id) })),
 }));
 
-export default useStore;
+export const searchStore = create((set) => ({
+  search: "",
+  setSearch: (value) => set(() => ({ search: value })),
+}));
+
+export const filterStore = create((set) => ({
+  filter: "",
+  setFilter: (value) => set(() => ({ filter: value })),
+}));
