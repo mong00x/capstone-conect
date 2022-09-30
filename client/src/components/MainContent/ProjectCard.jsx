@@ -108,10 +108,10 @@ const ProjectCard = React.memo(({ project }) => {
         </Flex>
       </Flex>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{project.project_topic}</ModalHeader>
+        <ModalContent minW="40%" minH="50%">
+          <ModalHeader maxW="95%">{project.project_topic}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text>{project.project_description}</Text>
@@ -119,7 +119,7 @@ const ProjectCard = React.memo(({ project }) => {
 
           <ModalFooter>
             <Button
-              colorScheme="purple"
+              colorScheme={checked ? "gray" : "purple"}
               onClick={() => {
                 console.log("clicked");
                 checkRef.current.click();
