@@ -5,8 +5,10 @@ import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import Container from "./Container";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useStore } from "../../store";
 
 const SideMenu = () => {
+  const Rank = useStore((state) => state.Rank);
   return (
     <Flex
       w="380px"
@@ -21,10 +23,13 @@ const SideMenu = () => {
       <Flex flexDir="column">
         <Box p="1rem" bg="DarkShades" textAlign="center" width="100%">
           <Text fontSize="1rem" fontWeight="bold" color="LightShades">
-            My selections
+            My selections {Rank.length}/3
           </Text>
         </Box>
         <Box p="1rem">
+          <Text>Your selections will appear here</Text>
+          <Text>Drag to rank</Text>
+
           <DndProvider backend={HTML5Backend}>
             <Container />
           </DndProvider>
@@ -35,8 +40,7 @@ const SideMenu = () => {
         className="submit-btn"
         mx="1rem"
         bg="AccentMain.default"
-        color="LightShades"
-        borderRadius={50}
+        colorScheme="purple"
       >
         Submit
       </Button>
