@@ -57,9 +57,16 @@ const MainContent = () => {
         overflow={"auto"}
       >
         {data &&
-          data.map((project) => (
-            <ProjectCard key={project.project_id} project={project} />
-          ))}
+          data
+            .filter((project) =>
+              Object.values(project)
+                .join("")
+                .toLowerCase()
+                .includes(search.toLowerCase())
+            )
+            .map((project) => (
+              <ProjectCard key={project.project_id} project={project} />
+            ))}
       </Grid>
     </Flex>
   ) : (
