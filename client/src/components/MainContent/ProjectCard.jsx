@@ -20,7 +20,11 @@ import {
 import { useStore } from "../../store";
 
 const ProjectCard = React.memo(({ project }) => {
-  const [checked, setChecked] = useState(false);
+  const Rank = useStore((state) => state.Rank);
+  console.log();
+  const [checked, setChecked] = useState(
+    Rank.some((i) => i.id === project.project_id)
+  );
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const checkRef = useRef(null);
@@ -73,6 +77,7 @@ const ProjectCard = React.memo(({ project }) => {
               size="lg"
               borderColor="#888"
               checked={checked}
+              defaultChecked={checked}
               onChange={handleCheck}
             >
               <Text fontSize="1rem" fontWeight="bold" lineHeight={6}>
