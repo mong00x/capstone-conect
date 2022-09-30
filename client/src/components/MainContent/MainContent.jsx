@@ -1,14 +1,23 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
-import { Flex, Grid, Spinner } from "@chakra-ui/react";
+import { Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 import SearchFilter from "./SearchFilter";
+import { searchStore, filterStore } from "../../store";
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 const MainContent = () => {
+  const search = searchStore((state) => state.search);
+  console.log(process.env.NODE_ENV);
+  const url =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost/all_projects.php"
+      : "https://cduprojects.spinetail.cdu.edu.au/adminpage/all_projects.php";
   const fetchProjects = async () => {
-    const { data } = await axios.get("http://localhost/all_projects.php");
+    // if in development mode, api url is localhost, else it is the cpanel url
+
+    const { data } = await axios.get(url);
     return data.projects;
     //error handling
   };
@@ -37,28 +46,31 @@ const MainContent = () => {
         size="xl"
       />
     </Flex>
-  ) : (
-    isSuccess && (
-      <Flex
-        flexDir="column"
-        w="100%"
-        h="100%"
-        color="DarkShades"
-        bg="ContentBG"
+  ) : isSuccess ? (
+    <Flex flexDir="column" w="100%" h="100%" color="DarkShades" bg="ContentBG">
+      <SearchFilter />
+      <Grid
+        templateColumns="repeat(auto-fill, minmax(360px, 1fr))"
+        gap={8}
+        p="32px 32px 120px 32px"
+        justifyContent="space-between"
+        overflow={"auto"}
       >
-        <SearchFilter />
-        <Grid
-          templateColumns="repeat(auto-fill, minmax(360px, 1fr))"
-          gap={8}
-          p="32px 32px 120px 32px"
-          justifyContent="space-between"
-          overflow={"auto"}
-        >
-          {data &&
-            data.map((project) => (
-              <ProjectCard key={project.project_id} project={project} />
-            ))}
-        </Grid>
+        {data &&
+          data.map((project) => (
+            <ProjectCard key={project.project_id} project={project} />
+          ))}
+      </Grid>
+    </Flex>
+  ) : (
+    isError && (
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+        width="100vw"
+      >
+        <Text>Something went wrong</Text>
       </Flex>
     )
   );
