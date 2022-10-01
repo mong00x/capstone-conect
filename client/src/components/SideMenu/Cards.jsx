@@ -16,10 +16,8 @@ export const Card = memo(function Card({
   const existRef = useRef(true);
   useEffect(() => {
     existRef.current = true;
-    console.log("mounting", existRef.current);
     return () => {
       existRef.current = false;
-      console.log("unmounting", existRef.current);
     };
   }, []);
 
