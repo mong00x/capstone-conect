@@ -95,6 +95,27 @@ CREATE TABLE IF NOT EXISTS `projects` (
   PRIMARY KEY (`project_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8mb4;
 
+
+--
+-- Table structure for table `projects-register`
+--
+
+
+DROP TABLE IF EXISTS `projects-register`;
+CREATE TABLE IF NOT EXISTS `projects-register` (
+  `project_reg_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL, 
+  `enrolment_date` date NOT NULL,
+  `priority` int(1) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`project_reg_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8mb4;
+   
+
+
+
+
 --
 -- Dumping data for table `projects`
 --
@@ -283,6 +304,6 @@ INSERT INTO `students` (`student_id`, `student_name`, `student_email`, `student_
 (318846, 'Andrew Mu', 'andrew.mu@students.cdu.edu.au', NULL, NULL);
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;yt 9
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
