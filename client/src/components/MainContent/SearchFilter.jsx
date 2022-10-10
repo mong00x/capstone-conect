@@ -55,7 +55,7 @@ const SearchFilter = () => {
               placeholder="Search the projects"
               size="md"
               borderRadius="50px"
-              minW="300px"
+              w="100%"
               bg="BG"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -75,11 +75,11 @@ const SearchFilter = () => {
             </InputRightElement>
           </InputGroup>
 
-          <Button className="search-btn" bg="DarkShades" color="LightShades">
+          {/* <Button className="search-btn" bg="DarkShades" color="LightShades">
             Search
-          </Button>
+          </Button> */}
         </Flex>
-        <Button>Filter</Button>
+        
       </Flex>
       <Flex flexDir="row"> </Flex>
     </Flex>
