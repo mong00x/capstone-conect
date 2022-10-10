@@ -7,22 +7,23 @@ import Modal from "./popup";
 const Login_page = () => {
     const [email,setEmail] = useState('');
     const [user_type,setType] = useState('student');
-    const [password,setPassword] = useState('');
-    console.log(password);
+    const [password,setPassword] = useState(Math.floor(Math.random() * (9999 - 1111)) + 1111);
     
     const [popup,setPopup] = useState(false);
 
     const handellogin = (e) =>{
         e.preventDefault();
-        setPassword(Math.floor(Math.random() * (9999 - 1111)) + 1111);
-        console.log(password);
-
-        emailjs.sendForm('service_2qo1eeb', 'template_hbtmtbs', e.target, 'WjagjhsUVM7RUWDft')
-      .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
-      });
+        var templateParams = {
+            email: email,
+            password: password
+        };
+         
+        emailjs.send('service_2qo1eeb', 'template_hbtmtbs', templateParams, 'WjagjhsUVM7RUWDft')
+            .then(function(response) {
+               console.log('SUCCESS!', response.status, response.text);
+            }, function(error) {
+               console.log('FAILED...', error);
+            });
 
       setPopup(true)
         
@@ -50,13 +51,7 @@ const Login_page = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}/>}
             
-            <br></br>
-            {user_type === "student" && <input 
-            className="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            />}
+           
             
             <br></br>
             {user_type === "student" && <button  type="submit">Send Password</button>}
