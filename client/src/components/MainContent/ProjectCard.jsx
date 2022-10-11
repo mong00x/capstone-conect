@@ -78,6 +78,7 @@ const ProjectCard = React.memo(({ project }) => {
               borderColor="#888"
               checked={checked}
               defaultChecked={checked}
+              disabled={Rank.length >= 3 && !checked}
               onChange={handleCheck}
             >
               <Text fontSize="1rem" fontWeight="bold" lineHeight={6}>
@@ -125,8 +126,8 @@ const ProjectCard = React.memo(({ project }) => {
           <ModalFooter>
             <Button
               colorScheme={checked ? "gray" : "purple"}
+              disabled={Rank.length >= 3 && !checked}
               onClick={() => {
-                console.log("clicked");
                 checkRef.current.click();
                 onClose();
               }}

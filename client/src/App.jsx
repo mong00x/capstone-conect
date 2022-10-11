@@ -1,8 +1,7 @@
 import "./App.css";
-import create from "zustand";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import {  Flex } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import SideMenu from "./components/SideMenu/SideMenu";
 import MainContent from "./components/MainContent/MainContent";
@@ -10,7 +9,12 @@ import MainContent from "./components/MainContent/MainContent";
 const queryClient = new QueryClient();
 
 function App() {
-  if(!(JSON.parse(sessionStorage.getItem('user')).auth))
+   if(JSON.parse(sessionStorage.getItem('user')).auth == null)
+  {
+    const user = {auth: false}
+    sessionStorage.setItem('user', JSON.stringify(user))
+  }
+  if((!JSON.parse(sessionStorage.getItem('user')).auth))
   {
     
     location.replace("http://127.0.0.1:5173/")

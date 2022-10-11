@@ -8,6 +8,8 @@ import { useStore } from "../../store";
 
 const style = {
   width: "100%",
+  overflow: "auto",
+  maxHeight: "59vh",
 };
 
 //  get item data from store
