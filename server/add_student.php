@@ -19,8 +19,6 @@ closeDB();
 		$success="1";
 		$_SESSION['msg']="User Created";	
 		$_SESSION['msgType']="success";
-				
-
 ?>
 <script type="text/javascript">
 	location.replace("http://127.0.0.1:5173/app")
