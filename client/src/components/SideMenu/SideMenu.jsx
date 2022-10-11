@@ -12,13 +12,12 @@ const SideMenu = () => {
   return (
     <Flex
       w="380px"
-      maxH="90%"
-      overflow="hidden"
       bg="BG"
-      color="DarsShades"
+      color="DarkShades"
       flexDirection="column"
       borderRight="1px solid #E2E8F0"
       justifyContent="space-between"
+      height="90%"
     >
       <Flex flexDir="column">
         <Box p="1rem" bg="DarkShades" textAlign="center" width="100%">
@@ -36,14 +35,16 @@ const SideMenu = () => {
         </Box>
       </Flex>
 
-      <Button
-        className="submit-btn"
-        mx="1rem"
-        bg="AccentMain.default"
-        colorScheme="purple"
-      >
-        Submit
-      </Button>
+        <Button
+          className="submit-btn"
+          mx="1rem"
+          bg="AccentMain.default"
+          colorScheme="purple"
+        >
+          Submit
+        </Button>
+      
+
     </Flex>
   );
 };

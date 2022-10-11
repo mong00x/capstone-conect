@@ -52,21 +52,21 @@ export const Card = memo(function Card({
     [findCard, moveCard]
   );
   const opacity = isDragging ? 0.5 : 1;
+  const background = isDragging ? "gray.100" : ""
   return (
     <Fade in={existRef.current}>
       <Flex
         className="RankCard"
         flexDir="row"
         ref={(node) => drag(drop(node))}
-        opacity={opacity}
         alignItems="center"
         borderRadius="md"
+        opacity={opacity}
+        background={background}
         my={2}
-        p={2}
-        gap={4}
-        bg="gray.200"
         cursor="move"
-        h="128px"
+        h="120px"
+        transition="all 0.2s"
       >
         <Box>
           <DragHandleIcon />
