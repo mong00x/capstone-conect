@@ -1,13 +1,18 @@
 import react from 'react';
 import {useState} from "react";
 
-const Modal = ( {pin,email}) => 
+const Modal = ( {pin,email,fname}) => 
 {
     const [typedpin,setpin] = useState("");
+    
     function Verify()
 {
     if (pin==typedpin)
     {
+        const user = {name: fname, email: email, password_token: pin, auth: true}
+        sessionStorage.setItem('user', JSON.stringify(user))
+        
+        console.log(JSON.parse(sessionStorage.getItem('user')))
         location.replace("http://127.0.0.1:5173/app")
 
     }
