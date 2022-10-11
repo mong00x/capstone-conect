@@ -66,6 +66,7 @@ const Login_page = () => {
             {user_type === "student" && <label  >Student Id : </label>}
             <br></br>
             {user_type === "student" && <input 
+            className="input"
             type="text"
             id="studentid"
             name="studentid"
