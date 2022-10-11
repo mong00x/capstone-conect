@@ -3,17 +3,18 @@ import "./login.css";
 import emailjs from '@emailjs/browser';
 import Modal from "./popup";
 
-
 const Login_page = () => {
     const [email,setEmail] = useState('');
     const [fname,setFname] = useState('');
+    const [studentid,setId] = useState('');
     const [user_type,setType] = useState('student');
     const [password,setPassword] = useState(Math.floor(Math.random() * (9999 - 1111)) + 1111);
     const [popup,setPopup] = useState(false);
     
     const user = {name: fname, email: email, password_token: password, auth: false}
     sessionStorage.setItem('user', JSON.stringify(user))
-
+    
+    
     const handellogin = (e) =>{
         e.preventDefault();
         var templateParams = {
@@ -28,10 +29,10 @@ const Login_page = () => {
                console.log('FAILED...', error);
             });
         
-        const user = {name: fname, email: email, password_token: password, auth: false}
+        const user = {studentid:studentid, name: fname, email: email, password_token: password, auth: false}
         sessionStorage.setItem('user', JSON.stringify(user))
         console.log(JSON.parse(sessionStorage.getItem('user')))
-
+        
       setPopup(true)
 
         
@@ -62,6 +63,16 @@ const Login_page = () => {
             onChange={(e) => setEmail(e.target.value)}/>}
             <br></br>
 
+            {user_type === "student" && <label  >Student Id : </label>}
+            <br></br>
+            {user_type === "student" && <input 
+            type="text"
+            id="studentid"
+            name="studentid"
+            value={studentid}
+            onChange={(e) => setId(e.target.value)}/>}
+            <br></br>
+
             {user_type === "student" && <label  >Full name : </label>}
             <br></br>
             {user_type === "student" && <input 
@@ -84,7 +95,7 @@ const Login_page = () => {
     return(
         
         <div >
-        <Modal pin={password} email={email} fname= {fname}/>
+        <Modal pin={password} email={email} fname= {fname} studentid={studentid}/>
         </div>
         
     )
