@@ -40,10 +40,11 @@ const Login_page = () => {
         if (!popup) 
         {
             return(
-            <form onSubmit={handellogin}>
+            <div className="logincontainer">
+            <form  onSubmit={handellogin} >
             <label >Choose a login type:</label>
             <br></br>
-            <select value={user_type} onChange={(e) => setType(e.target.value)} >
+            <select className="dropwdown" value={user_type} onChange={(e) => setType(e.target.value)} >
                 <option value="admin">Admin</option>
                 <option value="student">Student</option>
                 <option value="lecturer">Lecturer</option>
@@ -53,6 +54,7 @@ const Login_page = () => {
             {user_type === "student" && <label  >Email address : </label>}
             <br></br>
             {user_type === "student" && <input 
+            className="input"
             type="email"
             id="email"
             name="email"
@@ -63,6 +65,7 @@ const Login_page = () => {
             {user_type === "student" && <label  >Full name : </label>}
             <br></br>
             {user_type === "student" && <input 
+            className="input"
             type="text"
             id="fname"
             name="fname"
@@ -70,9 +73,11 @@ const Login_page = () => {
             onChange={(e) => setFname(e.target.value)}/>}
             <br></br>
 
-            {user_type === "student" && <button  type="submit">Send Password</button>}
-            {user_type !== "student" && <a href="http://localhost/login.php"  >Login as {user_type}</a>}
+            {user_type === "student" && <button className="btn"  type="submit">Send Password</button>}
+            {user_type !== "student" && <a className="link" href="http://localhost/login.php"  >Login as {user_type}</a>}
         </form>
+                </div>
+           
         )
         }
 
