@@ -19,9 +19,11 @@ import {
 
 import { useStore } from "../../store";
 
-const ProjectCard = React.memo(({ project }) => {
+const ProjectCard = React.memo(({ project, discplines }) => {
   const Rank = useStore((state) => state.Rank);
-  console.log();
+  console.log(Object.values(discplines))
+
+
   const [checked, setChecked] = useState(
     Rank.some((i) => i.id === project.project_id)
   );
@@ -96,10 +98,10 @@ const ProjectCard = React.memo(({ project }) => {
 
         <Flex flexDir="column" gap={4}>
           <Flex flexDir="row" gap={2} flexWrap="wrap">
-            {project.project_discipline &&
-              project.project_discipline.map((project_discipline) => (
-                <Badge key={project_discipline} borderRadius="full" px="2">
-                  {project_discipline}
+            {discplines &&
+              discplines.map((discpline) => (
+                <Badge key={discpline} borderRadius="full" px="2">
+                  {discpline}
                 </Badge>
               ))}
           </Flex>
@@ -121,6 +123,14 @@ const ProjectCard = React.memo(({ project }) => {
           <ModalCloseButton />
           <ModalBody>
             <Text>{project.project_description}</Text>
+            <Flex flexDir="row" gap={2} flexWrap="wrap" mt={5}>
+            {discplines &&
+              discplines.map((discpline) => (
+                <Badge key={discpline} borderRadius="full" px="3">
+                  {discpline}
+                </Badge>
+              ))}
+          </Flex>
           </ModalBody>
 
           <ModalFooter>

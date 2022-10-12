@@ -2,13 +2,14 @@ import React from "react";
 import ProjectCard from "./ProjectCard";
 import { Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 import SearchFilter from "./SearchFilter";
-import { searchStore, filterStore } from "../../store";
+import { searchStore, discplineStore } from "../../store";
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 const MainContent = () => {
   const search = searchStore((state) => state.search);
+  const [discplines, setDiscplines] = React.useState([]);
   console.log(process.env.NODE_ENV);
   const url =
     process.env.NODE_ENV === "development"
@@ -21,17 +22,50 @@ const MainContent = () => {
     return data.projects;
     //error handling
   };
+  const fetchMapping = async () => {
+    // if in development mode, api url is localhost, else it is the cpanel url
 
-  const { isLoading, isError, isSuccess, data, error } = useQuery(
+    const { data } = await axios.get("http://localhost/project_discipline.php");
+    // console.log("fetchMapping", data);
+    return data['projects discipline mapping'];
+    //error handling
+  };
+
+
+  React.useEffect (() => {
+    fetchMapping().then((data) => {
+      setDiscplines(data);
+    })
+    ;
+  }, []);
+
+
+  // on dataM fetched, save the result to discplinestore
+
+  const { isLoading:isLoadingP, isError:isErrorP, isSuccess:isSuccessP, data:dataP, error:errorP, } = useQuery(
     ["projects"],
     fetchProjects
   );
 
-  // register project to store
+  const findDiscpline = (projectId, discplines) => {
+    const result = [];
+    if (discplines) {
+      discplines.forEach((discpline) => {
+        if (discpline.project_id === projectId) {
+          result.push(discpline.discipline_code);
+        }
+      });
+    }
+    return result;
+  };
 
-  isError && console.log("Error: ", error.message);
 
-  return isLoading ? (
+
+
+
+
+
+  return isLoadingP ? (
     <Flex
       justifyContent="center"
       alignItems="center"
@@ -46,7 +80,7 @@ const MainContent = () => {
         size="xl"
       />
     </Flex>
-  ) : isSuccess ? (
+  ) : isSuccessP ? (
     <Flex flexDir="column" w="100%" h="100%" color="DarkShades" bg="ContentBG">
       <SearchFilter />
       <Grid
@@ -56,8 +90,8 @@ const MainContent = () => {
         justifyContent="space-between"
         overflow={"auto"}
       >
-        {data &&
-          data
+        {discplines &&
+          dataP
             .filter((project) =>
               Object.values(project)
                 .join("")
@@ -65,12 +99,12 @@ const MainContent = () => {
                 .includes(search.toLowerCase())
             )
             .map((project) => (
-              <ProjectCard key={project.project_id} project={project} />
+              <ProjectCard key={project.project_id} project={project}  discplines={findDiscpline(project.project_id, discplines)}/> // why getDiscplines(project.project_id) is not working? maybe because it is async? how do you know? 
             ))}
       </Grid>
     </Flex>
   ) : (
-    isError && (
+    isErrorP && (
       <Flex
         justifyContent="center"
         alignItems="center"
