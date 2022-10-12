@@ -1,10 +1,10 @@
 import update from "immutability-helper";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useState, useEffect } from "react";
 import { useDrop } from "react-dnd";
 import { Card } from "./Cards";
 import { ItemTypes } from "./ItemTypes";
 
-import { useStore } from "../../store";
+import { useStore,cardStore } from "../../store";
 
 const style = {
   width: "100%",
@@ -16,6 +16,8 @@ const style = {
 
 const Container = memo(function Container() {
   const Rank = useStore((state) => state.Rank);
+  const gloCard = cardStore((state) => state.card);
+  const setGloCard = cardStore((state) => state.setCard);
   console.log("Rank", Rank);
   const [cards, setCards] = useState(Rank);
   useStore.subscribe(
@@ -25,6 +27,11 @@ const Container = memo(function Container() {
     },
     (state) => state.Rank
   );
+
+  useEffect(() => {
+    setGloCard(cards); // this is one action slower why?
+      console.log("cards", gloCard);
+  }, [cards]);
 
   const findCard = useCallback(
     // useCallback is a hook that returns a memoized version of the callback that only changes if one of the dependencies has changed
@@ -56,7 +63,9 @@ const Container = memo(function Container() {
             [atIndex, 0, card], // insert the card at the new index
           ],
         })
-      );
+      )
+      // update cards to cardStore 
+      
     },
     [findCard, cards, setCards] // dependencies
   );
