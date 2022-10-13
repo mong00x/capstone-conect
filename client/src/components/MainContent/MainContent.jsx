@@ -2,7 +2,7 @@ import React from "react";
 import ProjectCard from "./ProjectCard";
 import { Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 import SearchFilter from "./SearchFilter";
-import { searchStore, discplineStore } from "../../store";
+import { searchStore } from "../../store";
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
