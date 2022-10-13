@@ -6,6 +6,7 @@ import Modal from "./popup";
 const Login_page = () => {
     const [email,setEmail] = useState('');
     const [fname,setFname] = useState('');
+    const [lname,setLname] = useState('');
     const [studentid,setId] = useState('');
     const [user_type,setType] = useState('student');
     const [password,setPassword] = useState(Math.floor(Math.random() * (9999 - 1111)) + 1111);
@@ -74,7 +75,7 @@ const Login_page = () => {
             onChange={(e) => setId(e.target.value)}/>}
             <br></br>
 
-            {user_type === "student" && <label  >Full name : </label>}
+            {user_type === "student" && <label  >First name : </label>}
             <br></br>
             {user_type === "student" && <input 
             className="input"
@@ -84,6 +85,7 @@ const Login_page = () => {
             value={fname}
             onChange={(e) => setFname(e.target.value)}/>}
             <br></br>
+
 
             {user_type === "student" && <button className="btn"  type="submit">Send Password</button>}
             {user_type !== "student" && <a className="link" href="http://localhost/login.php"  >Login as {user_type}</a>}
@@ -96,7 +98,7 @@ const Login_page = () => {
     return(
         
         <div >
-        <Modal pin={password} email={email} fname= {fname} studentid={studentid}/>
+        <Modal/>
         </div>
         
     )
