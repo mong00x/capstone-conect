@@ -2,7 +2,7 @@ import React from "react";
 import ProjectCard from "./ProjectCard";
 import { Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 import SearchFilter from "./SearchFilter";
-import { searchStore, discplineStore } from "../../store";
+import { searchStore } from "../../store";
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -13,23 +13,24 @@ const MainContent = () => {
   console.log(process.env.NODE_ENV);
   const url =
     process.env.NODE_ENV === "development"
-      ? "http://localhost/all_projects.php"
-      : "https://cduprojects.spinetail.cdu.edu.au/adminpage/all_projects.php";
+      ? "http://localhost/"
+      : "https://cduprojects.spinetail.cdu.edu.au/adminpage/";
   const fetchProjects = async () => {
     // if in development mode, api url is localhost, else it is the cpanel url
 
-    const { data } = await axios.get(url);
-    return data.projects;
+    const { projects } = await axios.get(url+"all_projects.php");
+    return projects.projects.slice(0,10);
     //error handling
   };
   const fetchMapping = async () => {
     // if in development mode, api url is localhost, else it is the cpanel url
 
-    const { data } = await axios.get("http://localhost/project_discipline.php");
+    const { mappings } = await axios.get(url+"project_discipline.php");
     // console.log("fetchMapping", data);
-    return data['projects discipline mapping'];
+    return mappings['projects discipline mapping'];
     //error handling
   };
+
 
 
   React.useEffect (() => {
@@ -42,7 +43,7 @@ const MainContent = () => {
 
   // on dataM fetched, save the result to discplinestore
 
-  const { isLoading:isLoadingP, isError:isErrorP, isSuccess:isSuccessP, data:dataP, error:errorP, } = useQuery(
+  const { isLoading, isError, isSuccess, data, error, } = useQuery(
     ["projects"],
     fetchProjects
   );
@@ -65,7 +66,7 @@ const MainContent = () => {
 
 
 
-  return isLoadingP ? (
+  return isLoading ? (
     <Flex
       justifyContent="center"
       alignItems="center"
@@ -80,7 +81,7 @@ const MainContent = () => {
         size="xl"
       />
     </Flex>
-  ) : isSuccessP ? (
+  ) : isSuccess ? (
     <Flex flexDir="column" w="100%" h="100%" color="DarkShades" bg="ContentBG">
       <SearchFilter />
       <Grid
@@ -91,7 +92,7 @@ const MainContent = () => {
         overflow={"auto"}
       >
         {discplines &&
-          dataP
+          data
             .filter((project) =>
               Object.values(project)
                 .join("")
@@ -104,7 +105,7 @@ const MainContent = () => {
       </Grid>
     </Flex>
   ) : (
-    isErrorP && (
+    isError && (
       <Flex
         justifyContent="center"
         alignItems="center"
