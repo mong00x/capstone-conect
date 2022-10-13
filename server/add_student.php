@@ -6,12 +6,11 @@ $success=0;
 $var=$_GET["x"];
 $jo = json_decode($var);
 $password_token= $jo->password_token;
-$name= $jo->name;
+$fname= $jo->name;
 $email= $jo->email;
 $id= $jo->studentid;
 
-
-$query= "INSERT INTO students (student_id, student_name, student_email, student_password_token) VALUES ('$id','$name', '$email', '$password_token')";
+$query= "INSERT INTO students (student_id, student_name, student_email, student_password_token) VALUES ('$id','$fname', '$email', '$password_token')";
 connectDB();
 	$result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']));
 closeDB();
