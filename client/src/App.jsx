@@ -9,7 +9,7 @@ import MainContent from "./components/MainContent/MainContent";
 const queryClient = new QueryClient();
 
 function App() {
-  if(JSON.parse(sessionStorage.getItem('user')) == null || JSON.parse(sessionStorage.getItem('user')).auth == false)
+  if(JSON.parse(sessionStorage.getItem('user')).auth == null)
   {
     location.replace("http://127.0.0.1:5173/")
   }

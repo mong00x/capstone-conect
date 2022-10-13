@@ -1,28 +1,33 @@
 import react from 'react';
 import {useState} from "react";
+import axios from "axios";
 
-const Modal = () => 
+const Modal = ( {pin,email,fname,studentid}) => 
 {
     const [typedpin,setpin] = useState("");
     
     function Verify()
+{
+    if (pin==typedpin)
     {
-        if (JSON.parse(sessionStorage.getItem('user')).pin==typedpin)
-        {
-            location.replace ("http://localhost/add_student.php?x=" + sessionStorage.getItem('user')) 
-        }
+        const user = {studentid: studentid, name: fname, email: email, password_token: pin, auth: true}
+        sessionStorage.setItem('user', JSON.stringify(user))
+        
+        
+        location.replace ("http://localhost/add_student.php?x=" + sessionStorage.getItem('user')) 
+}
 
-        else{
-            document.getElementById("error").innerHTML = "Wrong pin try again!";
-        }
-    
+    else{
+        document.getElementById("error").innerHTML = "Wrong pin try again!";
     }
+    
+}
     return(
         <div className='popup'>
             
             <div className='popinside'>
                 <p id='error'> </p>
-                varification code has been send to { JSON.parse(sessionStorage.getItem('user')).email }.
+                varification code has been send to {email}.
                 <br></br>
                 <br></br>
                 
@@ -40,7 +45,8 @@ const Modal = () =>
 
             </div>
 
-        </div>)
+        </div>
+    )
 }
 
 
