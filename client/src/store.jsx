@@ -3,11 +3,11 @@ import create from "zustand";
 export const useStore = create((set) => ({
   Rank: [],
   // addRank function will add selcted project topic and supervisor to Rank array
-  addRank: (id, topic, supervisors, rank) =>
+  addRank: (id, topic, lecturer, lecturer2, rank) =>
     set((state) => ({
       Rank: [
         ...state.Rank,
-        { id, topic, supervisors, rank },
+        { id, topic, lecturer, lecturer2, rank },
       ],
     })),
   removeRank: (id) =>
