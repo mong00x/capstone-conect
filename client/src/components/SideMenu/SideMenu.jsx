@@ -8,8 +8,8 @@ import { Box, Flex, Text, Button,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Checkbox
 } from '@chakra-ui/react' 
+import axios from "axios";
 
 // drag and drop stuff
 import Container from "./Container";
@@ -19,20 +19,50 @@ import { useStore,cardStore } from "../../store";
 
 const SideMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [checked, setChecked] = useState(false)
-  
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const Rank = useStore((state) => state.Rank);
   const gloCard = cardStore((state) => state.card);
+
+  const handleSubmit = () => {
+    // post the data to the database
+    console.log("Rank", Rank);
+    console.log("gloCard", gloCard);
+
+
+    gloCard.map(
+      (card) => {
+        axios.post("http://localhost/adadd_project_register.php", {
+          student_id: JSON.parse(sessionStorage.getItem("user")).studentid,
+          project_id: card.id,
+          project_ranking: gloCard.indexOf(card) + 1,
+          state: "initial",
+          state_changed_time: new Date(),
+          approve: false,
+        })
+        .then((res) => {
+          console.log("res", res);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+      }
+    )
+      setIsSubmitted(true);
+  };
+
+ 
+
   return (
     <Flex
-      w="380px"
+      w="400px"
+      height="95vh"
+      pb={7}
       bg="BG"
       color="DarkShades"
       flexDirection="column"
       borderRight="1px solid #E2E8F0"
       justifyContent="space-between"
-      height="90%"
     >
       <Flex flexDir="column">
         <Box p="1rem" bg="DarkShades" textAlign="center" width="100%">
@@ -56,7 +86,8 @@ const SideMenu = () => {
           bg="AccentMain.default"
           colorScheme="purple"
           onClick={onOpen}
-          disabled={Rank.length < 3}
+          disabled={Rank.length < 3 && isSubmitted === false}
+          
         >
           Submit
         </Button>
@@ -67,16 +98,25 @@ const SideMenu = () => {
           <ModalHeader fontSize={24}>Submit your project selection</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Flex flexDir="column" gap={5} mt={6}>
+            <Flex flexDir="column" gap={2} mt={6}>
             { gloCard.map((item) => (
 
-              <Box key={item.id}>
+              <Box key={item.id}  borderRadius={5} py={4} px={2} bg="gray.100" color="DarkShades">
                 <Flex flexDir="row" alignItems="center" gap={3}>
-                  <Flex bg="DarkShades" minW="27px" minH="27px" borderRadius="100" justifyContent="center" alignItems="center" textAlign="center">
-                  <Text color="LightShades" fontWeight="bold" mb="3px" ml="1px">{gloCard.indexOf(item) + 1}</Text>
+                  <Flex bg="DarkShades" minW="2rem"minH="2rem" borderRadius="100" justifyContent="center" alignItems="center" textAlign="center">
+                  <Text color="LightShades" fontWeight="bold">{gloCard.indexOf(item) + 1}</Text>
 
                   </Flex>
-                  <Text fontWeight="bold" lineHeight="20px">{item.topic}</Text>
+                  <Flex flexDir="column" gap={4}>
+
+                    <Text fontWeight="bold" lineHeight="20px">{item.topic}</Text>
+
+                    <Flex flexDir="row" gap={20}>
+                      <Text fontWeight="bold" lineHeight="20px">{item.lecturer.name}</Text>
+                      <Text lineHeight="20px">{item.lecturer2.name}</Text>
+                    </Flex>
+                  </Flex>
+                  
 
                 </Flex>
               </Box>
@@ -103,7 +143,7 @@ const SideMenu = () => {
           </ModalBody>
 
           <ModalFooter mt={8}>
-            <Button mr={3} onClick={null} colorScheme="purple">
+            <Button mr={3} onClick={handleSubmit} colorScheme="purple">
               Confirm and Submit
             </Button>
             <Button variant='ghost' onClick={onClose} >Cancel</Button>
