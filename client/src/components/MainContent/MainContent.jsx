@@ -11,26 +11,31 @@ const MainContent = () => {
   const search = searchStore((state) => state.search);
   const [discplines, setDiscplines] = React.useState([]);
   console.log(process.env.NODE_ENV);
-  const url =
+  const projectUrl =
     process.env.NODE_ENV === "development"
-      ? "http://localhost/"
-      : "https://cduprojects.spinetail.cdu.edu.au/adminpage/";
+      ? "http://localhost/all_projects.php"
+      : "https://cduprojects.spinetail.cdu.edu.au/adminpage/all_projects.php";
+
+    const mappingUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost/project_discipline.php"
+      : "https://cduprojects.spinetail.cdu.edu.au/adminpage/project_discipline.php";
+
   const fetchProjects = async () => {
     // if in development mode, api url is localhost, else it is the cpanel url
 
-    const { projects } = await axios.get(url+"all_projects.php");
-    return projects.projects.slice(0,10);
+    const { data } = await axios.get(projectUrl);
+    return data.projects.splice(0, 10);
     //error handling
   };
   const fetchMapping = async () => {
     // if in development mode, api url is localhost, else it is the cpanel url
 
-    const { mappings } = await axios.get(url+"project_discipline.php");
+    const { data } = await axios.get(mappingUrl);
     // console.log("fetchMapping", data);
-    return mappings['projects discipline mapping'];
+    return data['projects discipline mapping'];
     //error handling
   };
-
 
 
   React.useEffect (() => {
@@ -43,7 +48,7 @@ const MainContent = () => {
 
   // on dataM fetched, save the result to discplinestore
 
-  const { isLoading, isError, isSuccess, data, error, } = useQuery(
+  const { isLoading:isLoadingP, isError:isErrorP, isSuccess:isSuccessP, data:dataP, error:errorP, } = useQuery(
     ["projects"],
     fetchProjects
   );
@@ -62,11 +67,7 @@ const MainContent = () => {
 
 
 
-
-
-
-
-  return isLoading ? (
+  return isLoadingP ? (
     <Flex
       justifyContent="center"
       alignItems="center"
@@ -81,7 +82,7 @@ const MainContent = () => {
         size="xl"
       />
     </Flex>
-  ) : isSuccess ? (
+  ) : isSuccessP ? (
     <Flex flexDir="column" w="100%" h="100%" color="DarkShades" bg="ContentBG">
       <SearchFilter />
       <Grid
@@ -92,7 +93,7 @@ const MainContent = () => {
         overflow={"auto"}
       >
         {discplines &&
-          data
+          dataP
             .filter((project) =>
               Object.values(project)
                 .join("")
@@ -105,7 +106,7 @@ const MainContent = () => {
       </Grid>
     </Flex>
   ) : (
-    isError && (
+    isErrorP && (
       <Flex
         justifyContent="center"
         alignItems="center"
