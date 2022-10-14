@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {
   Flex,
   Text,
+  Box,
   Checkbox,
   Button,
   Badge,
@@ -21,7 +22,7 @@ import { useStore } from "../../store";
 
 const ProjectCard = React.memo(({ project, discplines }) => {
   const Rank = useStore((state) => state.Rank);
-  console.log(Object.values(discplines))
+  // console.log(Object.values(discplines))
 
 
   const [checked, setChecked] = useState(
@@ -33,7 +34,7 @@ const ProjectCard = React.memo(({ project, discplines }) => {
 
   const description =
     project.project_description &&
-    project.project_description.toString().slice(0, 110) + "...";
+    project.project_description.toString().slice(0, 200) + "...";
 
   const addRank = useStore((state) => state.addRank);
   const removeRank = useStore((state) => state.removeRank);
@@ -46,26 +47,27 @@ const ProjectCard = React.memo(({ project, discplines }) => {
       addRank(
         project.project_id,
         project.project_topic,
-        project.project_supervisors
+        {"id":project.lecturer_id ,"name": project.lecturer_name},
+        {"id":project.lecturer2_id ,"name": project.lecturer2_name},
+
       );
     } else {
       removeRank(project.project_id);
     }
   };
   return (
-    <>
+    <Flex p="16px"
+    w="100%"
+    borderRadius={12}
+    bg="BG"
+   
+    border="3px inset #E2E8F0"
+    borderColor={checked ? "AccentMain.default" : "transparent"}
+    transition="all .3s ease">
       <Flex
         flexDir="column"
-        p="16px"
         gap="20px"
-        height="420px"
-        w="100%"
-        borderRadius={12}
-        bg="BG"
         justifyContent="space-between"
-        border="3px inset #E2E8F0"
-        borderColor={checked ? "AccentMain.default" : "transparent"}
-        transition="all .3s ease"
       >
         <Flex flexDir="column" gap={2}>
           <Flex
@@ -78,6 +80,7 @@ const ProjectCard = React.memo(({ project, discplines }) => {
               ref={checkRef}
               size="lg"
               borderColor="#888"
+              alignItems="flex-start"
               checked={checked}
               defaultChecked={checked}
               disabled={Rank.length >= 3 && !checked}
@@ -106,12 +109,13 @@ const ProjectCard = React.memo(({ project, discplines }) => {
               ))}
           </Flex>
           <Flex flexDir="column" flexWrap="wrap" gap={1}>
-            {project.project_supervisors &&
-              project.project_supervisors.map((project_supervisors) => (
-                <Text key={project_supervisors} fontSize="sm">
-                  {project_supervisors}
-                </Text>
-              ))}
+            {project.lecturer_name && project.lecturer2_name &&
+            (
+              <Flex gap={4}>
+                <Text fontWeight="bold">{project.lecturer_name}</Text>
+                <Text>{project.lecturer2_name}</Text>
+              </Flex>
+            )}
           </Flex>
         </Flex>
       </Flex>
@@ -131,6 +135,13 @@ const ProjectCard = React.memo(({ project, discplines }) => {
                 </Badge>
               ))}
           </Flex>
+          {project.lecturer_name && project.lecturer2_name &&
+            (
+              <Flex gap={4} mt={8}>
+                <Text fontWeight="bold">{project.lecturer_name}</Text>
+                <Text>{project.lecturer2_name}</Text>
+              </Flex>
+            )}
           </ModalBody>
 
           <ModalFooter>
@@ -147,7 +158,7 @@ const ProjectCard = React.memo(({ project, discplines }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </Flex>
   );
 });
 

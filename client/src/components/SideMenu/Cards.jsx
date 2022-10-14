@@ -9,7 +9,8 @@ import { DragHandleIcon } from "@chakra-ui/icons";
 export const Card = memo(function Card({
   id,
   text,
-  supervisors,
+  lecturer1,
+  lecturer2,
   rank,
   moveCard,
   findCard,
@@ -63,7 +64,7 @@ export const Card = memo(function Card({
   const opacity = isDragging ? 0.5 : 1;
   const background = isDragging ? "gray.100" : "gray.200"
   return (
-    <Fade in={existRef.current}>
+    <Fade in={existRef.current} >
       <Flex
         className="RankCard"
         flexDir="row"
@@ -73,24 +74,28 @@ export const Card = memo(function Card({
         opacity={opacity}
         background={background}
         my={2}
+        py={2}
+        px={1}
         cursor="move"
-        h="120px"
+        h="110px"
         transition="all 0.2s"
+        overflow="hidde"
       >
         <Box>
           <DragHandleIcon />
-          {<Text>{rank}</Text>}
+          {/* {<Text>{rank}</Text>} */}
         </Box>
-        <Flex flexDir="column" gap={2}>
-          <Text fontWeight="bold" lineHeight="20px">
-            {text && text}
+        <Flex flexDir="column" justifyContent="space-between" h="100%">
+          <Text>
+            {text && text.toString().slice(0,36) + "..."}
           </Text>
-          <Box>
-            {supervisors &&
-              supervisors.map((supervisor) => (
-                <Text fontSize="sm">{supervisor}</Text>
-              ))}
-          </Box>
+          {lecturer1 && lecturer2 &&
+            (
+              <Flex gap={4} flexWrap="wrap">
+                <Text fontWeight="bold">{lecturer1.name}</Text>
+                <Text>{lecturer2.name}</Text>
+              </Flex>
+            )}
         </Flex>
       </Flex>
     </Fade>
