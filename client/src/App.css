@@ -18,7 +18,9 @@ html, body {
   background-color: #b780ff !important;
 }
 
-
+.chakra-checkbox__control{
+  margin-top:6px !important
+}
 /* #
 .logo {
   height: 6em;
