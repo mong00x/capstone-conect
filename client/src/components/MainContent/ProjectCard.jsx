@@ -108,15 +108,13 @@ const ProjectCard = React.memo(({ project, discplines }) => {
                 </Badge>
               ))}
           </Flex>
-          <Flex flexDir="column" flexWrap="wrap" gap={1}>
             {project.lecturer_name && project.lecturer2_name &&
             (
-              <Flex gap={4}>
+              <Flex flexDir="row" gap={2} flexWrap="wrap">
                 <Text fontWeight="bold">{project.lecturer_name}</Text>
                 <Text>{project.lecturer2_name}</Text>
               </Flex>
             )}
-          </Flex>
         </Flex>
       </Flex>
 
