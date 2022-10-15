@@ -28,8 +28,7 @@ const SideMenu = () => {
 
   const handleSubmit = () => {
     // post the data to the database
-    console.log("Rank", Rank);
-    console.log("gloCard", gloCard);
+    console.log("submit");
 
 
     gloCard.map(

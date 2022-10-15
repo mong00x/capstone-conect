@@ -32,18 +32,3 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     http_response_code(200);
     echo json_encode(["success"=>1,"msg"=>"Submission Created"]);
 }
-
-
-
-// // post to student_project_requests
-// $query = "INSERT INTO student_project_requests (student_id, project_id, project_ranking, state,	state_changed_time,	approve) VALUES ( '$student_id', '$project_id', '$project_ranking', '$state', '$state_changed_time', '$approve')";
- 
-// connectDB();
-// $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']));
-// closeDB();
-
-// $success="1";
-// $_SESSION['msg']="project submisition registered";
-// $_SESSION['msgType']="success";
-
-// ?>

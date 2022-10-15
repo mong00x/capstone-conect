@@ -9,19 +9,12 @@ import MainContent from "./components/MainContent/MainContent";
 const queryClient = new QueryClient();
 
 function App() {
-
   const redirectUrl = process.env.NODE_ENV === "development" ? "http://localhost:5173" : "https://cduprojects.spinetail.cdu.edu.au";
-
-  if(JSON.parse(sessionStorage.getItem('user')).auth == null)
+  if(JSON.parse(sessionStorage.getItem('user')) == null || JSON.parse(sessionStorage.getItem('user')).auth == false)
   {
-    const user = {auth: false}
-    sessionStorage.setItem('user', JSON.stringify(user))
-  }
-  if(!(JSON.parse(sessionStorage.getItem('user')).auth))
-  {
-    
     location.replace(redirectUrl)
   }
+  
   return (
     <Flex
       className="App"
