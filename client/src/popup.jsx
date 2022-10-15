@@ -3,9 +3,11 @@ import {useState} from "react";
 import axios from "axios";
 
 const Modal = ( {pin,email,fname,studentid}) => 
+
+
 {
     const [typedpin,setpin] = useState("");
-    
+    const redirectUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_student.php?x=" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_student.php?x=";    
     function Verify()
 {
     if (pin==typedpin)
@@ -14,7 +16,7 @@ const Modal = ( {pin,email,fname,studentid}) =>
         sessionStorage.setItem('user', JSON.stringify(user))
         
         
-        location.replace ("http://localhost/add_student.php?x=" + sessionStorage.getItem('user')) 
+        location.replace (redirectUrl + sessionStorage.getItem('user')) 
 }
 
     else{

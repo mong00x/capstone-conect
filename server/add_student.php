@@ -20,5 +20,14 @@ closeDB();
 		$_SESSION['msgType']="success";
 ?>
 <script type="text/javascript">
-	location.replace("http://127.0.0.1:5173/app")
+	// environment variables if development 
+	location.replace("http://localhost:5173/app")
+
+
+
+	
+	
+	
+	// environment variables if production
+	// location.replace("https://cduprojects.spinetail.cdu.edu.au/app")
 </script>

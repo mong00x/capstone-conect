@@ -10,6 +10,8 @@ const Login_page = () => {
     const [user_type,setType] = useState('student');
     const [password,setPassword] = useState(Math.floor(Math.random() * (9999 - 1111)) + 1111);
     const [popup,setPopup] = useState(false);
+
+    const loginUrl =  process.env.NODE_ENV === "development" ? "http://localhost/login.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/login.php";
     
     const user = {name: fname, email: email, password_token: password, auth: false}
     sessionStorage.setItem('user', JSON.stringify(user))
@@ -86,7 +88,7 @@ const Login_page = () => {
             <br></br>
 
             {user_type === "student" && <button className="btn"  type="submit">Send Password</button>}
-            {user_type !== "student" && <a className="link" href="http://localhost/login.php"  >Login as {user_type}</a>}
+            {user_type !== "student" && <a className="link" href={loginUrl } >Login as {user_type}</a>}
         </form>
                 </div>
            

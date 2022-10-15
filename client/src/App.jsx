@@ -9,6 +9,9 @@ import MainContent from "./components/MainContent/MainContent";
 const queryClient = new QueryClient();
 
 function App() {
+
+  const redirectUrl = process.env.NODE_ENV === "development" ? "http://localhost:5173" : "https://cduprojects.spinetail.cdu.edu.au";
+
   if(JSON.parse(sessionStorage.getItem('user')).auth == null)
   {
     const user = {auth: false}
@@ -17,7 +20,7 @@ function App() {
   if(!(JSON.parse(sessionStorage.getItem('user')).auth))
   {
     
-    location.replace("http://127.0.0.1:5173/")
+    location.replace(redirectUrl)
   }
   return (
     <Flex
