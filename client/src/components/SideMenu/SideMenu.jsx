@@ -21,6 +21,8 @@ const SideMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const postUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_project_register.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_project_register.php";
+
   const Rank = useStore((state) => state.Rank);
   const gloCard = cardStore((state) => state.card);
 
@@ -32,16 +34,16 @@ const SideMenu = () => {
 
     gloCard.map(
       (card) => {
-        axios.post("http://localhost/adadd_project_register.php", {
+        axios.post(postUrl, JSON.stringify({
           student_id: JSON.parse(sessionStorage.getItem("user")).studentid,
           project_id: card.id,
           project_ranking: gloCard.indexOf(card) + 1,
           state: "initial",
           state_changed_time: new Date(),
           approve: false,
-        })
+        }))
         .then((res) => {
-          console.log("res", res);
+          console.log("res", res.data);
         })
         .catch((err) => {
           console.log("err", err);
@@ -49,6 +51,7 @@ const SideMenu = () => {
       }
     )
       setIsSubmitted(true);
+      onClose();
   };
 
  
@@ -111,8 +114,8 @@ const SideMenu = () => {
 
                     <Text fontWeight="bold" lineHeight="20px">{item.topic}</Text>
 
-                    <Flex flexDir="row" gap={20}>
-                      <Text fontWeight="bold" lineHeight="20px">{item.lecturer.name}</Text>
+                    <Flex flexDir="row" gap={4} flexWrap="wrap">
+                      <Text fontWeight="bold" lineHeight="20px" mr={4}>{item.lecturer.name}</Text>
                       <Text lineHeight="20px">{item.lecturer2.name}</Text>
                     </Flex>
                   </Flex>
