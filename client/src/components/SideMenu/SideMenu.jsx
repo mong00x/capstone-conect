@@ -1,5 +1,13 @@
 import React, {useState} from "react";
-import { Box, Flex, Text, Button,
+import { 
+  Box, 
+  Flex, 
+  Text, 
+  Button,
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  ScaleFade,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -9,6 +17,7 @@ import { Box, Flex, Text, Button,
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react' 
+import { CheckCircleIcon } from "@chakra-ui/icons";
 import axios from "axios";
 
 // drag and drop stuff
@@ -18,7 +27,12 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useStore,cardStore } from "../../store";
 
 const SideMenu = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const submitModal = useDisclosure()
+  const {
+    isOpen: isVisible,
+    onClose,
+    onOpen,
+  } = useDisclosure({ defaultIsOpen: false })
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const postUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_project_register.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_project_register.php";
@@ -49,8 +63,9 @@ const SideMenu = () => {
         });
       }
     )
+      onOpen()
       setIsSubmitted(true);
-      onClose();
+      
   };
 
  
@@ -87,19 +102,44 @@ const SideMenu = () => {
           mx="1rem"
           bg="AccentMain.default"
           colorScheme="purple"
-          onClick={onOpen}
-          disabled={Rank.length < 3 && isSubmitted === false}
+          onClick={submitModal.onOpen}
+          disabled={Rank.length < 3 || isSubmitted === true }
           
         >
           Submit
         </Button>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={submitModal.isOpen} onClose={submitModal.onClose} closeOnOverlayClick={false}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent minW="580px">
           <ModalHeader fontSize={24}>Submit your project selection</ModalHeader>
-          <ModalCloseButton />
           <ModalBody>
+            {isVisible ? 
+            
+           (
+            <ScaleFade initialScale={0.9} in={isVisible}> 
+              <Alert
+                status='success'
+                variant='subtle'
+                flexDirection='column'
+                alignItems='center'
+                justifyContent='center'
+                textAlign='center'
+                height='280px'
+              >
+              <CheckCircleIcon boxSize='40px' mr={0} color="green.500"/>
+              <AlertTitle mt={4} mb={1} fontSize='lg'>
+                Application submitted!
+              </AlertTitle>
+              <AlertDescription maxWidth='md' whiteSpace="normal">
+                Thanks for submitting your application. Your application will be responded within 3 working days. 
+                Please check your email for further information.
+              </AlertDescription>
+            </Alert>
+          </ScaleFade>
+          ):
+          (
+            <>
             <Flex flexDir="column" gap={2} mt={6}>
             { gloCard.map((item) => (
 
@@ -140,15 +180,24 @@ const SideMenu = () => {
               </Text>
               
             </Flex>
+            </>
+          )}
             
 
           </ModalBody>
 
           <ModalFooter mt={8}>
-            <Button mr={3} onClick={handleSubmit} colorScheme="purple">
-              Confirm and Submit
-            </Button>
-            <Button variant='ghost' onClick={onClose} >Cancel</Button>
+            {
+              !isSubmitted&&
+              <>
+                <Button mr={3} onClick={handleSubmit} colorScheme="purple">
+                  Confirm and Submit
+                </Button>
+                <Button variant='ghost' onClick={submitModal.onClose} >
+                  Cancel
+                </Button>
+              </>
+             }
           </ModalFooter>
         </ModalContent>
       </Modal>
