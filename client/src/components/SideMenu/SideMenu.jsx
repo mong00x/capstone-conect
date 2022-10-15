@@ -26,27 +26,22 @@ const SideMenu = () => {
 
   const handleSubmit = () => {
     // post the data to the database
-    console.log("Rank", Rank);
-    console.log("gloCard", gloCard);
+    console.log("submit");
 
 
     gloCard.map(
       (card) => {
-        axios.post("http://localhost/adadd_project_register.php", {
-          student_id: JSON.parse(sessionStorage.getItem("user")).studentid,
+        console.log("submit");
+        const pro_rej = {
+          studentid: JSON.parse(sessionStorage.getItem("user")).studentid, 
           project_id: card.id,
           project_ranking: gloCard.indexOf(card) + 1,
           state: "initial",
-          state_changed_time: new Date(),
-          approve: false,
-        })
-        .then((res) => {
-          console.log("res", res);
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-      }
+          approve: false}
+        sessionStorage.setItem('pro_rej', JSON.stringify(pro_rej))
+        location.replace ("http://localhost/add_project_register.php?data=" + sessionStorage.getItem('pro_rej')) 
+        }
+
     )
       setIsSubmitted(true);
   };
