@@ -3,7 +3,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
 import PropTypes from "prop-types";
 
-import { Flex, Text, Box, Fade } from "@chakra-ui/react";
+import { Flex, Text, Stack } from "@chakra-ui/react";
 import { DragHandleIcon } from "@chakra-ui/icons";
 
 export const Card = memo(function Card({
@@ -64,7 +64,6 @@ export const Card = memo(function Card({
   const opacity = isDragging ? 0.5 : 1;
   const background = isDragging ? "gray.100" : "gray.200"
   return (
-    <Fade in={existRef.current} >
       <Flex
         className="RankCard"
         flexDir="row"
@@ -75,30 +74,32 @@ export const Card = memo(function Card({
         background={background}
         my={2}
         py={2}
-        px={1}
+        px={2}
+        h="96px"
         cursor="move"
-        h="110px"
         transition="all 0.2s"
         overflow="hidde"
-      >
-        <Box>
+        shadow="md"  
+        gap={2}
+        >
+        <Stack direction="column">
           <DragHandleIcon />
+          
           {/* {<Text>{rank}</Text>} */}
-        </Box>
+        </Stack>
         <Flex flexDir="column" justifyContent="space-between" h="100%">
           <Text>
             {text && text.toString().slice(0,36) + "..."}
           </Text>
           {lecturer1 && lecturer2 &&
             (
-              <Flex gap={1} flexWrap="wrap">
+              <Flex flexWrap="wrap">
                 <Text fontWeight="bold" fontSize="1px" mr={4}>{lecturer1.name}</Text>
                 <Text fontSize={4}>{lecturer2.name}</Text>
               </Flex>
             )}
         </Flex>
       </Flex>
-    </Fade>
   );
 });
 
