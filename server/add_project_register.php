@@ -7,6 +7,15 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 include_once 'includes.php';
 
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/SMTP.php';
+require 'PHPMailer/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+
 // get data posted 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -31,4 +40,37 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     $_SESSION['msgType']="success";
     http_response_code(200);
     echo json_encode(["success"=>1,"msg"=>"Submission Created"]);
+
+    
+
+    if ( $data['project_ranking'] == 3) 
+    { 
+        $mail = new PHPMailer();
+        $mail-> isSMTP();
+        // $mail->Host = 'mail.udlcanada.com';
+        $mail->Host = 'mail.udlcanada.com';
+        $mail->Port = "587";
+        $mail->SMTPDebug  = 2;
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'tls';
+        $mail->Username = 'admin@udlcanada.com';
+        $mail->Password = 'BrainDrain';
+        // $mail->Username = 'admin@udlcanada.com';
+        // $mail->Password = 'BrainDrain';
+        $mail->Subject = 'Application submitted';
+        $mail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
+        $mail->setFrom('admin@udlcanada.com'); // sender
+        $mail->addAddress('s342742@students.cdu.edu.au'); // receiver
+        if ($mail->Send()) {
+            echo "Mail sent";
+        } else {
+            // error
+            echo "Error: " . $mail->ErrorInfo;
+        }
+    } else {
+        echo "Not sent" . $data["project_ranking"];
+    }
+
+
+
 }
