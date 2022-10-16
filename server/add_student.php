@@ -20,14 +20,6 @@ closeDB();
 		$_SESSION['msgType']="success";
 ?>
 <script type="text/javascript">
-	// environment variables if development 
-	location.replace("http://localhost:5173/app")
-
-
-
-	
-	
-	
-	// environment variables if production
-	// location.replace("https://cduprojects.spinetail.cdu.edu.au/app")
+	const myurl = process.env.NODE_ENV === "development" ? "http://localhost/http://localhost:5173/app" : "https://cduprojects.spinetail.cdu.edu.au/app/";
+	location.replace(myurl)
 </script>
