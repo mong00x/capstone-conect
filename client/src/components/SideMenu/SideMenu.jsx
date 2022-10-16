@@ -14,8 +14,11 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   useDisclosure,
+  Stack,
+  Avatar,
+  CircularProgress,
+  CircularProgressLabel
 } from '@chakra-ui/react' 
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import axios from "axios";
@@ -52,8 +55,8 @@ const SideMenu = () => {
           project_id: card.id,
           project_ranking: gloCard.indexOf(card) + 1,
           state: "initial",
-          state_changed_time: new Date(),
-          approve: false,
+          state_changed_time: new Date().toISOString().slice(0, 19).replace('T', ' '),
+          approve: 0,
         }))
         .then((res) => {
           console.log("res", res.data);
@@ -84,12 +87,18 @@ const SideMenu = () => {
       <Flex flexDir="column">
         <Box p="1rem" bg="DarkShades" textAlign="center" width="100%">
           <Text fontSize="1rem" fontWeight="bold" color="LightShades">
-            My selections {Rank.length}/3
+            <Stack direction="row" spacing={2} align="center">
+              <Text>Please select up to 3 projects</Text>
+
+              <CircularProgress value={Rank.length*33.333}>
+                <CircularProgressLabel>{Rank.length}/3</CircularProgressLabel>
+              </CircularProgress>
+            </Stack>
+          
           </Text>
         </Box>
         <Box p="1rem">
-          <Text>Please select up to 3 projects</Text>
-          <Text>Drag to rank</Text>
+          
 
           <DndProvider backend={HTML5Backend}>
             <Container />
@@ -144,22 +153,27 @@ const SideMenu = () => {
             { gloCard.map((item) => (
 
               <Box key={item.id}  borderRadius={5} py={4} px={2} bg="gray.100" color="DarkShades">
-                <Flex flexDir="row" alignItems="center" gap={3}>
+                <Flex flexDir="row" alignItems="flex-start" gap={3}>
                   <Flex bg="DarkShades" minW="2rem"minH="2rem" borderRadius="100" justifyContent="center" alignItems="center" textAlign="center">
-                  <Text color="LightShades" fontWeight="bold">{gloCard.indexOf(item) + 1}</Text>
-
+                    <Text color="LightShades" fontWeight="bold">
+                      {gloCard.indexOf(item) + 1}
+                    </Text>
                   </Flex>
                   <Flex flexDir="column" gap={4}>
 
                     <Text fontWeight="bold" lineHeight="20px">{item.topic}</Text>
 
-                    <Flex flexDir="row" gap={4} flexWrap="wrap">
-                      <Text fontWeight="bold" lineHeight="20px" mr={4}>{item.lecturer.name}</Text>
-                      <Text lineHeight="20px">{item.lecturer2.name}</Text>
+                    <Flex flexDir="row" gap={1} flexWrap="wrap" alignItems="center" >
+                      <Stack direction="row" alignItems="center" mr={4}>
+                        <Text fontWeight="bold"  lineHeight="20px" >{item.lecturer.name}</Text>
+
+                      </Stack>
+                      <Stack direction="row" alignItems="center">
+                        <Text lineHeight="20px">{item.lecturer2.name}</Text>
+                      </Stack>
                     </Flex>
                   </Flex>
-                  
-
+                
                 </Flex>
               </Box>
               )
