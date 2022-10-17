@@ -45,32 +45,84 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
 
     if ( $data['project_ranking'] == 3) 
     { 
-        $mail = new PHPMailer();
-        $mail-> isSMTP();
-        // $mail->Host = 'mail.udlcanada.com';
-        $mail->Host = 'mail.udlcanada.com';
-        $mail->Port = "587";
-        $mail->SMTPDebug  = 2;
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'tls';
-        $mail->Username = 'admin@udlcanada.com';
-        $mail->Password = 'BrainDrain';
-        // $mail->Username = 'admin@udlcanada.com';
-        // $mail->Password = 'BrainDrain';
-        $mail->Subject = 'Application submitted';
-        $mail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
-        $mail->setFrom('admin@udlcanada.com'); // sender
-        $mail->addAddress('s342742@students.cdu.edu.au'); // receiver
-        if ($mail->Send()) {
+        $STUmail = new PHPMailer();
+        $STUmail-> isSMTP();
+        $STUmail->Host = 'mail.udlcanada.com';
+        $STUmail->Port = "587";
+        $STUmail->SMTPDebug  = 2;
+        $STUmail->SMTPAuth = true;
+        $STUmail->SMTPSecure = 'tls';
+        $STUmail->Username = 'admin@udlcanada.com';
+        $STUmail->Password = 'BrainDrain';
+
+        $STUmail->Subject = 'Application submitted';
+        $STUmail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
+        $STUmail->setFrom('admin@udlcanada.com'); // sender
+        $STUmail->addAddress('s342742@students.cdu.edu.au'); // receiver
+        if ($STUmail->Send()) {
             echo "Mail sent";
         } else {
             // error
-            echo "Error: " . $mail->ErrorInfo;
+            echo "Error: " . $STUmail->ErrorInfo;
         }
     } else {
-        echo "Not sent" . $data["project_ranking"];
+        echo "Email to student Not sent" . $data["project_ranking"];
     }
 
+    if($data['project_ranking'] == 1) { 
+        $LECmail = new PHPMailer();
+        $LECmail-> isSMTP();
+        $LECmail->Host = 'mail.udlcanada.com';
+        $LECmail->Port = "587";
+        $LECmail->SMTPDebug  = 2;
+        $LECmail->SMTPAuth = true;
+        $LECmail->SMTPSecure = 'tls';
+        $LECmail->Username = 'admin@udlcanada.com';
+        $LECmail->Password = 'BrainDrain';
+        
+        // get project TOPIC information 
+        $query = "SELECT project_topic FROM projects WHERE project_id = '$project_id'";
+        connectDB();
+        $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "Data: " . $data);
+        closeDB();
+        $row = mysqli_fetch_assoc($result);
+
+        
+        $project_topic = $row['project_topic'];
+        
+        // get student information
+        $query = "SELECT student_name, student_id FROM students WHERE student_id = '$student_id'";
+        connectDB();
+        $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "Data: " . $data);
+        closeDB();
+        $row = mysqli_fetch_assoc($result);
+       
+        $student_name = $row['student_name'];
+        
+        $student_id = $row['student_id'];
+
+        $message = file_get_contents("lecturer_email_template.html");
+        $message = str_replace("%project_topic%", $project_topic, $message);
+        $message = str_replace("%student_name%", $student_name, $message);
+        $message = str_replace("%student_id%", $student_id, $message);
+
+        
+
+        $LECmail->Subject = 'Application received';
+        $LECmail->isHTML(true);
+        $LECmail->msgHTML($message);
+        $LECmail->AltBody = 'This is a plain-text message body';
+        $LECmail->setFrom('admin@udlcanada.com'); // sender
+        $LECmail->addAddress('s342742@students.cdu.edu.au'); // receiver
+        if ($LECmail->Send()) {
+            echo " Lecturer Mail sent";
+        } else {
+            // error
+            echo "Error: " . $LECmail->ErrorInfo;
+        }
+    } else {
+        echo "Email to student Not sent" . $data["project_ranking"];
+    }
 
 
 }
