@@ -81,7 +81,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $LECmail->Password = 'BrainDrain';
         
         // get project TOPIC information 
-        $query = "SELECT project_topic FROM projects WHERE project_id = '$project_id'";
+        $query = "SELECT project_topic,lecturer_id FROM projects WHERE project_id = '$project_id'";
         connectDB();
         $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "Data: " . $data);
         closeDB();
@@ -125,7 +125,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $LECmail->msgHTML($message);
         $LECmail->AltBody = 'You have a new project';
         $LECmail->setFrom('admin@udlcanada.com'); // sender
-        $LECmail->addAddress('$lecturer_email '); // receiver
+        $LECmail->addAddress($lecturer_email); // receiver
         if ($LECmail->Send()) {
             echo " Lecturer Mail sent";
         } else {
@@ -133,7 +133,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
             echo "Error: " . $LECmail->ErrorInfo;
         }
     } else {
-        echo "Email to student Not sent" . $data["project_ranking"];
+        echo "Email to Lecturer Not sent" . $data["project_ranking"];
     }
 
 
