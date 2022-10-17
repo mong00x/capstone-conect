@@ -24,7 +24,7 @@ const Login_page = () => {
             password: password
         };
          
-        emailjs.send('service_2qo1eeb', 'template_hbtmtbs', templateParams, 'WjagjhsUVM7RUWDft')
+        emailjs.send('service_v7jhvcq', 'template_7s3j2wa', templateParams, 'pEzK7znAU0MbBXUsH')
             .then(function(response) {
                console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
