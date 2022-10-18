@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import { 
   Box, 
   Flex, 
@@ -12,13 +12,13 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
+  ModalCloseButton,
   ModalFooter,
   ModalBody,
   useDisclosure,
   Stack,
-  Avatar,
   CircularProgress,
-  CircularProgressLabel
+  CircularProgressLabel,
 } from '@chakra-ui/react' 
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import axios from "axios";
@@ -31,6 +31,7 @@ import { useStore,cardStore } from "../../store";
 
 const SideMenu = () => {
   const submitModal = useDisclosure()
+  const initialRef = useRef(null)
   const {
     isOpen: isVisible,
     onClose,
@@ -118,10 +119,18 @@ const SideMenu = () => {
           Submit
         </Button>
 
-        <Modal isOpen={submitModal.isOpen} onClose={submitModal.onClose} closeOnOverlayClick={false}>
-        <ModalOverlay />
-        <ModalContent minW="580px">
-          <ModalHeader fontSize={24}>Submit your project selection</ModalHeader>
+        <Modal 
+          initialFocusRef={initialRef}
+          isOpen={submitModal.isOpen} 
+          onClose={submitModal.onClose} 
+          closeOnOverlayClick={false} 
+          size="xl">
+        <ModalOverlay
+        
+           />
+        <ModalContent>
+          <ModalHeader fontSize={24} >Submit your project selection</ModalHeader>
+          <ModalCloseButton ref={initialRef}/>
           <ModalBody>
             {isVisible ? 
             
