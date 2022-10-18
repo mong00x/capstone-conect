@@ -1,7 +1,20 @@
 import "./App.css";
+import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import {  Flex } from "@chakra-ui/react";
+import {  
+  Flex,   
+  Modal,
+  Button,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Text
+} from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import SideMenu from "./components/SideMenu/SideMenu";
 import MainContent from "./components/MainContent/MainContent";
@@ -14,6 +27,18 @@ function App() {
   {
     location.replace(redirectUrl)
   }
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [firstTime, setFirstTime] = React.useState(true)
+
+  React.useEffect(() => {
+    if(firstTime)
+    {
+      onOpen()
+      setFirstTime(false)
+    }
+  }, [firstTime])
+
+
   
   return (
     <Flex
@@ -31,6 +56,24 @@ function App() {
         </Flex>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
+      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Welcome to HIT 401 Capstone Project</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontWeight='bold' mb='1rem'>
+              you can view and select your top 3 projects. Please select carefully as you will not be able to change your selection after. 
+            </Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              OK
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 }
