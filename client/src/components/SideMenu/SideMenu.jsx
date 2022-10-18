@@ -1,9 +1,10 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { 
   Box, 
   Flex, 
   Text, 
   Button,
+  useToast,
   Alert,
   AlertTitle,
   AlertDescription,
@@ -20,7 +21,7 @@ import {
   CircularProgress,
   CircularProgressLabel,
 } from '@chakra-ui/react' 
-import { CheckCircleIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import axios from "axios";
 
 // drag and drop stuff
@@ -32,6 +33,7 @@ import { useStore,cardStore } from "../../store";
 const SideMenu = () => {
   const submitModal = useDisclosure()
   const initialRef = useRef(null)
+  const toast = useToast()
   const {
     isOpen: isVisible,
     onClose,
@@ -72,6 +74,24 @@ const SideMenu = () => {
       
   };
 
+  useEffect(() => {
+    if (Rank.length === 3) {
+      toast({
+        title: 'You have selected your 3 projects.',
+        description: 'You can now drag to rank them before submision. Project that is ranked higher will be prioritised.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position:"bottom",
+        containerStyle: {
+          mb:"28px",
+          maxWidth: '30%',
+        }
+      })
+    }
+
+  }, [Rank]);
+
  
 
   return (
@@ -99,6 +119,7 @@ const SideMenu = () => {
           </Text>
         </Box>
         <Box p="1rem">
+          
           
 
           <DndProvider backend={HTML5Backend}>
