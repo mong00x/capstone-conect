@@ -16,6 +16,9 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Tooltip,
+  Tag,
+  TagLabel
 } from "@chakra-ui/react";
 
 import { useStore } from "../../store";
@@ -103,16 +106,22 @@ const ProjectCard = React.memo(({ project, discplines }) => {
           <Flex flexDir="row" gap={2} flexWrap="wrap">
             {discplines &&
               discplines.map((discpline) => (
-                <Badge key={discpline} borderRadius="full" px="2">
-                  {discpline}
-                </Badge>
+                <Tooltip key={discpline} borderRadius="full" px="2" label={discpline}>
+                  <Tag colorScheme="purple">
+                    <TagLabel>{discpline}</TagLabel>
+                    </Tag>
+                </Tooltip>
               ))}
           </Flex>
             {project.lecturer_name && project.lecturer2_name &&
             (
               <Flex flexDir="row" gap={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr={3}>{project.lecturer_name}</Text>
-                <Text>{project.lecturer2_name}</Text>
+                <Tag variant="solid">
+                  <TagLabel>{project.lecturer_name}</TagLabel>
+                  </Tag>
+                <Tag>
+                  <TagLabel>{project.lecturer2_name}</TagLabel>
+                  </Tag>
               </Flex>
             )}
         </Flex>
