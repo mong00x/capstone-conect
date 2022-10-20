@@ -50,3 +50,4 @@ Refresh your Client site and now you should be able to see and manipulate your s
 4. Data fetching: [Axios](https://axios-http.com/docs/intro)
 5. Drag and Drop: [React DnD](https://react-dnd.github.io/react-dnd/)
 6. emailjs (npm install @emailjs/browser)
+7. md5 (npm install md5)
