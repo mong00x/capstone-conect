@@ -2,26 +2,30 @@ import {useState} from "react";
 import "./login.css";
 import emailjs from '@emailjs/browser';
 import Modal from "./popup";
+import md5 from "md5";
+
+const password = Math.floor(Math.random() * (9999 - 1111)) + 1111;
 
 const Login_page = () => {
     const [email,setEmail] = useState('');
     const [fname,setFname] = useState('');
     const [studentid,setId] = useState('');
     const [user_type,setType] = useState('student');
-    const [password,setPassword] = useState(Math.floor(Math.random() * (9999 - 1111)) + 1111);
     const [popup,setPopup] = useState(false);
 
     const loginUrl =  process.env.NODE_ENV === "development" ? "http://localhost/login.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/login.php";
-    
-    const user = {name: fname, email: email, password_token: password, auth: false}
-    sessionStorage.setItem('user', JSON.stringify(user))
+    const hashed_password = md5(password);
+
+    const user = {name: fname, email: email, password_token: hashed_password, auth: false};
+    sessionStorage.setItem('user', JSON.stringify(user));
     
     
     const handellogin = (e) =>{
         e.preventDefault();
         var templateParams = {
             email: email,
-            password: password
+            password: password,
+            name: fname
         };
          
         emailjs.send('service_v7jhvcq', 'template_7s3j2wa', templateParams, 'pEzK7znAU0MbBXUsH')
@@ -31,10 +35,11 @@ const Login_page = () => {
                console.log('FAILED...', error);
             });
         
-        const user = {studentid:studentid, name: fname, email: email, password_token: password, auth: false}
+        const user = {studentid:studentid, name: fname, email: email, password_token: hashed_password, auth: false}
         sessionStorage.setItem('user', JSON.stringify(user))
         console.log(JSON.parse(sessionStorage.getItem('user')))
-        
+        console.log(password)
+        console.log(hashed_password)
       setPopup(true)
 
         
