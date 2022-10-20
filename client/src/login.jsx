@@ -14,9 +14,8 @@ const Login_page = () => {
     const [popup,setPopup] = useState(false);
 
     const loginUrl =  process.env.NODE_ENV === "development" ? "http://localhost/login.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/login.php";
-    const hashed_password = md5(password);
 
-    const user = {name: fname, email: email, password_token: hashed_password, auth: false};
+    const user = {studentid: studentid, name: fname, email: email, password_token: password, auth: false};
     sessionStorage.setItem('user', JSON.stringify(user));
     
     
@@ -34,12 +33,12 @@ const Login_page = () => {
             }, function(error) {
                console.log('FAILED...', error);
             });
+            
         
-        const user = {studentid:studentid, name: fname, email: email, password_token: hashed_password, auth: false}
+        const user = {studentid:studentid, name: fname, email: email, password_token: password, auth: false}
         sessionStorage.setItem('user', JSON.stringify(user))
         console.log(JSON.parse(sessionStorage.getItem('user')))
         console.log(password)
-        console.log(hashed_password)
       setPopup(true)
 
         
@@ -103,7 +102,7 @@ const Login_page = () => {
     return(
         
         <div >
-        <Modal pin={password} email={email} fname= {fname} studentid={studentid}/>
+        <Modal pin={password} />
         </div>
         
     )

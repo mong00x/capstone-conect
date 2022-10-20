@@ -2,7 +2,7 @@ import react from 'react';
 import {useState} from "react";
 import md5 from "md5";
 
-const Modal = ( {pin,email,fname,studentid}) => 
+const Modal = ( {pin}) => 
 
 
 {
@@ -12,7 +12,13 @@ const Modal = ( {pin,email,fname,studentid}) =>
     {
         if (pin==typedpin)
         {
-            const user = {studentid: studentid, name: fname, email: email, password_token: pin, auth: true}
+            const user = {
+                studentid: JSON.parse(sessionStorage.getItem('user')).studentid, 
+                name: JSON.parse(sessionStorage.getItem('user')).name, 
+                email: JSON.parse(sessionStorage.getItem('user')).email, 
+                password_token: JSON.parse(sessionStorage.getItem('user')).password_token,
+                auth: true
+            }
             sessionStorage.setItem('user', JSON.stringify(user))
             location.replace (redirectUrl + sessionStorage.getItem('user')) 
         }
@@ -27,7 +33,7 @@ const Modal = ( {pin,email,fname,studentid}) =>
             
             <div className='popinside'>
                 <p id='error'> </p>
-                varification code has been send to {email}.
+                varification code has been send to {JSON.parse(sessionStorage.getItem('user')).email}.
                 <br></br>
                 <br></br>
                 
