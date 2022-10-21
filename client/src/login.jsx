@@ -156,7 +156,8 @@ return(
                 type="password"
                 name="newpin"
                 value={typedpin}
-                onChange={(e) => setpin(e.target.value)}/>
+                onChange={(e) => setpin(e.target.value)}
+                autofocus/>
                 </ModalBody>
 
                 <ModalFooter>
