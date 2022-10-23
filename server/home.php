@@ -12,4 +12,86 @@
 
 		<h2>Welcome to admin page !</h2>
     
+	 
+	 
+	 
+	 
+	 
+		<h2>Dashboard</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+           
+              <th scope="col">Topic Title</th>
+              <th scope="col">Total Registered Student  </th>
+             
+			  
+            </tr>
+          </thead>
+          <tbody>
+			  
+	<?php 
+			  
+		if ($_SESSION['priv']>1) {	  
+			$query = "SELECT * FROM projects ORDER BY project_id ASC";
+		} else {
+			
+			$query = "SELECT * FROM projects WHERE lecturer_id= ".$_SESSION['userloginID']." ORDER BY project_id ASC";
+		}
+		connectDB();
+		$result = mysqli_query($_SESSION['db'],$query) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
+		$result2=$result;
+		$result3=$result;
+		closeDB();
+		if(mysqli_num_rows($result)<1){
+			//no results found
+			echo "<p class=\"\">No results found.</p>";
+		}else{
+			$a=0;
+			while($row = mysqli_fetch_assoc($result)){ 
+	?>
+		  
+			  
+            <tr>
+             
+              <td width="30%"><?php echo $row['project_topic'];?></td>
+              <td>
+				  <?php
+				  $query_st = "SELECT * FROM student_project_requests WHERE project_id='".$row['project_id']."'"	;
+		connectDB();
+		$result_st = mysqli_query($_SESSION['db'],$query_st);
+			closeDB();	
+				  
+				 $width=mysqli_num_rows($result_st)*30;
+				  ?>
+				  
+				  <img src="bg.jpg" width="<?php echo $width?>" height="30" alt=""/> <?php echo mysqli_num_rows($result_st);?>
+				
+				
+				
+				</td>
+			
+            </tr>
+            
+			  
+			  							  
+<?php		$a++;											  
+			}
+		
+		}
+	 ?>
+			  
+			  
+          </tbody>
+        </table>
+      </div>
+
+	 
+	 
+	 
+	 
+	 
+	 
+	 
     </main>

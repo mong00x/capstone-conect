@@ -17,11 +17,13 @@ if (!isset($_SESSION['auth']))
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
 
-    
+   
+  \
 
     
 
 <link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+	   	 
 
     <style>
       .bd-placeholder-img {
@@ -126,6 +128,13 @@ if (!isset($_SESSION['auth']))
               Project List
             </a>
           </li>
+			<li class="nav-item">
+            <a class="nav-link" href="index.php?p=project_register">
+              <span data-feather="layers" class="align-text-bottom"></span>
+              Project Register (approve/decline)
+            </a>
+          </li>
+         
          
 			
          
@@ -159,6 +168,9 @@ if (!isset($_SESSION['auth']))
 			case "project_list":
 				include_once('project_list.php');
 				break;	
+			case "project_register":
+				include_once('project_register.php');
+				break;
 			default:	
 			include_once('home.php');
 				break;	

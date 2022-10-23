@@ -32,6 +32,7 @@ if(mysqli_num_rows($result)<1) {
 		$_SESSION['auth'] = true;
 		$_SESSION['priv'] = $row['priv'];
 		$_SESSION['userloginID']=$row['lecturer_id'];
+		$_SESSION['user_name']=$row['lecturer_name'];
 		$_SESSION['username']=$row['lecturer_email'];
 		header("Location:index.php");
 	}

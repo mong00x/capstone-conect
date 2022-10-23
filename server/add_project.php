@@ -19,11 +19,53 @@ $query = "SELECT * FROM projects WHERE project_topic='".$_POST['title']."'"	;
 	
 //insert information to database	
 	
-$query= "INSERT INTO projects (project_topic, project_description, project_internal, project_external,category,lecturer_id) VALUES ('".$_POST['title']."','".$_POST['detail']."','".$_POST['internal']."','".$_POST['external']."','".$_POST['category']."','".$_SESSION['userloginID']."')";
+$dis="";
+$lec=$_SESSION['user_name'];		
+
+
+/*
+if(isset($_POST['lecturer'])){
+      foreach($_POST['lecturer'] as $value2){
+		  $lec.= $value2.", ";
+    }
+  }	*/
+		
+	$dis=explode("|",$_POST['lecturer2_name']);
+		
+		
+
+		
+$query= "INSERT INTO projects (project_topic, project_description,lecturer_id, lecturer_name, lecturer2_id,lecturer2_name) VALUES ('".$_POST['title']."','".$_POST['detail']."','".$_SESSION['userloginID']."','".$_SESSION['user_name']."','".$dis[1]."','".$dis[0]."')";
 
 		connectDB();
 $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']));
 		closeDB();
+	
+		
+		
+		
+	$query = "SELECT * FROM projects WHERE project_topic='".$_POST['title']."'"	;
+		connectDB();
+		$result = mysqli_query($_SESSION['db'],$query);
+		$row2 = mysqli_fetch_assoc($result);
+		closeDB();	
+	
+if(isset($_POST['discipline'])){
+      foreach($_POST['discipline'] as $value){
+		  $dis= $value;
+		  
+		  $query= "INSERT INTO discipline_project_mapping (project_id, discipline_id) VALUES ('".$row2['project_id']."','".$dis."')";
+
+		connectDB();
+$result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']));
+		closeDB();
+		  
+		  
+		  
+    }
+  }				
+		
+		
 		
 		$success="1";
 		$_SESSION['msg']="User Created";
@@ -57,24 +99,33 @@ $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occ
 <textarea class="form-control" id="detail" name="detail" rows="8"><?php if (isset($_POST['detail'])) echo $_POST['detail'];?></textarea>
    
   <label for="category" class="sr-only">Discipline</label>
-		  <select class="form-select" aria-label="Default select example" name="category">
-  <option selected>Open this to choice a category</option>
+		
+  
 			  
 		<?php	  
 		$query = "SELECT * FROM discipline "	;
 		connectDB();
 		$result = mysqli_query($_SESSION['db'],$query);
 		closeDB();
-							 
+		$aa=1;					 
 		while($row = mysqli_fetch_assoc($result)){					
 		?>					 
-							 
+			
 			  
-  <option value="<?php echo $row['discipline']?>"><?php echo $row['discipline']?></option>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="<?php echo $row['discipline_id']?>" name="discipline[]" >
+  <label class="form-check-label" for="flexCheckDefault">
+    <?php echo $row['discipline']?>
+  </label>
+</div>
+			  
+			  
+
   		<?php }?>
-</select>
+
   <br>
-		  <div class="form-check">
+		 <?php /*
+<div class="form-check">
   <input class="form-check-input" type="checkbox" value="1" name="internal" checked>
   <label class="form-check-label" for="flexCheckDefault">
     Internal
@@ -88,6 +139,46 @@ $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occ
 </div><br>
 
 
+
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="<?php echo $row['lecturer_name']?>" name="lecturer[]" >
+  <label class="form-check-label" for="flexCheckDefault">
+    <?php echo $row['lecturer_name']?>
+  </label>
+</div>
+
+
+*/?>
+
+ <label for="category" class="sr-only">Second Lecturer :</label>
+		
+ 
+		  
+
+		  <select id="lecturer2_name" name="lecturer2_name">
+			  
+		<?php	  
+		$query = "SELECT * FROM lecturers "	;
+		connectDB();
+		$result = mysqli_query($_SESSION['db'],$query);
+		closeDB();
+		$aa=1;					 
+		while($row = mysqli_fetch_assoc($result)){					
+		?>					 
+			
+			  
+
+		  
+  <option value="<?php echo $row['lecturer_name']?>|<?php echo $row['lecturer_id']?>"><?php echo $row['lecturer_name']?></option>
+
+		  
+		  
+		<?php }?>  
+		  
+  
+</select>
+		  
+		  		  
 
 <button type="submit" name="submit" value="CreateNewUser" class="btn btn-lg btn-primary btn-block" > Add </button> 		  
 		    <?php } else { echo "You have added a project successfully !";  ?>
