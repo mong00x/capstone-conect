@@ -15,7 +15,7 @@ const NavBar = () => {
       bg="BG"
     >
       <Text fontSize="2xl" fontWeight="bold" width="auto">
-        Capstone project
+        Capstone Project
       </Text>
     </Box>
   );

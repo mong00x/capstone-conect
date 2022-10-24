@@ -35,8 +35,6 @@ closeDB();
 <?php
 
 } else {
-	
-
 	echo "Student with this student id have already exist";?>
 	<script>
 		alert("This studentId have already been registered ");

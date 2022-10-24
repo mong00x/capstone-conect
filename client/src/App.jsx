@@ -15,7 +15,6 @@ import {
   useDisclosure,
   Text
 } from "@chakra-ui/react";
-import NavBar from "./components/NavBar";
 import SideMenu from "./components/SideMenu/SideMenu";
 import MainContent from "./components/MainContent/MainContent";
 
@@ -48,7 +47,7 @@ function App() {
       height="100%"
       overflow="hidden"
     >
-      <NavBar />
+      
       <QueryClientProvider client={queryClient}>
         <Flex flexDir="row" wdith="100%" height="100%">
           <SideMenu />

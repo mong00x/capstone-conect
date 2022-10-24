@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import App from "./App";
 import Login_page  from "./login";
 import About from "./About";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import NavBar from "./components/NavBar";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const theme = extendTheme({
   colors: {
@@ -24,6 +26,7 @@ const theme = extendTheme({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
+    <NavBar />
       <BrowserRouter>
         <Routes>
           <Route path="/app" element={<App />} />

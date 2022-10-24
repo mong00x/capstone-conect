@@ -1,56 +1,63 @@
-import {useState,useEffect} from "react";
-import "./login.css";
+//dependencies 
+import {useState} from "react";
 import emailjs from '@emailjs/browser';
 import md5 from "md5";
-import {  
-    Flex,   
+import {    
     Modal,
-    Button,
     ModalOverlay,
     ModalContent,
     ModalHeader,
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    useDisclosure,
-    Text
-  } from "@chakra-ui/react";
+    useDisclosure
+} from "@chakra-ui/react";
+
+// file import
+import "./login.css";
+import NavBar from "./components/NavBar";
 
 const password = Math.floor(Math.random() * (9999 - 1111)) + 1111;
-const redirectUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_student.php?x=" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_student.php?x=";    
+
+// Url variables
+const addstutUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_student.php?x=" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_student.php?x=";    
 const loginUrl =  process.env.NODE_ENV === "development" ? "http://localhost/login.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/login.php";
 
+// mail variables
+const serviceID = 'service_v7jhvcq';
+const templateID = 'template_7s3j2wa';
+const publicKey = 'pEzK7znAU0MbBXUsH';
+
 const Login_page = () => {
+    // page variables 
     const [typedpin,setpin] = useState('');
     const [email,setEmail] = useState('');
     const [fname,setFname] = useState('');
-    const [studentid,setId] = useState('');
+    const [studentid,setId] = useState("");
     const [user_type,setType] = useState('student');
 
-    const user = {studentid: studentid, name: fname, email: email, password_token: password, auth: false};
+    const user = {studentid: studentid, name: fname, email: email, password_token: md5(password), auth: false};
     sessionStorage.setItem('user', JSON.stringify(user));
     
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-
-
-    const handellogin = (e) =>{
+    // sending password to mail
+    const Send_Password = (e) =>{
         e.preventDefault();
-        if (studentid!='' && email!=''&& fname!=''  )
+        if (studentid!='' && email!=''&& fname!='')
         {
             send_mail();
             onOpen();
         }
         else
         {
-            alert("Dont leave any field empty")
-            console.log("Empty field")
+            alert("Dont leave any field empty");
         }
         
-        
-        const user = {studentid:studentid, name: fname, email: email, password_token: password, auth: false}
-        sessionStorage.setItem('user', JSON.stringify(user))
-        console.log(JSON.parse(sessionStorage.getItem('user')))
+        //change session veriables to latest one 
+        const user = {studentid:studentid, name: fname, email: email, password_token: md5(password), auth: false};
+        sessionStorage.setItem('user', JSON.stringify(user));
+        console.log(JSON.parse(sessionStorage.getItem('user')));
         console.log(password)
        
     }
@@ -61,29 +68,30 @@ const Login_page = () => {
             password: password,
             name: fname
         };
-         
-        emailjs.send('service_v7jhvcq', 'template_7s3j2wa', templateParams, 'pEzK7znAU0MbBXUsH')
+        //sending mail
+        emailjs.send(serviceID, templateID, templateParams, publicKey )
             .then(function(response) {
                console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
                console.log('FAILED...', error);
             });
     }
-    
+    //check the verification code
     function Verify()
     {
         
-        if (typedpin == password)
+        if (password == typedpin)
         {
+            //change session veriables to latest one 
             const user = {
                 studentid: JSON.parse(sessionStorage.getItem('user')).studentid, 
                 name: JSON.parse(sessionStorage.getItem('user')).name, 
                 email: JSON.parse(sessionStorage.getItem('user')).email, 
                 password_token: JSON.parse(sessionStorage.getItem('user')).password_token,
                 auth: true
-            }
-            sessionStorage.setItem('user', JSON.stringify(user))
-            location.replace (redirectUrl + sessionStorage.getItem('user')) 
+            };
+            sessionStorage.setItem('user', JSON.stringify(user));
+            location.replace (addstutUrl + sessionStorage.getItem('user'));
         }
 
         else{
@@ -96,8 +104,9 @@ const Login_page = () => {
 
 return(
     <>
+    
         <div className="logincontainer">
-            <form  onSubmit={handellogin} >
+            <form  onSubmit={Send_Password} >
                 <label >Choose a login type:</label>
                 <br></br>
                 <select className="dropwdown" value={user_type} onChange={(e) => setType(e.target.value)} >
@@ -110,7 +119,7 @@ return(
                 
                 {user_type === "student" && <><input 
                 className="input"
-                type="email"
+                typeof="email"
                 id="email"
                 name="email"
                 value={email}
@@ -121,7 +130,7 @@ return(
                 
                 {user_type === "student" && <><input 
                 className="input"
-                type="text"
+                type="number"
                 id="studentid"
                 name="studentid"
                 value={studentid}
@@ -152,16 +161,17 @@ return(
                 <p id='error'> </p>
                 varification code has been send to {JSON.parse(sessionStorage.getItem('user')).email}.
                 <br></br>
+                <br></br>
                 <input 
                 type="password"
                 name="newpin"
                 value={typedpin}
                 onChange={(e) => setpin(e.target.value)}
-                autofocus/>
+                autoFocus/>
                 </ModalBody>
 
                 <ModalFooter>
-                <button onClick={Verify}> Verify</button>
+                <button id = "btn"onClick={Verify}> Verify</button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
