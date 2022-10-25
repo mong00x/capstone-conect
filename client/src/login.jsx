@@ -12,7 +12,7 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    Input
+    PinInput, PinInputField,useToast, HStack
 } from "@chakra-ui/react";
 
 // file import
@@ -39,6 +39,8 @@ const Login_page = () => {
     const [studentid,setId] = useState("");
     const [user_type,setType] = useState('student');
 
+    const toast = useToast();
+
     const user = {studentid: studentid, name: fname, email: email, password_token: md5(password), auth: false};
     sessionStorage.setItem('user', JSON.stringify(user));
     
@@ -61,7 +63,14 @@ const Login_page = () => {
         }
         else
         {
-            alert("Dont leave any field empty");
+            toast({
+                title: 'Empty field',
+                description: "Do not leave any field empty",
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+                position: 'top-right'
+              });
         }
         
         
@@ -75,12 +84,12 @@ const Login_page = () => {
             name: fname
         };
         //sending mail
-        emailjs.send(serviceID, templateID, templateParams, publicKey )
+        /*emailjs.send(serviceID, templateID, templateParams, publicKey )
             .then(function(response) {
                console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
                console.log('FAILED...', error);
-            });
+            });*/
     }
     //check the verification code
     function Verify()
@@ -101,7 +110,14 @@ const Login_page = () => {
         }
 
         else{
-            document.getElementById("error").innerHTML = "Wrong pin try again!";
+            toast({
+                title: 'Wrong Code.',
+                description: "Re-check the verification code.",
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+                position: 'top-right'
+              })
         }
         
     }
@@ -158,23 +174,26 @@ return(
                 {user_type !== "student" && <a className="link" href={loginUrl } >Login as {user_type}</a>}
             </form>
         </div>
+        
         <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>Confirm your verificaion code here</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                <p id='error'> </p>
                 varification code has been send to {JSON.parse(sessionStorage.getItem('user')).email}.
                 <br></br>
                 <br></br>
+                <HStack>
+                <PinInput otp mask
+                onChange={(e) => setpin(parseInt(e))}>
+                    <PinInputField />
+                    <PinInputField />
+                    <PinInputField />
+                    <PinInputField />
+                </PinInput>
+                </HStack>
                 
-                <Input
-                type="number"
-                name="newpin"
-                value={typedpin}
-                onChange={(e) => setpin(parseInt(e.target.value))}
-                autoFocus/>
                 </ModalBody>
 
                 <ModalFooter>
