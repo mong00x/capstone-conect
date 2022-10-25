@@ -49,5 +49,5 @@ Refresh your Client site and now you should be able to see and manipulate your s
 3. Routing: [React Router](https://reactrouter.com/en/main)
 4. Data fetching: [Axios](https://axios-http.com/docs/intro)
 5. Drag and Drop: [React DnD](https://react-dnd.github.io/react-dnd/)
-6. emailjs (npm install @emailjs/browser)
-7. md5 (npm install md5)
+6. emailjs:[emailjs](https://www.emailjs.com/docs/sdk/send/) (npm install @emailjs/browser)
+7. md5:[md5](https://www.npmjs.com/package/md5)
