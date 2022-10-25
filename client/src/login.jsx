@@ -84,12 +84,12 @@ const Login_page = () => {
             name: fname
         };
         //sending mail
-        /*emailjs.send(serviceID, templateID, templateParams, publicKey )
+        emailjs.send(serviceID, templateID, templateParams, publicKey )
             .then(function(response) {
                console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
                console.log('FAILED...', error);
-            });*/
+            });
     }
     //check the verification code
     function Verify()
