@@ -1,4 +1,5 @@
 //dependencies 
+
 import {useState} from "react";
 import emailjs from '@emailjs/browser';
 import md5 from "md5";
@@ -10,12 +11,14 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    useDisclosure
+    useDisclosure,
+    Input
 } from "@chakra-ui/react";
 
 // file import
 import "./login.css";
-import NavBar from "./components/NavBar";
+
+
 
 const password = Math.floor(Math.random() * (9999 - 1111)) + 1111;
 
@@ -46,6 +49,13 @@ const Login_page = () => {
         e.preventDefault();
         if (studentid!='' && email!=''&& fname!='')
         {
+        
+            //change session veriables to latest one 
+            const user = {studentid:studentid, name: fname, email: email, password_token: md5(password), auth: false};
+            sessionStorage.setItem('user', JSON.stringify(user));
+            console.log(JSON.parse(sessionStorage.getItem('user')));
+            console.log(password)
+
             send_mail();
             onOpen();
         }
@@ -54,11 +64,7 @@ const Login_page = () => {
             alert("Dont leave any field empty");
         }
         
-        //change session veriables to latest one 
-        const user = {studentid:studentid, name: fname, email: email, password_token: md5(password), auth: false};
-        sessionStorage.setItem('user', JSON.stringify(user));
-        console.log(JSON.parse(sessionStorage.getItem('user')));
-        console.log(password)
+        
        
     }
     function send_mail()
@@ -80,7 +86,7 @@ const Login_page = () => {
     function Verify()
     {
         
-        if (password == typedpin)
+        if (JSON.parse(sessionStorage.getItem('user')).password_token == md5(typedpin))
         {
             //change session veriables to latest one 
             const user = {
@@ -162,11 +168,12 @@ return(
                 varification code has been send to {JSON.parse(sessionStorage.getItem('user')).email}.
                 <br></br>
                 <br></br>
-                <input 
-                type="password"
+                
+                <Input
+                type="number"
                 name="newpin"
                 value={typedpin}
-                onChange={(e) => setpin(e.target.value)}
+                onChange={(e) => setpin(parseInt(e.target.value))}
                 autoFocus/>
                 </ModalBody>
 
