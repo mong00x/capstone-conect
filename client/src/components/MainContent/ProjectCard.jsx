@@ -23,6 +23,33 @@ import {
 
 import { useStore } from "../../store";
 
+const disciplineSwitch = (discipline) => {
+  switch (discipline) {
+    case "CE":
+      return "Chemical Engineering"
+    case "CSE":
+      return "Civil and Structural Engineering"
+    case "EEE":
+      return "Electrical and Electronics Engineernig"
+    case "ME":
+      return "Mechanical Engineering"
+    case "COS":
+      return "Computer Science"
+    case "CYS":
+      return "Cyber Security"
+    case "ISDS":
+      return "Information Systems and Data Science"
+    case "SE":
+      return "Software Engineering"
+    case "DS":
+      return "Data Science"
+  }
+}
+
+
+
+
+
 const ProjectCard = React.memo(({ project, discplines }) => {
   const Rank = useStore((state) => state.Rank);
   // console.log(Object.values(discplines))
@@ -106,7 +133,7 @@ const ProjectCard = React.memo(({ project, discplines }) => {
           <Flex flexDir="row" gap={2} flexWrap="wrap">
             {discplines &&
               discplines.map((discpline) => (
-                <Tooltip key={discpline} borderRadius="full" px="2" label={discpline}>
+                <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)}>
                   <Tag colorScheme="purple">
                     <TagLabel>{discpline}</TagLabel>
                     </Tag>
@@ -137,9 +164,11 @@ const ProjectCard = React.memo(({ project, discplines }) => {
             <Flex flexDir="row" gap={2} flexWrap="wrap" mt={5}>
             {discplines &&
               discplines.map((discpline) => (
-                <Badge key={discpline} borderRadius="full" px="3">
-                  {discpline}
-                </Badge>
+                <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)}>
+                  <Tag colorScheme="purple">
+                    <TagLabel>{discpline}</TagLabel>
+                    </Tag>
+                </Tooltip>
               ))}
           </Flex>
           {project.lecturer_name && project.lecturer2_name &&
