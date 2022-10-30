@@ -12,7 +12,10 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    PinInput, PinInputField,useToast, HStack
+    PinInput, 
+    PinInputField,
+    useToast, 
+    HStack
 } from "@chakra-ui/react";
 
 // file import
@@ -185,13 +188,13 @@ return(
                 <br></br>
                 <br></br>
                 <HStack>
-                <PinInput otp mask
-                onChange={(e) => setpin(parseInt(e))}>
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                </PinInput>
+                    <PinInput otp 
+                    onChange={(e) => setpin(parseInt(e))}>
+                        <PinInputField />
+                        <PinInputField />
+                        <PinInputField />
+                        <PinInputField />
+                    </PinInput>
                 </HStack>
                 
                 </ModalBody>
