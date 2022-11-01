@@ -20,7 +20,7 @@ if (isset($_GET['approve']))
 	}
 	else {
 		$is_approved = ($approve_result["approve"] == 1) ? "Approved" : "Declined";
-		$approve="failed to approve, the application has already been processed.\n" . "Current status: " . $is_approved . "\n" . "Last updated: " . $approve_result["state_changed_time"];
+		$approve="Failed to approve, the application has already been processed.\n" . "Current status: " . $is_approved . "\n" . "Last updated: " . $approve_result["state_changed_time"];
 	}
 	
 	
