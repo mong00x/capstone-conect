@@ -1,0 +1,38 @@
+<html>
+<head>
+	<title>Add Data</title>
+	<script>
+		function goBack() {
+  window.history.back()
+}
+		
+	</script>
+</head>
+
+<body>
+	<input type="button" value="Back" onclick="goBack()">
+	<br/><br/>
+
+	<form action="add.php" method="post" name="form1">
+		<table width="25%" >
+			<tr> 
+				<td>ServiceID</td>
+				<td><input type="text" name="serviceID"></td>
+			</tr>
+			<tr> 
+				<td>Template ID</td>
+				<td><input type="text" name="templateID"></td>
+			</tr>
+			<tr> 
+				<td>Public Key</td>
+				<td><input type="text" name="publicKey"></td>
+			</tr>
+			<tr> 
+				<td></td>
+				<td><input type="submit" name="Submit" value="Add"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
+
