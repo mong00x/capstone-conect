@@ -1,6 +1,6 @@
 //dependencies 
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import emailjs from '@emailjs/browser';
 import md5 from "md5";
 import {    
@@ -28,13 +28,27 @@ const password = Math.floor(Math.random() * (9999 - 1111)) + 1111;
 // Url variables
 const addstutUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_student.php?x=" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_student.php?x=";    
 const loginUrl =  process.env.NODE_ENV === "development" ? "http://localhost/login.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/login.php";
+const mailUrl =  process.env.NODE_ENV === "development" ? "http://localhost/mail_manager.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/mail_manager.php";
+ 
 
-// mail variables
-const serviceID = 'service_v7jhvcq';
-const templateID = 'template_7s3j2wa';
-const publicKey = 'pEzK7znAU0MbBXUsH';
+
 
 const Login_page = () => {
+    // mail variables
+    useEffect(()=>{
+    fetch(mailUrl)
+    .then(res => res.json())
+    .then(result =>{
+        sessionStorage.setItem('data', JSON.stringify(result[0]));
+    }, 
+    (error) => {
+        console.error(error)
+    });
+    },[]); 
+    const serviceID = JSON.parse(sessionStorage.getItem('data')).serviceID;
+    const templateID = JSON.parse(sessionStorage.getItem('data')).templateID;
+    const publicKey = JSON.parse(sessionStorage.getItem('data')).publicKey;
+
     // page variables 
     const [typedpin,setpin] = useState('');
     const [email,setEmail] = useState('');
@@ -187,7 +201,6 @@ return(
                 varification code has been send to {JSON.parse(sessionStorage.getItem('user')).email}.
                 <br></br>
                 <br></br>
-                <HStack>
                     <PinInput otp 
                     onChange={(e) => setpin(parseInt(e))}>
                         <PinInputField />
@@ -195,7 +208,6 @@ return(
                         <PinInputField />
                         <PinInputField />
                     </PinInput>
-                </HStack>
                 
                 </ModalBody>
 
