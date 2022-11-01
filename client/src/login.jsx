@@ -36,20 +36,35 @@ const mailUrl =  process.env.NODE_ENV === "development" ? "http://localhost/mail
 const Login_page = () => {
     // mail variables
     useEffect(()=>{
-    fetch(mailUrl)
-    .then(res => res.json())
-    .then(result =>{
-        sessionStorage.setItem('data', JSON.stringify(result[0]));
-    }, 
-    (error) => {
-        console.error(error)
-    });
-    },[]); 
+        fetch(mailUrl)
+        .then(response =>{
+            if(response.ok)
+            {
+                return response.json()
+            }
+            throw response;
+        })
+        .then (res =>{
+            sessionStorage.setItem('data', JSON.stringify(res[0]));
+            const serviceID = JSON.parse(sessionStorage.getItem('data')).serviceID;
+            const templateID = JSON.parse(sessionStorage.getItem('data')).templateID;
+            const publicKey = JSON.parse(sessionStorage.getItem('data')).publicKey;
+
+        })
+        .catch(error=>
+            {
+                console.error("error", error);
+
+            })
+        .finally(()=>{
+            console.log("emailjs configure")
+        })
+
+    },[]);
+    
 
 
-    const serviceID = JSON.parse(sessionStorage.getItem('data')).serviceID;
-    const templateID = JSON.parse(sessionStorage.getItem('data')).templateID;
-    const publicKey = JSON.parse(sessionStorage.getItem('data')).publicKey;
+    
 
     // page variables 
     const [typedpin,setpin] = useState('');
