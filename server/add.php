@@ -21,7 +21,10 @@ if(isset($_POST['Submit'])) {
 		
 		//link to the previous page
 		echo "<br/><a href='javascript:self.history.back();'>Go Back</a>";
-	} else { 
+	}
+	
+	else 
+	{ 
 		// if all the fields are filled (not empty) 
 			
 		//insert data to database	
@@ -29,8 +32,11 @@ if(isset($_POST['Submit'])) {
 		
 		//display success message
 		echo "<font color='green'>Data added successfully.";
-		echo "<br/><a href='mail.php'>Go to mailjs page</a>";
-		echo "<br/><a href='index.php'>Go to log in</a>";
+		?>
+		<script>
+		window.location.href = "mail.php";
+		</script>
+		<?php
 	}
 }
 ?>

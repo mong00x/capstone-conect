@@ -43,7 +43,7 @@
                 <td><?php echo $row['serviceID'];?></td>
                 <td><?php echo $row['templateID'];?></td>
                 <td><?php echo $row['publicKey'];?></td>	
-                <td><a class= "btn btn-secondary" href="http://localhost/add.html">Use new</a></td>
+                <td><a class= "btn btn-secondary" href="add.html">Use new</a></td>
 
                 </tr>		  							  
         <?php		
@@ -55,6 +55,7 @@
                 </tbody>
             </table>
         </div>
+        <a class= "btn btn-primary" href="login.php">Go to Log In</a>
     </body>
 </html>
         
