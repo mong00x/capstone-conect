@@ -45,9 +45,13 @@ const Login_page = () => {
         console.error(error)
     });
     },[]); 
-    const serviceID = JSON.parse(sessionStorage.getItem('data')).serviceID;
-    const templateID = JSON.parse(sessionStorage.getItem('data')).templateID;
-    const publicKey = JSON.parse(sessionStorage.getItem('data')).publicKey;
+    const serviceID = 'service_v7jhvcq';
+    const templateID = 'template_7s3j2wa';
+    const publicKey = 'pEzK7znAU0MbBXUsH';
+
+    // const serviceID = JSON.parse(sessionStorage.getItem('data')).serviceID;
+    // const templateID = JSON.parse(sessionStorage.getItem('data')).templateID;
+    // const publicKey = JSON.parse(sessionStorage.getItem('data')).publicKey;
 
     // page variables 
     const [typedpin,setpin] = useState('');
