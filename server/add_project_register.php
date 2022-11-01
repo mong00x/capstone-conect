@@ -32,10 +32,9 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     $student_id= $data['student_id'];
     $project_id= $data['project_id'];
     $project_ranking= $data['project_ranking'];
-    $state= $data['state'];
     $state_changed_time= date("Y-m-d H:i:s");
     $approve= $data['approve'];
-    $query = "INSERT INTO student_project_requests (student_id, project_id, project_ranking, state,	state_changed_time, approve) VALUES ( '$student_id', '$project_id', '$project_ranking', '$state', '$state_changed_time', '$approve')";
+    $query = "INSERT INTO student_project_requests (student_id, project_id, project_ranking, state_changed_time, approve) VALUES ( '$student_id', '$project_id', '$project_ranking', '$state_changed_time', '$approve')";
     connectDB();
     $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "Data: " . $data);
     closeDB();
