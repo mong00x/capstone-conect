@@ -18,7 +18,7 @@ if (!isset($_SESSION['auth']))
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
 
    
-  \
+
 
     
 
