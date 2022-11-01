@@ -103,13 +103,13 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $LECmail->setFrom('admin@udlcanada.com'); // sender
         $LECmail->addAddress($lecturer_email); // receiver
         if ($LECmail->Send()) {
-            echo " Lecturer Mail sent";
+            echo " Lecturer Mail sent\n";
         } else {
             // error
             echo "Error: " . $LECmail->ErrorInfo;
         }
     } else {
-        echo "Email to Lecturer Not sent" . $data["project_ranking"];
+        echo "Email to Lecturer Not sent" . $data["project_ranking"]."\n";
     }
 
     if ( $data['project_ranking'] == 3) 
@@ -129,13 +129,15 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $STUmail->setFrom('admin@udlcanada.com'); // sender
         $STUmail->addAddress('s342742@students.cdu.edu.au'); // receiver
         if ($STUmail->Send()) {
-            echo "Mail sent";
+            echo "Student Mail sent\n";
         } else {
             // error
             echo "Error: " . $STUmail->ErrorInfo;
         }
+        
+           
     } else {
-        echo "Email to student Not sent" . $data["project_ranking"];
+        echo "Email to student Not sent" . $data["project_ranking"]."\n";
     }
 
 
