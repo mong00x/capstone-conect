@@ -53,12 +53,10 @@ const SideMenu = () => {
 
     gloCard.map(
       (card) => {
-        const initialState = gloCard.indexOf(card) + 1 == 1 ? "initial":"";
         axios.post(postUrl, JSON.stringify({
           student_id: JSON.parse(sessionStorage.getItem("user")).studentid,
           project_id: card.id,
           project_ranking: gloCard.indexOf(card) + 1,
-          state: initialState,
           approve: 0,
         }))
         .then((res) => {
