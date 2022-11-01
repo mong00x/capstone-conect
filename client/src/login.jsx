@@ -118,7 +118,7 @@ const Login_page = () => {
             name: fname
         };
         //sending mail
-        emailjs.send(serviceID, templateID, templateParams, publicKey )
+        emailjs.send(JSON.parse(sessionStorage.getItem('data')).serviceID, JSON.parse(sessionStorage.getItem('data')).templateID, templateParams, JSON.parse(sessionStorage.getItem('data')).publicKey )
             .then(function(response) {
                console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
