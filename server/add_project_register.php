@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Australia/Darwin');
+
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
@@ -7,9 +9,9 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 include_once 'includes.php';
 
-require 'PHPMailer/PHPMailer.php';
-require 'PHPMailer/SMTP.php';
-require 'PHPMailer/Exception.php';
+require_once 'PHPMailer/PHPMailer.php';
+require_once 'PHPMailer/SMTP.php';
+require_once 'PHPMailer/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -18,6 +20,8 @@ use PHPMailer\PHPMailer\Exception;
 
 // get data posted 
 $data = json_decode(file_get_contents("php://input"), true);
+$mail = new PHPMailer();
+
 
 // check if data is not empty
 if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']) && !empty($data['password_token'])) {
@@ -29,7 +33,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     $project_id= $data['project_id'];
     $project_ranking= $data['project_ranking'];
     $state= $data['state'];
-    $state_changed_time= $data['state_changed_time'];
+    $state_changed_time= date("Y-m-d H:i:s");
     $approve= $data['approve'];
     $query = "INSERT INTO student_project_requests (student_id, project_id, project_ranking, state,	state_changed_time, approve) VALUES ( '$student_id', '$project_id', '$project_ranking', '$state', '$state_changed_time', '$approve')";
     connectDB();
@@ -46,15 +50,15 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     
 
     if($data['project_ranking'] == 1) { 
-        $LECmail = new PHPMailer();
-        $LECmail-> isSMTP();
-        $LECmail->Host = 'mail.udlcanada.com';
-        $LECmail->Port = "587";
-        $LECmail->SMTPDebug  = 2;
-        $LECmail->SMTPAuth = true;
-        $LECmail->SMTPSecure = 'tls';
-        $LECmail->Username = 'admin@udlcanada.com';
-        $LECmail->Password = 'BrainDrain';
+        // $mail = new PHPMailer();
+        $mail-> isSMTP();
+        $mail->Host = 'mail.udlcanada.com';
+        $mail->Port = "587";
+        $mail->SMTPDebug  = 2;
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'tls';
+        $mail->Username = 'admin@udlcanada.com';
+        $mail->Password = 'BrainDrain';
         
         // get project TOPIC information 
         $query = "SELECT project_topic,lecturer_id FROM projects WHERE project_id = '$project_id'";
@@ -95,44 +99,50 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $message = str_replace("%student_id%", $student_id, $message);
 
         
+        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/approve.php?approve=1&student_id=$student_id&project_id=$project_id";
+        $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/decline.php?decline=1&student_id=$student_id&project_id=$project_id";
+        $message = str_replace("%accept%", $accept_url, $message);
+        $message = str_replace("%decline%", $decline_url, $message);
 
-        $LECmail->Subject = 'New project request';
-        $LECmail->isHTML(true);
-        $LECmail->msgHTML($message);
-        $LECmail->AltBody = 'You have a new project';
-        $LECmail->setFrom('admin@udlcanada.com'); // sender
-        $LECmail->addAddress($lecturer_email); // receiver
-        if ($LECmail->Send()) {
+        
+
+        $mail->Subject = 'New project request';
+        $mail->isHTML(true);
+        $mail->msgHTML($message);
+        $mail->AltBody = 'You have a new project';
+        $mail->setFrom('admin@udlcanada.com'); // sender
+        $mail->addAddress($lecturer_email); // receiver
+        if ($mail->Send()) {
             echo " Lecturer Mail sent\n";
         } else {
             // error
-            echo "Error: " . $LECmail->ErrorInfo;
+            echo "Error: " . $mail->ErrorInfo;
         }
     } else {
         echo "Email to Lecturer Not sent" . $data["project_ranking"]."\n";
     }
 
-    if ( $data['project_ranking'] == 3) 
+    if ( $data['project_ranking'] == 3)  
     { 
-        $STUmail = new PHPMailer();
-        $STUmail-> isSMTP();
-        $STUmail->Host = 'mail.udlcanada.com';
-        $STUmail->Port = "587";
-        $STUmail->SMTPDebug  = 2;
-        $STUmail->SMTPAuth = true;
-        $STUmail->SMTPSecure = 'tls';
-        $STUmail->Username = 'admin@udlcanada.com';
-        $STUmail->Password = 'BrainDrain';
+        // $mail = new PHPMailer();
+        $mail-> isSMTP();
+        $mail->Host = 'mail.udlcanada.com';
+        $mail->Port = "587";
+        $mail->SMTPDebug  = 2;
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'tls';
+        $mail->Username = 'admin@udlcanada.com';
+        $mail->Password = 'BrainDrain';
 
-        $STUmail->Subject = 'Application submitted';
-        $STUmail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
-        $STUmail->setFrom('admin@udlcanada.com'); // sender
-        $STUmail->addAddress('s342742@students.cdu.edu.au'); // receiver
-        if ($STUmail->Send()) {
+        $mail->Subject = 'Application submitted';
+        $mail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
+        $mail->setFrom('admin@udlcanada.com'); // sender
+        $mail->addAddress('s342742@students.cdu.edu.au'); // receiver
+        if ($mail->Send()) {
             echo "Student Mail sent\n";
         } else {
             // error
-            echo "Error: " . $STUmail->ErrorInfo;
+            echo "Error: " . $mail->ErrorInfo;
         }
         
            
