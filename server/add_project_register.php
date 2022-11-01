@@ -43,31 +43,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
 
     
 
-    if ( $data['project_ranking'] == 3) 
-    { 
-        $STUmail = new PHPMailer();
-        $STUmail-> isSMTP();
-        $STUmail->Host = 'mail.udlcanada.com';
-        $STUmail->Port = "587";
-        $STUmail->SMTPDebug  = 2;
-        $STUmail->SMTPAuth = true;
-        $STUmail->SMTPSecure = 'tls';
-        $STUmail->Username = 'admin@udlcanada.com';
-        $STUmail->Password = 'BrainDrain';
-
-        $STUmail->Subject = 'Application submitted';
-        $STUmail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
-        $STUmail->setFrom('admin@udlcanada.com'); // sender
-        $STUmail->addAddress('s342742@students.cdu.edu.au'); // receiver
-        if ($STUmail->Send()) {
-            echo "Mail sent";
-        } else {
-            // error
-            echo "Error: " . $STUmail->ErrorInfo;
-        }
-    } else {
-        echo "Email to student Not sent" . $data["project_ranking"];
-    }
+    
 
     if($data['project_ranking'] == 1) { 
         $LECmail = new PHPMailer();
@@ -134,6 +110,32 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         }
     } else {
         echo "Email to Lecturer Not sent" . $data["project_ranking"];
+    }
+
+    if ( $data['project_ranking'] == 3) 
+    { 
+        $STUmail = new PHPMailer();
+        $STUmail-> isSMTP();
+        $STUmail->Host = 'mail.udlcanada.com';
+        $STUmail->Port = "587";
+        $STUmail->SMTPDebug  = 2;
+        $STUmail->SMTPAuth = true;
+        $STUmail->SMTPSecure = 'tls';
+        $STUmail->Username = 'admin@udlcanada.com';
+        $STUmail->Password = 'BrainDrain';
+
+        $STUmail->Subject = 'Application submitted';
+        $STUmail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
+        $STUmail->setFrom('admin@udlcanada.com'); // sender
+        $STUmail->addAddress('s342742@students.cdu.edu.au'); // receiver
+        if ($STUmail->Send()) {
+            echo "Mail sent";
+        } else {
+            // error
+            echo "Error: " . $STUmail->ErrorInfo;
+        }
+    } else {
+        echo "Email to student Not sent" . $data["project_ranking"];
     }
 
 
