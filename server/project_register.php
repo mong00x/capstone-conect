@@ -87,6 +87,11 @@ if (isset($_GET['pending']))
 		}else{
 			$a=0;
 			while($row = mysqli_fetch_assoc($result)){ 
+		
+			
+				
+			
+			
 				
 		$query_prj = "SELECT * FROM projects WHERE project_id='".$row['project_id']."'"	;
 		connectDB();
@@ -118,9 +123,56 @@ if (isset($_GET['pending']))
 				</td>
               <td><?php echo $row_st['student_name'];?></td>
               <td><?php echo $row_st['student_id'];?></td>
-				<td><h1><?php echo $row['project_ranking'];?></h1>
+				<td><?php echo $row['project_ranking'];?>
 					</td>
-              <td><a href="index.php?p=project_register&approve=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id']?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to APPROVE this project, please.');">Approve</a> | <a href="index.php?p=project_register&decline=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to DECLINE this project, please.');">Decline</a>| <a href="index.php?p=project_register&pending=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to PENDING this project, please.');">Pending</a></td>
+              <td>
+				  
+				<?php 
+				
+				$show=0;
+				if (($row['approve']==0) AND ($row['project_ranking']==1)) $show=1; 
+				if (($row['approve']==0) AND ($row['project_ranking']==2)) {
+					
+					
+						$query5 = "SELECT * FROM student_project_requests  WHERE student_id=".$row_st['student_id']." AND project_ranking=1 AND approve<>2 ";
+		connectDB();
+		$result5 = mysqli_query($_SESSION['db'],$query5) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query5 . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
+		closeDB();
+		if(mysqli_num_rows($result5)==0){$show=1;  }
+					
+					
+				} 
+				if (($row['approve']==0) AND ($row['project_ranking']==3)) {
+					
+					
+						$query5 = "SELECT * FROM student_project_requests  WHERE student_id=".$row_st['student_id']." AND project_ranking=1 AND approve<>2 ";
+		connectDB();
+		$result5 = mysqli_query($_SESSION['db'],$query5) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query5 . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
+		closeDB();
+		if(mysqli_num_rows($result5)==0){
+		
+			$query5 = "SELECT * FROM student_project_requests  WHERE student_id=".$row_st['student_id']." AND project_ranking=2 AND approve<>2 ";
+		connectDB();
+		$result5 = mysqli_query($_SESSION['db'],$query5) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query5 . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
+		closeDB();
+		if(mysqli_num_rows($result5)==0){$show=1; }
+		
+		
+		}
+					
+					
+				} 
+				
+				
+				
+				
+				if ($show==1) {
+				?>
+				  <a href="index.php?p=project_register&approve=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id']?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to APPROVE this project, please.');">Approve</a> | <a href="index.php?p=project_register&decline=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to DECLINE this project, please.');">Decline</a>| <a href="index.php?p=project_register&pending=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to PENDING this project, please.');">Pending</a>
+				
+				<?php }?>
+				
+				</td>
             </tr>
             
 			  

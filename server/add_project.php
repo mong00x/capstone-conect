@@ -1,7 +1,8 @@
 <?php 
 $success=0;
+$abc="";
 
-
+$title="Add a project";
 if ((isset($_POST['submit']))&&($_POST['submit']=="CreateNewUser"))
 	{
 // check email available	
@@ -75,11 +76,114 @@ $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occ
 		
 	
 }}
+
+
+
+
+if ((isset($_POST['update']))&&($_POST['update']=="update"))
+	{
+// check email available	
+$query = "SELECT * FROM projects WHERE project_id='".$_GET['project_id']."'"	;
+		connectDB();
+		$result = mysqli_query($_SESSION['db'],$query);
+		closeDB();
+		if (mysqli_num_rows($result)==0){
+			$errorArray[] =  "<h1>This project is not available !</h1>";
+		
+		}
+	
+	
+	else {
+	
+//insert information to database	
+	
+$dis="";
+$lec=$_SESSION['user_name'];		
+
+
+/*
+if(isset($_POST['lecturer'])){
+      foreach($_POST['lecturer'] as $value2){
+		  $lec.= $value2.", ";
+    }
+  }	*/
+		
+	$dis=explode("|",$_POST['lecturer2_name']);
+		
+		
+
+
+		
+$query="UPDATE projects SET project_topic='".$_POST['title']."', project_description='".$_POST['detail']."',lecturer2_id='".$dis[1]."',lecturer2_name='".$dis[0]."'  WHERE project_id='".$_GET['project_id']."'";		
+		
+		connectDB();
+$result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']));
+		closeDB();
+	
+		
+		
+	
+if(isset($_POST['discipline'])){
+	
+	$query="DELETE FROM discipline_project_mapping WHERE project_id=".$_GET['project_id'];
+		connectDB();
+$result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']));
+		closeDB(); 
+	
+      foreach($_POST['discipline'] as $value){
+		  $dis= $value;
+		  
+		  $query= "INSERT INTO discipline_project_mapping (project_id, discipline_id) VALUES ('".$_GET['project_id']."','".$dis."')";
+
+		connectDB();
+$result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']));
+		closeDB();
+		  
+		  
+		  
+    }
+  }				
+		
+		
+		
+		$success="1";
+		$_SESSION['msg']="Updated the project successfully";
+		$_SESSION['msgType']="success";
+		
+	
+		
+	
+}}
+
+
+
+
+
+
+if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {	  
+		
+			$query = "SELECT * FROM projects WHERE project_id= ".$_GET['project_id']."";
+		
+		connectDB();
+		$result = mysqli_query($_SESSION['db'],$query) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
+		closeDB();
+		
+		$row = mysqli_fetch_assoc($result); 
+		
+		$title="Edit the project";
+		$_POST['title']=$row['project_topic'];
+		$_POST['detail']=$row['project_description'];
+		$prj_id=$row['project_id'];
+		$abc="&project_id=".$prj_id;
+
+}
+
+
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Add a project </h1>
+        <h1 class="h2"><?php echo $title;?></h1>
 		  
         <div class="btn-toolbar mb-2 mb-md-0">
         
@@ -89,7 +193,7 @@ $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occ
 
 
 
-	  <form method="post" action="index.php?p=add_project" id="userManagement" class="form-signin" enctype="multipart/form-data">
+	  <form method="post" action="index.php?p=add_project<?php echo $abc;?>" id="userManagement" class="form-signin" enctype="multipart/form-data">
 		   <h2><?php if (isset($errorArray[0])) echo $errorArray[0];?></h2> 
  
 	 <?php if ($success<>1) { ?>	
@@ -105,17 +209,32 @@ $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occ
 		<?php	  
 		$query = "SELECT * FROM discipline "	;
 		connectDB();
-		$result = mysqli_query($_SESSION['db'],$query);
+		$result2 = mysqli_query($_SESSION['db'],$query);
 		closeDB();
 		$aa=1;					 
-		while($row = mysqli_fetch_assoc($result)){					
+		while($row2 = mysqli_fetch_assoc($result2)){	
+			
+			
+			$aaa="";
+			if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {	  
+		
+			$query3 = "SELECT * FROM discipline_project_mapping WHERE project_id= ".$_GET['project_id']." AND discipline_id= ".$row2['discipline_id']."";
+		
+		connectDB();
+		$result3 = mysqli_query($_SESSION['db'],$query3) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query3 . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
+		closeDB();
+			if(mysqli_num_rows($result3)<1){
+				$aaa="checked";
+			}}
+			
+			
 		?>					 
 			
 			  
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="<?php echo $row['discipline_id']?>" name="discipline[]" >
+  <input class="form-check-input" type="checkbox" value="<?php echo $row2['discipline_id']?>" name="discipline[]" <?php echo $aaa;?> >
   <label class="form-check-label" for="flexCheckDefault">
-    <?php echo $row['discipline']?>
+    <?php echo $row2['discipline']?>
   </label>
 </div>
 			  
@@ -157,7 +276,25 @@ $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occ
 
 		  <select id="lecturer2_name" name="lecturer2_name">
 			  
-		<?php	  
+			  
+			  
+			  
+		<?php
+							 
+		if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {	  
+		
+			$query3 = "SELECT * FROM lecturers WHERE lecturer_id= ".$row['lecturer2_id']."";
+		
+		connectDB();
+		$result3 = mysqli_query($_SESSION['db'],$query3) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query3 . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
+		closeDB();
+			$row3 = mysqli_fetch_assoc($result3);
+				?>
+			    <option value="<?php echo $row3['lecturer_name']?>|<?php echo $row3['lecturer_id']?>"><?php echo $row3['lecturer_name']?></option>
+			  <?php
+							 
+		}
+							 
 		$query = "SELECT * FROM lecturers "	;
 		connectDB();
 		$result = mysqli_query($_SESSION['db'],$query);
@@ -178,9 +315,21 @@ $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occ
   
 </select>
 		  
-		  		  
+	<br>
+<br>
+	
+<?php		  
+if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {	 	?>	  
 
-<button type="submit" name="submit" value="CreateNewUser" class="btn btn-lg btn-primary btn-block" > Add </button> 		  
+<button type="submit" name="update" value="update" class="btn btn-lg btn-primary btn-block" > Update the project </button> 
+		  <input type="hidden" name="project_id" value="<?php echo $prj_id;?>">
+<?php } else {?>
+		  
+	<button type="submit" name="submit" value="CreateNewUser" class="btn btn-lg btn-primary btn-block" > Add the project </button> 		  
+		  
+		  
+	<?php }?>	  
+		  
 		    <?php } else { echo "You have added a project successfully !";  ?>
 
 		  

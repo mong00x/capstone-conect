@@ -78,7 +78,7 @@ if (isset($_GET['del']))
 				<?php echo $row4['discipline']; echo "<br>"?>
 				<?php }?>
 					</td>
-              <td><a href="# "  class="btn btn-primary " role="button">Edit</a> | <a href="index.php?p=project_list&del=<?php echo $row['project_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to delete this project, please.');">Delete</a></td>
+              <td><a href="index.php?p=add_project&project_id=<?php echo $row['project_id'];?>"  class="btn btn-primary " role="button">Edit</a> | <a href="index.php?p=project_list&del=<?php echo $row['project_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to delete this project, please.');">Delete</a></td>
             </tr>
             
 			  
