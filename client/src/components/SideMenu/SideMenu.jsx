@@ -50,14 +50,13 @@ const SideMenu = () => {
     // post the data to the database
     console.log("submit");
 
-
     gloCard.map(
       (card) => {
         axios.post(postUrl, JSON.stringify({
           student_id: JSON.parse(sessionStorage.getItem("user")).studentid,
           project_id: card.id,
           project_ranking: gloCard.indexOf(card) + 1,
-          approve: 0,
+          approve: project_ranking === 1 ? 0 : '',
         }))
         .then((res) => {
           console.log("res", res.data);
