@@ -35,34 +35,36 @@ const mailUrl =  process.env.NODE_ENV === "development" ? "http://localhost/mail
 
 const Login_page = () => {
     // mail variables
-    useEffect(()=>{
-        fetch(mailUrl)
-        .then(response =>{
-            if(response.ok)
-            {
-                return response.json()
-            }
-            throw response;
-        })
-        .then (res =>{
-            sessionStorage.setItem('data', JSON.stringify(res[0]));
-            const serviceID = JSON.parse(sessionStorage.getItem('data')).serviceID;
-            const templateID = JSON.parse(sessionStorage.getItem('data')).templateID;
-            const publicKey = JSON.parse(sessionStorage.getItem('data')).publicKey;
+    // useEffect(()=>{
+    //     fetch(mailUrl)
+    //     .then(response =>{
+    //         if(response.ok)
+    //         {
+    //             return response.json()
+    //         }
+    //         throw response;
+    //     })
+    //     .then (res =>{
+    //         sessionStorage.setItem('data', JSON.stringify(res[0]));
+    //         const serviceID = JSON.parse(sessionStorage.getItem('data')).serviceID;
+    //         const templateID = JSON.parse(sessionStorage.getItem('data')).templateID;
+    //         const publicKey = JSON.parse(sessionStorage.getItem('data')).publicKey;
 
-        })
-        .catch(error=>
-            {
-                console.error("error", error);
+    //     })
+    //     .catch(error=>
+    //         {
+    //             console.error("error", error);
 
-            })
-        .finally(()=>{
-            console.log("emailjs configure")
-        })
+    //         })
+    //     .finally(()=>{
+    //         console.log("emailjs configure")
+    //     })
 
-    },[]);
+    // },[]);
     
-
+    const serviceID = "service_v7jhvcq"
+    const templateID = "template_7s3j2wa"
+    const publicKey = "pEzK7znAU0MbBXUsH"
 
     
 
@@ -118,7 +120,8 @@ const Login_page = () => {
             name: fname
         };
         //sending mail
-        emailjs.send(JSON.parse(sessionStorage.getItem('data')).serviceID, JSON.parse(sessionStorage.getItem('data')).templateID, templateParams, JSON.parse(sessionStorage.getItem('data')).publicKey )
+        // emailjs.send(JSON.parse(sessionStorage.getItem('data')).serviceID, JSON.parse(sessionStorage.getItem('data')).templateID, templateParams, JSON.parse(sessionStorage.getItem('data')).publicKey )
+        emailjs.send(serviceID, templateID, templateParams, publicKey )
             .then(function(response) {
                console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
