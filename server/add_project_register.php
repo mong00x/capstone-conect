@@ -32,7 +32,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     $student_id= $data['student_id'];
     $project_id= $data['project_id'];
     $project_ranking= $data['project_ranking'];
-    $state_changed_time= date("Y-m-d H:i:s");
+    $state_changed_time= date("Y-m-d H:i:s");    
     $approve= $data['approve'];
     $query = "INSERT INTO student_project_requests (student_id, project_id, project_ranking, state_changed_time, approve) VALUES ( '$student_id', '$project_id', '$project_ranking', '$state_changed_time', '$approve')";
     connectDB();
@@ -51,13 +51,13 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     if($data['project_ranking'] == 1) { 
         // $mail = new PHPMailer();
         $mail-> isSMTP();
-        $mail->Host = 'mail.udlcanada.com';
+        $mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
         $mail->Port = "587";
         $mail->SMTPDebug  = 2;
         $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'tls';
-        $mail->Username = 'admin@udlcanada.com';
-        $mail->Password = 'BrainDrain';
+        // $mail->SMTPSecure = 'tls';
+        $mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
+        $mail->Password = 'pRsdKrr8DeHwTY3';
         
         // get project TOPIC information 
         $query = "SELECT project_topic,lecturer_id FROM projects WHERE project_id = '$project_id'";
@@ -109,7 +109,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $mail->isHTML(true);
         $mail->msgHTML($message);
         $mail->AltBody = 'You have a new project';
-        $mail->setFrom('admin@udlcanada.com'); // sender
+        $mail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
         $mail->addAddress($lecturer_email); // receiver
         if ($mail->Send()) {
             echo " Lecturer Mail sent\n";
@@ -123,20 +123,30 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
 
     if ( $data['project_ranking'] == 3)  
     { 
-        // $mail = new PHPMailer();
+
+        // get student email 
+        $query = "SELECT student_email FROM students WHERE student_id = '$student_id'";
+        connectDB();
+        $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "Data: " . $data);
+        closeDB();
+
+        $row = mysqli_fetch_assoc($result);
+
+        $student_email = $row['student_email'];
+
         $mail-> isSMTP();
-        $mail->Host = 'mail.udlcanada.com';
+        $mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
         $mail->Port = "587";
         $mail->SMTPDebug  = 2;
         $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'tls';
-        $mail->Username = 'admin@udlcanada.com';
-        $mail->Password = 'BrainDrain';
+        // $mail->SMTPSecure = 'tls';
+        $mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
+        $mail->Password = 'pRsdKrr8DeHwTY3';
 
         $mail->Subject = 'Application submitted';
         $mail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
-        $mail->setFrom('admin@udlcanada.com'); // sender
-        $mail->addAddress('s342742@students.cdu.edu.au'); // receiver
+        $mail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
+        $mail->addAddress($student_email); // receiver
         if ($mail->Send()) {
             echo "Student Mail sent\n";
         } else {
@@ -151,3 +161,17 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
 
 
 }
+
+$mail = new PHPMailer();
+$mail-> isSMTP();
+$mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
+$mail->Port = "587";
+$mail->SMTPDebug  = 2;
+$mail->SMTPAuth = true;
+// $mail->SMTPSecure = 'ssl';
+$mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
+$mail->Password = 'pRsdKrr8DeHwTY3';
+$mail->Subject = 'Test email';
+$mail->Body = 'This is a test email';
+$mail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
+$mail->addAddress('s342742@students.cdu.edu.au'); // receiver
