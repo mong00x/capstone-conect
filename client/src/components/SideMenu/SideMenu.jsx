@@ -56,7 +56,7 @@ const SideMenu = () => {
           student_id: JSON.parse(sessionStorage.getItem("user")).studentid,
           project_id: card.id,
           project_ranking: gloCard.indexOf(card) + 1,
-          approve: project_ranking === 1 ? 0 : '',
+          approve: gloCard.indexOf(card) === 0 ? 0 : null,
         }))
         .then((res) => {
           console.log("res", res.data);
