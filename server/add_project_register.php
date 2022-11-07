@@ -161,17 +161,3 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
 
 
 }
-
-$mail = new PHPMailer();
-$mail-> isSMTP();
-$mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
-$mail->Port = "587";
-$mail->SMTPDebug  = 2;
-$mail->SMTPAuth = true;
-// $mail->SMTPSecure = 'ssl';
-$mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
-$mail->Password = 'pRsdKrr8DeHwTY3';
-$mail->Subject = 'Test email';
-$mail->Body = 'This is a test email';
-$mail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
-$mail->addAddress('s342742@students.cdu.edu.au'); // receiver
