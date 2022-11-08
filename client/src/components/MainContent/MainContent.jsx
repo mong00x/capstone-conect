@@ -1,15 +1,27 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
-import { Flex, Grid, Spinner, Text } from "@chakra-ui/react";
+import { 
+  Flex,
+  // Grid,
+  Spinner,
+  Text
+     } from "@chakra-ui/react";
 import SearchFilter from "./SearchFilter";
 import { searchStore } from "../../store";
+
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from "react-virtualized-auto-sizer";
+
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
+import "./MainContent.css";
+
+
 const MainContent = () => {
   const search = searchStore((state) => state.search);
-  const [discplines, setDiscplines] = React.useState([]);
+  const [disciplines, setdisciplines] = React.useState([]);
   console.log(process.env.NODE_ENV);
   const projectUrl =
     process.env.NODE_ENV === "development"
@@ -25,7 +37,8 @@ const MainContent = () => {
     // if in development mode, api url is localhost, else it is the cpanel url
 
     const { data } = await axios.get(projectUrl);
-    return data.projects.splice(0, 10);
+    // return data.projects.splice(0, 10);
+    return data.projects;
     //error handling
   };
   const fetchMapping = async () => {
@@ -40,23 +53,39 @@ const MainContent = () => {
 
   React.useEffect (() => {
     fetchMapping().then((data) => {
-      setDiscplines(data);
+      setdisciplines(data);
     })
     ;
   }, []);
 
+  // React.useEffect(() => {
+  //   if (isSuccessP & search ) {
+  //     console.log("search", search);
+  //     console.log("dataP", dataP);
+  //     const filtered = dataP.filter((project) => {
+  //       return project.project_title.toLowerCase().includes(search.toLowerCase());
+  //     });
+  //     console.log("filtered", filtered);
+  //     setData(filtered);
+  //     console.log("data", data);
+  //   }else{
+  //     setData(dataP);
+  //   }
+  // }, [search]);
 
-  // on dataM fetched, save the result to discplinestore
+
+
+  // on dataM fetched, save the result to disciplinestore
 
   const { isLoading:isLoadingP, isError:isErrorP, isSuccess:isSuccessP, data:dataP, error:errorP, } = useQuery(
     ["projects"],
     fetchProjects
   );
 
-  const findDiscpline = (projectId, discplines) => {
+  const findDiscpline = (projectId, disciplines) => {
     const result = [];
-    if (discplines) {
-      discplines.forEach((discpline) => {
+    if (disciplines) {
+      disciplines.forEach((discpline) => {
         if (discpline.project_id === projectId) {
           result.push(discpline.discipline_code);
         }
@@ -85,14 +114,83 @@ const MainContent = () => {
   ) : isSuccessP ? (
     <Flex flexDir="column" w="100%" h="100%" color="DarkShades" bg="ContentBG">
       <SearchFilter />
-      <Grid
-        templateColumns="repeat(auto-fill, minmax(360px, 1fr))"
-        gap={8}
-        p="32px 32px 120px 32px"
-        justifyContent="space-between"
-        overflow={"auto"}
+        <AutoSizer>
+           {({ height, width }) => (
+          <List
+            className="List"
+            height={height}
+            itemCount={dataP.length}
+            itemSize={40000/width + 280}
+            width={width}
+
+          >
+         
+            
+            {({ index, style }) => ( 
+
+
+              <div style={style} className={index % 2 ? "ListItemOdd" + " index" + index : "ListItemEven" + " index" + index}>
+                {
+                  search ? (
+                    dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase())).length !== 0  ? (
+                    // length < index  
+                      // console.log(dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase())), index)
+                      index < dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase())).length ? (
+                        <ProjectCard 
+                      key={dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase()))[index].project_id}
+                      project={dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase()))[index]}
+                      disciplines={findDiscpline(dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase()))[index].project_id, disciplines)}
+                    />
+                        
+                      ):( 
+                        <div style={{height: "0px"}}></div>
+                      )
+
+
+                    ):(console.log("no match"))
+
+
+                  
+
+                  ):(
+
+                  <ProjectCard
+                    key={dataP[index].project_id}
+                    project={dataP[index]}
+                    disciplines={findDiscpline(dataP[index].project_id, disciplines)}
+                  />
+                )
+                }
+                
+                
+                
+                
+                
+              </div>
+            )}
+            
+
+              
+          </List>
+          
+        )}
+
+
+      </AutoSizer>
+      
+     
+      
+       
+      {/* <Grid *original code
+    
+        columnCount={1000}
+        columnWidth={100}
+        height={150}
+        rowCount={1000}
+        rowHeight={35}
+        width={300}
       >
-        {discplines &&
+        {disciplines &&
           dataP
             .filter((project) =>
               Object.values(project)
@@ -101,9 +199,9 @@ const MainContent = () => {
                 .includes(search.toLowerCase())
             )
             .map((project) => (
-              <ProjectCard key={project.project_id} project={project}  discplines={findDiscpline(project.project_id, discplines)}/> // why getDiscplines(project.project_id) is not working? maybe because it is async? how do you know? 
+              <ProjectCard key={project.project_id} project={project}  disciplines={findDiscpline(project.project_id, disciplines)}/> // why getdisciplines(project.project_id) 
             ))}
-      </Grid>
+      </Grid> */}
     </Flex>
   ) : (
     isErrorP && (
