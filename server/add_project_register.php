@@ -9,7 +9,6 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 include_once 'includes.php';
 
-
 require_once 'PHPMailer/PHPMailer.php';
 require_once 'PHPMailer/SMTP.php';
 require_once 'PHPMailer/Exception.php';
@@ -44,11 +43,8 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     $_SESSION['msgType']="success";
     http_response_code(200);
     echo json_encode(["success"=>1,"msg"=>"Submission Created"]);
-
-   // $projects_ids=array();
-    //array_push($projects_ids, $project_id);
-
     
+
 
     if($data['project_ranking'] == 1) { 
         // $mail = new PHPMailer();
@@ -71,6 +67,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         
         $project_topic = $row['project_topic'];
         $lecturer_id = $row['lecturer_id'];
+
         
         // get student information
         $query = "SELECT student_name, student_id FROM students WHERE student_id = '$student_id'";
@@ -146,13 +143,25 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
         $mail->Password = 'pRsdKrr8DeHwTY3';
 
-       
+        /*
+        connectDB();
+        $result = mysqli_query($_SESSION['db'], "SELECT project_id FROM student_project_requests where student_id = '$student_id'");
+        closeDB();
+        $project_ids = array();
+
+        while($row = mysql_fetch_assoc($result)) {
+        array_push($project_ids,$row['project_id']);
+        }
+        */
+ 
         $message_std = file_get_contents("student_email_template.html");
-        $message_std= str_replace("%project_topic%", $project_topic, $message_std);
+        $message_std= str_replace("%project_topic1%", $project_ids[0], $message_std);
+        $message_std= str_replace("%project_topic2%", $project_ids[1], $message_std);
+        $message_std= str_replace("%project_topic3%", $project_ids[2], $message_std);
         $message_std= str_replace("%student_name%", $student_name, $message_std);
         $message_std= str_replace("%student_id%", $student_id, $message_std);
 
-        $mail->Subject = 'Application submitted';
+        $mail->Subject = 'Application submited';
         $mail->isHTML(true);
         $mail->msgHTML($message_std);
         $mail->AltBody = 'Your application has been submitted. Please wait for the lecturer to approve.';
