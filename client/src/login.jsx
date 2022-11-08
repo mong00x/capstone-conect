@@ -35,30 +35,33 @@ const mailUrl =  process.env.NODE_ENV === "development" ? "http://localhost/mail
 
 const Login_page = () => {
     // mail variables
-    useEffect(()=>{
-        fetch(mailUrl)
-        .then(response =>{
-            if(response.ok)
-            {
-                return response.json()
-            }
-            throw response;
-        })
-        .then (res =>{
-            sessionStorage.setItem('data', JSON.stringify(res));
-            console.log(res)
+    // useEffect(()=>{
+    //     fetch(mailUrl)
+    //     .then(response =>{
+    //         if(response.ok)
+    //         {
+    //             return response.json()
+    //         }
+    //         throw response;
+    //     })
+    //     .then (res =>{
+    //         sessionStorage.setItem('data', JSON.stringify(res));
+    //         console.log(res)
 
-        })
-        .catch(error=>
-            {
-                console.error("error", error);
+    //     })
+    //     .catch(error=>
+    //         {
+    //             console.error("error", error);
 
-            })
-        .finally(()=>{
-            console.log("emailjs configure")
-        })
+    //         })
+    //     .finally(()=>{
+    //         console.log("emailjs configure")
+    //     })
 
-    },[]);
+    // },[]);
+    const serviceID = "service_2qo1eeb"
+    const templateID = "template_hbtmtbs"
+    const publicKey = "WjagjhsUVM7RUWDft"
     
 
     // page variables 
@@ -113,8 +116,8 @@ const Login_page = () => {
             name: fname
         };
         //sending mail
-         emailjs.send(JSON.parse(sessionStorage.getItem('data')).serviceID, JSON.parse(sessionStorage.getItem('data')).templateID, templateParams, JSON.parse(sessionStorage.getItem('data')).publicKey )
-        //emailjs.send(serviceID, templateID, templateParams, publicKey )
+        //  emailjs.send(JSON.parse(sessionStorage.getItem('data')).serviceID, JSON.parse(sessionStorage.getItem('data')).templateID, templateParams, JSON.parse(sessionStorage.getItem('data')).publicKey )
+        emailjs.send(serviceID, templateID, templateParams, publicKey )
             .then(function(response) {
                console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
