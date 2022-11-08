@@ -9,6 +9,7 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 include_once 'includes.php';
 
+
 require_once 'PHPMailer/PHPMailer.php';
 require_once 'PHPMailer/SMTP.php';
 require_once 'PHPMailer/Exception.php';
@@ -44,7 +45,8 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     http_response_code(200);
     echo json_encode(["success"=>1,"msg"=>"Submission Created"]);
 
-    
+   // $projects_ids=array();
+    //array_push($projects_ids, $project_id);
 
     
 
@@ -125,7 +127,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
     { 
 
         // get student email 
-        $query = "SELECT student_email FROM students WHERE student_id = '$student_id'";
+        $query = "SELECT student_email, student_name FROM students WHERE student_id = '$student_id'";
         connectDB();
         $result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "Data: " . $data);
         closeDB();
@@ -133,6 +135,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $row = mysqli_fetch_assoc($result);
 
         $student_email = $row['student_email'];
+        $student_name =  $row['student_name'];
 
         $mail-> isSMTP();
         $mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
@@ -143,8 +146,16 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
         $mail->Password = 'pRsdKrr8DeHwTY3';
 
+       
+        $message_std = file_get_contents("student_email_template.html");
+        $message_std= str_replace("%project_topic%", $project_topic, $message_std);
+        $message_std= str_replace("%student_name%", $student_name, $message_std);
+        $message_std= str_replace("%student_id%", $student_id, $message_std);
+
         $mail->Subject = 'Application submitted';
-        $mail->Body = 'Your application has been submitted. Please wait for the lecturer to approve.';
+        $mail->isHTML(true);
+        $mail->msgHTML($message_std);
+        $mail->AltBody = 'Your application has been submitted. Please wait for the lecturer to approve.';
         $mail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
         $mail->addAddress($student_email); // receiver
         if ($mail->Send()) {
@@ -155,8 +166,6 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         }
         
            
-    } else {
-        echo "Email to student Not sent" . $data["project_ranking"]."\n";
     }
 
 
