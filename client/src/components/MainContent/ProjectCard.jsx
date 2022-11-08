@@ -21,6 +21,7 @@ import {
   TagLabel
 } from "@chakra-ui/react";
 
+
 import { useStore } from "../../store";
 
 const disciplineSwitch = (discipline) => {
@@ -50,9 +51,9 @@ const disciplineSwitch = (discipline) => {
 
 
 
-const ProjectCard = React.memo(({ project, discplines }) => {
+const ProjectCard = React.memo(({ project, disciplines }) => {
   const Rank = useStore((state) => state.Rank);
-  // console.log(Object.values(discplines))
+  // console.log(disciplines)
 
 
   const [checked, setChecked] = useState(
@@ -90,7 +91,6 @@ const ProjectCard = React.memo(({ project, discplines }) => {
     w="100%"
     borderRadius={12}
     bg="BG"
-   
     border="3px inset #E2E8F0"
     borderColor={checked ? "AccentMain.default" : "transparent"}
     transition="all .3s ease">
@@ -131,10 +131,10 @@ const ProjectCard = React.memo(({ project, discplines }) => {
 
         <Flex flexDir="column" gap={4}>
           <Flex flexDir="row" gap={2} flexWrap="wrap">
-            {discplines &&
-              discplines.map((discpline) => (
+            {disciplines &&
+              disciplines.map((discpline) => (
                 <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)}>
-                  <Tag colorScheme="purple">
+                  <Tag colorScheme="purple" cursor="default">
                     <TagLabel>{discpline}</TagLabel>
                     </Tag>
                 </Tooltip>
@@ -162,8 +162,8 @@ const ProjectCard = React.memo(({ project, discplines }) => {
           <ModalBody>
             <Text>{project.project_description}</Text>
             <Flex flexDir="row" gap={2} flexWrap="wrap" mt={5}>
-            {discplines &&
-              discplines.map((discpline) => (
+            {disciplines &&
+              disciplines.map((discpline) => (
                 <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)}>
                   <Tag colorScheme="purple">
                     <TagLabel>{discpline}</TagLabel>
