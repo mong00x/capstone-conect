@@ -115,6 +115,12 @@ if (!isset($_SESSION['auth']))
               Lecturer List
             </a>
           </li>
+		 <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="index.php?p=settings">
+              <span data-feather="users" class="align-text-bottom"></span>
+              Settings
+            </a>
+          </li>
 			<?php }?>
           <li class="nav-item">
             <a class="nav-link" href="index.php?p=add_project">
@@ -171,6 +177,9 @@ if (!isset($_SESSION['auth']))
 			case "project_register":
 				include_once('project_register.php');
 				break;
+      case "settings":
+        include_once('settings.php');
+        break;
 			default:	
 			include_once('home.php');
 				break;	
