@@ -54,13 +54,14 @@ if (mysqli_num_rows($result_expired_project_requests) > 0) {
          $LECmail = new PHPMailer();
          $LECmail-> isSMTP();
 
-//         // $LECmail->Host = 'mail.udlcanada.com';
-//         // $LECmail->Port = "587";
-//         // $LECmail->SMTPDebug  = 2;
-//         // $LECmail->SMTPAuth = true;
-//         // $LECmail->SMTPSecure = 'tls';
-//         // $LECmail->Username = 'admin@udlcanada.com';
-//         // $LECmail->Password = 'BrainDrain';
+        // $LECmail->Host = 'mail.udlcanada.com';
+        // $LECmail->Port = "587";
+        // $LECmail->SMTPDebug  = 2;
+        // $LECmail->SMTPAuth = true;
+        // $LECmail->SMTPSecure = 'tls';
+        // $LECmail->Username = 'admin@udlcanada.com';
+        // $LECmail->Password = 'BrainDrain';
+        // $LECmail->setFrom('admin@udlcanada.com'); // sender
 
          $LECmail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
          $LECmail->Port = "587";
@@ -69,6 +70,7 @@ if (mysqli_num_rows($result_expired_project_requests) > 0) {
          $LECmail->SMTPSecure = 'tls';
          $LECmail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
          $LECmail->Password = 'pRsdKrr8DeHwTY3';
+         $LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
         
          $message = file_get_contents("lecturer_email_template.html");
          $message = str_replace("%project_topic%", $project_topic, $message);
@@ -83,8 +85,7 @@ if (mysqli_num_rows($result_expired_project_requests) > 0) {
          $LECmail->isHTML(true);
          $LECmail->msgHTML($message);
          $LECmail->AltBody = 'You have a new project';
-         // $LECmail->setFrom('admin@udlcanada.com'); // sender
-         $LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
+
          $LECmail->addAddress($lecturer_email); // receiver
          if ($LECmail->Send()) {
              $query_update_decline = "UPDATE student_project_requests SET approve = '2', state_changed_time = current_timestamp WHERE student_id = $student_id AND project_id = $project_id AND project_ranking = $project_ranking";

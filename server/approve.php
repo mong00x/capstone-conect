@@ -56,6 +56,7 @@ if (isset($_GET['approve']))
         $mail->SMTPSecure = 'tls';
         $mail->Username = 'admin@udlcanada.com';
         $mail->Password = 'BrainDrain';
+        $mail->setFrom('admin@udlcanada.com'); // sender
 
         // Spinetail Mail Settings
         // $mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
@@ -67,7 +68,6 @@ if (isset($_GET['approve']))
         // $mail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au');
 
         //Recipients
-        $mail->setFrom('admin@udlcanada.com'); // sender
         $mail->addAddress($student_email);     //Add a recipient
         
         $message = file_get_contents("student_approve_template.html");

@@ -44,13 +44,15 @@ if (isset($_GET['decline']))
 			$LECmail = new PHPMailer();
 			$LECmail-> isSMTP();
 
-			$LECmail->Host = 'LECmail.udlcanada.com';
+			// Localhost Mail Settings
+			$LECmail->Host = 'mail.udlcanada.com';
 			$LECmail->Port = "587";
 			$LECmail->SMTPDebug  = 2;
 			$LECmail->SMTPAuth = true;
 			$LECmail->SMTPSecure = 'tls';
 			$LECmail->Username = 'admin@udlcanada.com';
-			$LECmail->Password = 'BrainDrain';	
+			$LECmail->Password = 'BrainDrain';
+			$LECmail->setFrom('admin@udlcanada.com'); // sender
 	
 			// Spinetail Mail Settings
 			// $LECmail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
@@ -59,6 +61,7 @@ if (isset($_GET['decline']))
 			// $LECmail->SMTPSecure = 'tls';
 			// $LECmail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
 			// $LECmail->Password = 'pRsdKrr8DeHwTY3';
+			// $LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender	
 			
 			$message = file_get_contents("lecturer_email_template.html");
 			$message = str_replace("%project_topic%", $project_topic, $message);
@@ -74,8 +77,6 @@ if (isset($_GET['decline']))
 			$LECmail->isHTML(true);
 			$LECmail->Body = $message;
 			$LECmail->AltBody = $message;
-			$LECmail->setFrom('admin@udlcanada.com'); // sender
-			// $LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
 			$LECmail->addAddress($lecturer_email); // receiver
 			if ($LECmail->Send()) {
                 $query_update_decline = "UPDATE student_project_requests SET approve = '2', state_changed_time = current_timestamp WHERE project_ranking = $project_ranking AND project_id=".$_GET['decline']." AND student_id=".$_GET['student_id'];
