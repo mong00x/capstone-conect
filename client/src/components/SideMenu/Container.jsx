@@ -9,7 +9,7 @@ import { useStore,cardStore } from "../../store";
 const style = {
   width: "100%",
   overflow: "auto",
-  maxHeight: "59vh",
+  height: "70vh",
 };
 
 //  get item data from store

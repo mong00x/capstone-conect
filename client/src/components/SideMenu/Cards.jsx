@@ -75,7 +75,7 @@ export const Card = memo(function Card({
         my={2}
         py={2}
         px={2}
-        h="96px"
+        h="150px"
         cursor="move"
         transition="all 0.2s"
         overflow="hidde"
@@ -89,7 +89,8 @@ export const Card = memo(function Card({
         </Stack>
         <Flex flexDir="column" justifyContent="space-between" h="100%">
           <Text>
-            {text && text.toString().slice(0,36) + "..."}
+            {/* {text && text.toString().slice(0,1) + "..."} */}
+            {text}
           </Text>
           {lecturer1 && lecturer2 &&
             (
