@@ -55,7 +55,7 @@ function App() {
         </Flex>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Welcome to HIT 401 Capstone Project!</ModalHeader>
@@ -63,14 +63,14 @@ function App() {
           <ModalBody>
             <Text mb='1rem'>
             You can view and select the 3 projects you most want to apply for.
-            <br/>
-            <br/>
-            Please choose carefully, once the application is submitted it cannot be changed
+            </Text>
+            <Text mb='1rem'>
+            Please choose carefully, once the application is submitted it cannot be changed.
             </Text>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
+            <Button colorScheme='purple' mr={3} onClick={onClose} width="auto">
               OK
             </Button>
           </ModalFooter>
