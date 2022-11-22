@@ -97,8 +97,8 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $message = str_replace("%student_id%", $student_id, $message);
 
         
-        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/approve.php?approve=1&student_id=$student_id&project_id=$project_id";
-        $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/decline.php?decline=1&student_id=$student_id&project_id=$project_id";
+        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/approve.php?approve=$project_id&student_id=$student_id";
+        $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/decline.php?decline=$project_id&student_id=$student_id";
         $message = str_replace("%accept%", $accept_url, $message);
         $message = str_replace("%decline%", $decline_url, $message);
 
@@ -122,6 +122,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
 
     if ( $data['project_ranking'] == 3)  
     { 
+        echo "hi";
 
         // get student email 
         $query = "SELECT student_email, student_name FROM students WHERE student_id = '$student_id'";
@@ -143,21 +144,30 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
         $mail->Password = 'pRsdKrr8DeHwTY3';
 
-        /*
+        
         connectDB();
-        $result = mysqli_query($_SESSION['db'], "SELECT project_id FROM student_project_requests where student_id = '$student_id'");
+        $result = mysqli_query($_SESSION['db'], "SELECT project_id FROM student_project_requests where student_id = '$student_id' ORDER BY  project_ranking ASC");
         closeDB();
         $project_ids = array();
 
-        while($row = mysql_fetch_assoc($result)) {
+        while($row = mysqli_fetch_assoc($result)) {
         array_push($project_ids,$row['project_id']);
         }
-        */
+        
+        $project_topics = array();
+        for($i=0;$i<count($project_ids);$i++){
+            connectDB();
+            $result = mysqli_query($_SESSION['db'], "SELECT project_topic FROM projects where project_id = '$project_ids[$i]'");
+            closeDB();
+            $row = mysqli_fetch_assoc($result);
+            array_push($project_topics,$row['project_topic']);
+            }
+        
  
         $message_std = file_get_contents("student_email_template.html");
-        $message_std= str_replace("%project_topic1%", $project_ids[0], $message_std);
-        $message_std= str_replace("%project_topic2%", $project_ids[1], $message_std);
-        $message_std= str_replace("%project_topic3%", $project_ids[2], $message_std);
+        $message_std= str_replace("%project_topic1%", $project_topics[0], $message_std);
+        $message_std= str_replace("%project_topic2%", $project_topics[1], $message_std);
+        $message_std= str_replace("%project_topic3%", $project_topics[2], $message_std);
         $message_std= str_replace("%student_name%", $student_name, $message_std);
         $message_std= str_replace("%student_id%", $student_id, $message_std);
 
@@ -176,6 +186,7 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         
            
     }
+    
 
 
 }
