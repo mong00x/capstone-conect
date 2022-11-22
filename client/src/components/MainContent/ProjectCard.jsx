@@ -184,13 +184,13 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
           {project.lecturer_name && project.lecturer2_name &&
             (
               <Flex gap={4} mt={8}>
-                <Tooltip key={project.lecturer_name} borderRadius="full" px="2" label="First Supervisor" placement='auto'>
+                <Tooltip key={project.lecturer_name} borderRadius="full" px="2" label="First Supervisor" placement='bottom'>
                   <Tag variant="solid">
-                  <IonIcon name="person-outline"></IonIcon>
-                    <TagLabel>{project.lecturer_name}</TagLabel>
+                    <IonIcon name="person-outline"></IonIcon>
+                      <TagLabel>{project.lecturer_name}</TagLabel>
                   </Tag>
                 </Tooltip>
-                <Tooltip key={project.lecturer2_name} borderRadius="full" px="2" label="Second Supervisor" placement='auto'>
+                <Tooltip key={project.lecturer2_name} borderRadius="full" px="2" label="Second Supervisor" placement='bottom'>
                   <Tag variant="outline">
                   <IonIcon name="person-outline"></IonIcon>
                     <TagLabel>{project.lecturer2_name}</TagLabel>
