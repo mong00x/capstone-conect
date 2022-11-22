@@ -58,11 +58,14 @@ function App() {
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Welcome to HIT 401 Capstone Project</ModalHeader>
+          <ModalHeader>Welcome to HIT 401 Capstone Project!</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontWeight='bold' mb='1rem'>
-              you can view and select your top 3 projects. Please select carefully as you will not be able to change your selection after. 
+            <Text mb='1rem'>
+            You can view and select the 3 projects you most want to apply for.
+            <br/>
+            <br/>
+            Please choose carefully, once the application is submitted it cannot be changed
             </Text>
           </ModalBody>
 
