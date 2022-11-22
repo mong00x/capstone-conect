@@ -70,23 +70,23 @@ const SideMenu = () => {
       
   };
 
-  useEffect(() => {
-    if (Rank.length === 3) {
-      toast({
-        title: 'You have selected your 3 projects.',
-        description: 'You can now drag to rank them before submision. Project that is ranked higher will be prioritised.',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-        position:"bottom",
-        containerStyle: {
-          mb:"28px",
-          maxWidth: '30%',
-        }
-      })
-    }
+  // useEffect(() => {
+  //   if (Rank.length === 3) {
+  //     toast({
+  //       title: 'You have selected your 3 projects.',
+  //       description: 'You can now drag to rank them before submision. Project that is ranked higher will be prioritised.',
+  //       status: 'success',
+  //       duration: 9000,
+  //       isClosable: true,
+  //       position:"bottom",
+  //       containerStyle: {
+  //         mb:"28px",
+  //         maxWidth: '30%',
+  //       }
+  //     })
+  //   }
 
-  }, [Rank]);
+  // }, [Rank]);
 
 useEffect(()=>{
   if(isSubmitted){
