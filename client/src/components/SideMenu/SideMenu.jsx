@@ -13,7 +13,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalFooter,
   ModalBody,
   useDisclosure,
@@ -89,6 +88,14 @@ const SideMenu = () => {
 
   }, [Rank]);
 
+useEffect(()=>{
+  if(isSubmitted){
+    setTimeout(()=>{
+      window.location.href="http://cduprojects.spinetail.cdu.edu.au"
+    }, 20000)
+  }
+})
+
  
 
   return (
@@ -108,7 +115,7 @@ const SideMenu = () => {
             <Stack direction="row" spacing={2} align="center">
               <Text>Please select up to 3 projects</Text>
 
-              <CircularProgress value={Rank.length*33.333}>
+              <CircularProgress value={Rank.length*33.333} color="#9747FF">
                 <CircularProgressLabel>{Rank.length}/3</CircularProgressLabel>
               </CircularProgress>
             </Stack>
@@ -128,7 +135,6 @@ const SideMenu = () => {
         <Button 
           className="submit-btn"
           mx="1rem"
-          bg="AccentMain.default"
           colorScheme="purple"
           onClick={submitModal.onOpen}
           disabled={Rank.length < 3 || isSubmitted === true }
@@ -144,11 +150,12 @@ const SideMenu = () => {
           closeOnOverlayClick={false} 
           size="xl">
         <ModalOverlay
-        
-           />
+      bg='blackAlpha.300'
+      backdropFilter='blur(8px)'
+    />
         <ModalContent>
           <ModalHeader fontSize={24} >Submit your project selection</ModalHeader>
-          <ModalCloseButton ref={initialRef}/>
+          {/* <ModalCloseButton ref={initialRef}/> */}
           <ModalBody>
             {isVisible ? 
             
@@ -172,6 +179,10 @@ const SideMenu = () => {
                 Please check your email for further information.
               </AlertDescription>
             </Alert>
+            <br/>
+            <Text fontSize="xl" fontWeight="bold">You can close the window now, or you will be redirected to the home page in 20 seconds
+            </Text>
+
           </ScaleFade>
           ):
           (
