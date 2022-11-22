@@ -175,7 +175,7 @@ useEffect(()=>{
                 Application submitted!
               </AlertTitle>
               <AlertDescription maxWidth='md' whiteSpace="normal">
-                Thanks for submitting your application. Your application will be responded within 3 working days. 
+                Thanks for submitting your application. Your application will be responded within a few days. 
                 Please check your email for further information.
               </AlertDescription>
             </Alert>
