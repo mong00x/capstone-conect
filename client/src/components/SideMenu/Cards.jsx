@@ -94,7 +94,7 @@ export const Card = memo(function Card({
           {lecturer1 && lecturer2 &&
             (
               <Flex flexWrap="wrap">
-                <Text fontWeight="bold" fontSize="1px" mr={4}>{lecturer1.name}</Text>
+                <Text fontWeight="bold" fontSize={4} mr={4}>{lecturer1.name}</Text>
                 <Text fontSize={4}>{lecturer2.name}</Text>
               </Flex>
             )}
