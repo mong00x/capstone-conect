@@ -91,7 +91,7 @@ const SideMenu = () => {
 useEffect(()=>{
   if(isSubmitted){
     setTimeout(()=>{
-      window.location.href="http://cduprojects.spinetail.cdu.edu.au"
+      window.location.href="https://cduprojects.spinetail.cdu.edu.au"
     }, 20000)
   }
 })
@@ -123,8 +123,7 @@ useEffect(()=>{
           </Text>
         </Box>
         <Box p="1rem">
-          
-          
+          {Rank.length > 0  && "You can now drag to rank them before submision. Project that is ranked higher will be prioritised."}
 
           <DndProvider backend={HTML5Backend}>
             <Container />
@@ -150,8 +149,8 @@ useEffect(()=>{
           closeOnOverlayClick={false} 
           size="xl">
         <ModalOverlay
-      bg='blackAlpha.300'
-      backdropFilter='blur(8px)'
+      bg={isSubmitted ? 'blackAlpha.400' : 'blackAlpha.300'}
+      backdropFilter={isSubmitted && 'blur(8px)'}
     />
         <ModalContent>
           <ModalHeader fontSize={24} >Submit your project selection</ModalHeader>

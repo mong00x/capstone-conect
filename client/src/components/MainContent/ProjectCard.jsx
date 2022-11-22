@@ -53,8 +53,6 @@ const disciplineSwitch = (discipline) => {
 
 
 
-
-
 const ProjectCard = React.memo(({ project, disciplines }) => {
   const Rank = useStore((state) => state.Rank);
   // console.log(disciplines)
