@@ -20,13 +20,13 @@ import {
   Tag,
   TagLabel
 } from "@chakra-ui/react";
-
+import {IonIcon} from "react-ion-icon";
 
 import { useStore } from "../../store";
 
 const disciplineSwitch = (discipline) => {
   switch (discipline) {
-    case "CE":
+    case "ChE":
       return "Chemical Engineering"
     case "CSE":
       return "Civil and Structural Engineering"
@@ -34,16 +34,20 @@ const disciplineSwitch = (discipline) => {
       return "Electrical and Electronics Engineernig"
     case "ME":
       return "Mechanical Engineering"
-    case "COS":
+    case "CS":
       return "Computer Science"
     case "CYS":
       return "Cyber Security"
+    case "DS":
+      return "Data Science"
+    case "IS":
+      return "Information Systems"
     case "ISDS":
       return "Information Systems and Data Science"
     case "SE":
       return "Software Engineering"
-    case "DS":
-      return "Data Science"
+    
+
   }
 }
 
@@ -133,7 +137,7 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
           <Flex flexDir="row" gap={2} flexWrap="wrap">
             {disciplines &&
               disciplines.map((discpline) => (
-                <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)}>
+                <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)} placement='top'>
                   <Tag colorScheme="purple" cursor="default">
                     <TagLabel>{discpline}</TagLabel>
                     </Tag>
@@ -143,12 +147,18 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
             {project.lecturer_name && project.lecturer2_name &&
             (
               <Flex flexDir="row" gap={2} flexWrap="wrap">
-                <Tag variant="solid">
-                  <TagLabel>{project.lecturer_name}</TagLabel>
+                 <Tooltip key={project.lecturer_name} borderRadius="full" px="2" label="First Supervisor" placement='auto' >
+                  <Tag variant="solid" cursor="default">
+                  <IonIcon name="person-outline"></IonIcon>
+                    <TagLabel>{project.lecturer_name}</TagLabel>
                   </Tag>
-                <Tag>
-                  <TagLabel>{project.lecturer2_name}</TagLabel>
+                </Tooltip>
+                <Tooltip key={project.lecturer2_name} borderRadius="full" px="2" label="Second Supervisor" placement='auto' >
+                  <Tag variant="outline" cursor="default">
+                  <IonIcon name="person-outline"></IonIcon>
+                    <TagLabel>{project.lecturer2_name}</TagLabel>
                   </Tag>
+                </Tooltip>
               </Flex>
             )}
         </Flex>
@@ -164,7 +174,7 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
             <Flex flexDir="row" gap={2} flexWrap="wrap" mt={5}>
             {disciplines &&
               disciplines.map((discpline) => (
-                <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)}>
+                <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)} placement='auto'>
                   <Tag colorScheme="purple">
                     <TagLabel>{discpline}</TagLabel>
                     </Tag>
@@ -174,8 +184,20 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
           {project.lecturer_name && project.lecturer2_name &&
             (
               <Flex gap={4} mt={8}>
-                <Text fontWeight="bold">{project.lecturer_name}</Text>
-                <Text>{project.lecturer2_name}</Text>
+                <Tooltip key={project.lecturer_name} borderRadius="full" px="2" label="First Supervisor" placement='auto'>
+                  <Tag variant="solid">
+                  <IonIcon name="person-outline"></IonIcon>
+                    <TagLabel>{project.lecturer_name}</TagLabel>
+                  </Tag>
+                </Tooltip>
+                <Tooltip key={project.lecturer2_name} borderRadius="full" px="2" label="Second Supervisor" placement='auto'>
+                  <Tag variant="outline">
+                  <IonIcon name="person-outline"></IonIcon>
+                    <TagLabel>{project.lecturer2_name}</TagLabel>
+                  </Tag>
+                </Tooltip>
+                {/* <Text fontWeight="bold">{project.lecturer_name}</Text> */}
+                {/* <Text>{project.lecturer2_name}</Text> */}
               </Flex>
             )}
           </ModalBody>
