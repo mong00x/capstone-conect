@@ -15,6 +15,10 @@ margin-top:20px !important;
     background-size: 10px 10px;
 }
 
+.List{
+    height:90vh !important;
+}
+
 
 /* .ListItemOdd{
     margin-top:-250px !important;
