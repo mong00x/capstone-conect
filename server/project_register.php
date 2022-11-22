@@ -21,7 +21,7 @@ if (isset($_GET['del']))
 if (isset($_GET['approve']))
 {
 	
-	$query="UPDATE student_project_requests SET approve=1 WHERE project_id=".$_GET['approve']." AND student_id=".$_GET['student_id'];
+	$query="UPDATE student_project_requests SET approve=1, state_changed_time = current_timestamp WHERE project_id=".$_GET['approve']." AND student_id=".$_GET['student_id'];
 	connectDB();
 	$result = mysqli_query($_SESSION['db'],$query) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
 	closeDB();
@@ -32,7 +32,23 @@ if (isset($_GET['approve']))
 	closeDB();
 	$row_student_email = mysqli_fetch_assoc($result_student_email);
 	$student_email = $row_student_email['student_email'];
-		
+
+    $query_project_info = "SELECT lecturers.lecturer_email, projects.project_topic FROM `student_project_requests`
+    JOIN projects ON student_project_requests.project_id = projects.project_id
+    JOIN lecturers ON projects.lecturer_id = lecturers.lecturer_id
+    WHERE projects.project_id=".$_GET['approve'].
+    connectDB();
+    $result_project_info = mysqli_query($_SESSION['db'], $query_project_info);
+    closeDB();
+    $row_project_info = mysqli_fetch_assoc($result_project_info);
+    $lecturer_email = $row_project_info['lecturer_email'];
+    $project_topic = $row_project_info['project_topic'];
+
+	$query_update_student = "UPDATE students SET project_id=" .$_GET['approve']. " WHERE student_id=" .$_GET['student_id'];
+	connectDB();
+	mysqli_query($_SESSION['db'], $query_update_student);
+	closeDB();
+
     $mail = new PHPMailer();
     $mail-> isSMTP();
 
@@ -59,7 +75,8 @@ if (isset($_GET['approve']))
 	$mail->addAddress($student_email);     //Add a recipient
     
 	$message = file_get_contents("student_approve_template.html");
-	$message = str_replace("%project_topic%", $project_topic, $message);
+    $message = str_replace("%project_topic%", $project_topic, $message);
+    $message = str_replace("%lecturer_email%", $lecturer_email, $message);
 
 	//Content
 	$mail->isHTML(true); //Set email format to HTML
@@ -112,7 +129,7 @@ if (isset($_GET['decline']))
 		$LECmail->Port = "587";
 		$LECmail->SMTPDebug  = 2;
 		$LECmail->SMTPAuth = true;
-		$LECmail->SMTPSecure = 'tls';
+		// $LECmail->SMTPSecure = 'tls';
 		$LECmail->Username = 'admin@udlcanada.com';
 		$LECmail->Password = 'BrainDrain';
 		$LECmail->setFrom('admin@udlcanada.com'); // sender
@@ -250,7 +267,7 @@ if (isset($_GET['pending']))
 	
 				
 	?>
-		  
+		  	
 			  
             <tr>
               <td><?php echo $row_prj['project_topic'];?>
