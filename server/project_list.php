@@ -27,7 +27,7 @@ if (isset($_GET['del']))
         <table class="table table-striped table-sm">
           <thead>
             <tr>
-              <th scope="col">Project ID</th>
+              <!-- <th scope="col">Project ID</th> -->
               <th scope="col">Topic Title</th>
               <th scope="col">Lecturer Name</th>
              

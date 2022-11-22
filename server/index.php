@@ -18,7 +18,7 @@ if (!isset($_SESSION['auth']))
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
 
    
-
+  \
 
     
 
@@ -102,10 +102,22 @@ if (!isset($_SESSION['auth']))
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3 sidebar-sticky">
         <ul class="nav flex-column">
+        <li class="nav-item" style="background-color: yellow;">
+            <a class="nav-link" style="pointer-events: none;" href="">          
+              <span data-feather="log-in" class="align-text-bottom"></span>
+              Hello <?php echo ucwords($_SESSION['user_name']);?>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.php">
+              <span data-feather="home" class="align-text-bottom"></span>
+              Dashboard
+            </a>
+          </li>
 		<?php if ($_SESSION['priv']>1) {?>	
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="index.php?p=add_lecturer">
-              <span data-feather="file" class="align-text-bottom"></span>
+              <span data-feather="file-plus" class="align-text-bottom"></span>
               Add a lecturer
             </a>
           </li>
@@ -115,29 +127,42 @@ if (!isset($_SESSION['auth']))
               Lecturer List
             </a>
           </li>
-		 <li class="nav-item">
+			<li class="nav-item">
+            <a class="nav-link active" href="index.php?p=discipline">
+              <span data-feather="layers" class="align-text-bottom"></span>
+              Discipline
+            </a>
+          </li>
+      		 <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="index.php?p=settings">
-              <span data-feather="users" class="align-text-bottom"></span>
+              <span data-feather="settings" class="align-text-bottom"></span>
               Settings
             </a>
           </li>
 			<?php }?>
+			
           <li class="nav-item">
             <a class="nav-link" href="index.php?p=add_project">
-              <span data-feather="file" class="align-text-bottom"></span>
+              <span data-feather="file-plus" class="align-text-bottom"></span>
               Add a Project
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="index.php?p=project_list">
-              <span data-feather="layers" class="align-text-bottom"></span>
+              <span data-feather="list" class="align-text-bottom"></span>
               Project List
             </a>
           </li>
 			<li class="nav-item">
             <a class="nav-link" href="index.php?p=project_register">
               <span data-feather="layers" class="align-text-bottom"></span>
-              Project Register (approve/decline)
+              Project Register
+            </a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="index.php?p=students_list">
+              <span data-feather="users" class="align-text-bottom"></span>
+              Student List
             </a>
           </li>
          
@@ -177,9 +202,15 @@ if (!isset($_SESSION['auth']))
 			case "project_register":
 				include_once('project_register.php');
 				break;
-      case "settings":
-        include_once('settings.php');
-        break;
+			case "discipline":
+				include_once('discipline.php');
+				break;
+            case "settings":
+                include_once('settings.php');
+                break;
+            case "students_list":
+                include_once('students_list.php');
+                break;
 			default:	
 			include_once('home.php');
 				break;	

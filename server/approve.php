@@ -45,6 +45,11 @@ if (isset($_GET['approve']))
         $lecturer_email = $row_project_info['lecturer_email'];
         $project_topic = $row_project_info['project_topic'];
 
+        $query_update_student = "UPDATE students SET project_id=" .$_GET['approve']. " WHERE student_id=" .$_GET['student_id'];
+        connectDB();
+        mysqli_query($_SESSION['db'], $query_update_student);
+        closeDB();
+        
         $mail = new PHPMailer();
         $mail-> isSMTP();
 

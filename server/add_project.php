@@ -295,7 +295,7 @@ if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {
 							 
 		}
 							 
-		$query = "SELECT * FROM lecturers "	;
+		$query = "SELECT * FROM lecturers WHERE priv=0"	;
 		connectDB();
 		$result = mysqli_query($_SESSION['db'],$query);
 		closeDB();
