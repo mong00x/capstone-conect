@@ -4,7 +4,7 @@ import {
   Flex, 
   Text, 
   Button,
-  useToast,
+  CloseButton,
   Alert,
   AlertTitle,
   AlertDescription,
@@ -19,8 +19,9 @@ import {
   Stack,
   CircularProgress,
   CircularProgressLabel,
+
 } from '@chakra-ui/react' 
-import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon, WarningIcon  } from "@chakra-ui/icons";
 import axios from "axios";
 
 // drag and drop stuff
@@ -32,11 +33,15 @@ import { useStore,cardStore } from "../../store";
 const SideMenu = () => {
   const submitModal = useDisclosure()
   const initialRef = useRef(null)
-  const toast = useToast()
   const {
     isOpen: isVisible,
     onClose,
     onOpen,
+  } = useDisclosure({ defaultIsOpen: false })
+  const {
+    isOpen: isAlertOpen,
+    onClose: onAlertClose,
+    onOpen: onAlertOpen,
   } = useDisclosure({ defaultIsOpen: false })
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -45,6 +50,9 @@ const SideMenu = () => {
   const Rank = useStore((state) => state.Rank);
   const gloCard = cardStore((state) => state.card);
 
+  useEffect(() => {
+    Rank.length === 3 ?  onAlertOpen() : onAlertClose();
+  }, [Rank]);
   const handleSubmit = () => {
     // post the data to the database
     console.log("submit");
@@ -122,8 +130,20 @@ useEffect(()=>{
           
           </Text>
         </Box>
+        {isAlertOpen && 
+          <Alert status='info' colorScheme="purple">
+            You can now drag to rank your projects before submision. Project that is ranked higher will be prioritised.
+            <CloseButton
+              alignSelf='flex-start'
+              position='relative'
+              right={-1}
+              top={-1}
+              onClick={onAlertClose}
+            />
+        </Alert>
+          }
         <Box p="1rem">
-          {Rank.length > 0  && "You can now drag to rank them before submision. Project that is ranked higher will be prioritised."}
+          
 
           <DndProvider backend={HTML5Backend}>
             <Container />
@@ -153,36 +173,35 @@ useEffect(()=>{
       backdropFilter={isSubmitted && 'blur(8px)'}
     />
         <ModalContent>
-          <ModalHeader fontSize={24} >Submit your project selection</ModalHeader>
+          <ModalHeader fontSize={24} >Submit your Aplication</ModalHeader>
           {/* <ModalCloseButton ref={initialRef}/> */}
           <ModalBody>
             {isVisible ? 
-            
-           (
-            <ScaleFade initialScale={0.9} in={isVisible}> 
-              <Alert
-                status='success'
-                variant='subtle'
-                flexDirection='column'
-                alignItems='center'
-                justifyContent='center'
-                textAlign='center'
-                height='280px'
-              >
-              <CheckCircleIcon boxSize='40px' mr={0} color="green.500"/>
-              <AlertTitle mt={4} mb={1} fontSize='lg'>
-                Application submitted!
-              </AlertTitle>
-              <AlertDescription maxWidth='md' whiteSpace="normal">
-                Thanks for submitting your application. Your application will be responded within a few days. 
-                Please check your email for further information.
-              </AlertDescription>
-            </Alert>
-            <br/>
-            <Text fontSize="xl" fontWeight="bold">You can close the window now, or you will be redirected to the home page in 20 seconds
-            </Text>
+            (
+              <ScaleFade initialScale={0.9} in={isVisible}> 
+                <Alert
+                  status='success'
+                  variant='subtle'
+                  flexDirection='column'
+                  alignItems='center'
+                  justifyContent='center'
+                  textAlign='center'
+                  height='280px'
+                >
+                <CheckCircleIcon boxSize='40px' mr={0} color="green.500"/>
+                <AlertTitle mt={4} mb={1} fontSize='lg'>
+                  Application submitted!
+                </AlertTitle>
+                <AlertDescription maxWidth='md' whiteSpace="normal">
+                  Thanks for submitting your application. Your application will be responded within a few days. 
+                  Please check your email for further information.
+                </AlertDescription>
+              </Alert>
+              <br/>
+              <Text fontSize="xl" fontWeight="bold">You can close the window now, or you will be redirected to the home page in 20 seconds
+              </Text>
 
-          </ScaleFade>
+            </ScaleFade>
           ):
           (
             <>
