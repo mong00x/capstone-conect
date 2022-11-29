@@ -18,7 +18,13 @@ import {
     HStack,
     Stack,
     Text,
-    Button
+    Button,
+    FormControl,
+    FormLabel,
+    FormErrorMessage,
+    FormHelperText,
+    Select,
+    Input
 } from "@chakra-ui/react";
 import React, {useRef} from "react";
 
@@ -166,53 +172,49 @@ const Login_page = () => {
 
 return(
     <>
-    
         <div className="logincontainer">
-            <form  onSubmit={Send_Password} >
-                <label >Choose a login type:</label>
-                <br></br>
-                <select className="dropwdown" value={user_type} onChange={(e) => setType(e.target.value)} >
+            <Text fontSize="3xl" fontWeight="bold" mb="32px" alignSelf="left">Login</Text>
+            <FormControl  onSubmit={Send_Password} maxW="420px">
+                <FormLabel >Choose a login type:</FormLabel>
+                <Select mb="16px" value={user_type} onChange={(e) => setType(e.target.value)} >
                     <option value="admin/lecturer">Admin / Lecturer</option>
                     <option value="student">Student</option>
-                </select>
-                <br></br>
-                
-                {user_type === "student" && <><label  >Email address : </label><br></br></> }
-                
-                {user_type === "student" && <><input 
-                className="input"
-                typeof="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}/><br></br></>}
-               
+                </Select>
+                {user_type === "student" ?
+                    <>
+                        <FormLabel>Email address: </FormLabel>
+                        <Input 
+                            mb="16px"
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}/>
+                        <FormLabel>Student ID: </FormLabel>
+                        <Input 
+                            mb="16px"
+                            type="number"
+                            id="studentid"
+                            name="studentid"
+                            value={studentid}
+                            onChange={(e) => setId(parseInt(e.target.value))}/>
+                        <FormLabel>Full name: </FormLabel>
+                        <Input 
+                            mb="32px"
+                            type="text"
+                            id="fname"
+                            name="fname"
+                            value={fname}
+                            onChange={(e) => setFname(e.target.value)}/>
+                        <Button colorScheme="green" w="100%" size="lg" type="submit" m="auto" onClick={Send_Password} >Send One-Time Password</Button>
 
-                {user_type === "student" && <><label  >Student Id : </label> <br></br></>}
-                
-                {user_type === "student" && <><input 
-                className="input"
-                type="number"
-                id="studentid"
-                name="studentid"
-                value={studentid}
-                onChange={(e) => setId(e.target.value)}/><br></br></>}
-              
-
-                {user_type === "student" &&<> <label  >Full name : </label><br></br></>}
-                
-                {user_type === "student" && <> <input 
-                className="input"
-                type="text"
-                id="fname"
-                name="fname"
-                value={fname}
-                onChange={(e) => setFname(e.target.value)}/><br></br></>}
-                
-
-                {user_type === "student" && <button className="btn"  type="submit">Send Password</button>}
-                {user_type !== "student" && <a className="link" href={loginUrl } >Login as {user_type}</a>}
-            </form>
+                    </>
+                 :
+                 <Button colorScheme="green" w="100%" size="lg" mt="32px">
+                    <a  href={loginUrl } >Login as {user_type}</a>
+                 </Button>
+                 }
+            </FormControl>
         </div>
         
         <Modal 
@@ -223,7 +225,7 @@ return(
             isCentered >
             <ModalOverlay />
             <ModalContent alignItems="center" >
-                <ModalHeader>Confirm your verificaion code</ModalHeader>
+                <ModalHeader>Confirm your One-Time Password</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <Stack gap="24px">
