@@ -18,7 +18,7 @@ const theme = extendTheme({
     AccentLight: "#9BADCD",
     AccentMain: {
       light: "#E9D8FF",
-      default: "#9747FF",
+      default: "#805AD5",
     },
   },
 });
