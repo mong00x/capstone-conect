@@ -15,8 +15,12 @@ import {
     PinInput, 
     PinInputField,
     useToast, 
-    HStack
+    HStack,
+    Stack,
+    Text,
+    Button
 } from "@chakra-ui/react";
+import React, {useRef} from "react";
 
 // file import
 import "./login.css";
@@ -59,6 +63,9 @@ const Login_page = () => {
     //     })
 
     // },[]);
+
+    const lastField = useRef(null);
+    const verifyRef = useRef(null);
     const serviceID = "service_2qo1eeb"
     const templateID = "template_hbtmtbs"
     const publicKey = "WjagjhsUVM7RUWDft"
@@ -208,27 +215,47 @@ return(
             </form>
         </div>
         
-        <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
+        <Modal 
+            closeOnOverlayClick={false} 
+            blockScrollOnMount={false} 
+            isOpen={isOpen} 
+            onClose={onClose} 
+            isCentered >
             <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>Confirm your verificaion code here</ModalHeader>
+            <ModalContent alignItems="center" >
+                <ModalHeader>Confirm your verificaion code</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                varification code has been send to {JSON.parse(sessionStorage.getItem('user')).email}.
-                <br></br>
-                <br></br>
-                    <PinInput otp 
-                    onChange={(e) => setpin(parseInt(e))}>
-                        <PinInputField />
-                        <PinInputField />
-                        <PinInputField />
-                        <PinInputField />
-                    </PinInput>
-                
+                    <Stack gap="24px">
+                        <Stack>
+                            <Text>A varification code has been send to: </Text>
+                            <Text fontWeight="bold" >{email}</Text>
+                        </Stack>
+                        
+                    
+                        <HStack justifyContent="center">
+                            <PinInput 
+                                otp 
+                                size="lg"
+                                onChange={(e) => setpin(parseInt(e))}>
+                                <PinInputField />
+                                <PinInputField />
+                                <PinInputField />
+                                {/* when last field is entered, focus on the button */}
+                                <PinInputField
+                                    ref={lastField}
+                                    onInput={() => {
+                                        verifyRef.current.focus();}}
+
+                                />
+
+                            </PinInput>
+                        </HStack>
+                    </Stack>
                 </ModalBody>
 
-                <ModalFooter>
-                <button id = "btn"onClick={Verify}> Verify</button>
+                <ModalFooter m="25px">
+                <Button ref={verifyRef} id="varify" onClick={Verify} colorScheme="green" size="lg" w="256px"> Verify</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
