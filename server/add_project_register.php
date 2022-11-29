@@ -97,8 +97,8 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
         $message = str_replace("%student_id%", $student_id, $message);
 
         
-        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/approve.php?approve=$project_id&student_id=$student_id";
-        $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/decline.php?decline=$project_id&student_id=$student_id";
+        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/adminpage/approve.php?approve=$project_id&student_id=$student_id";
+        $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/adminpage/decline.php?decline=$project_id&student_id=$student_id";
         $message = str_replace("%accept%", $accept_url, $message);
         $message = str_replace("%decline%", $decline_url, $message);
 
