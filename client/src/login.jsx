@@ -107,6 +107,7 @@ const Login_page = () => {
             password: password
           }))
           .then((res) => {
+            
             console.log("res", res.data);
           })
           .catch((err) => {
