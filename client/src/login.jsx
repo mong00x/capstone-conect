@@ -39,17 +39,13 @@ const password = Math.floor(Math.random() * (9999 - 1111)) + 1111;
 const addstutUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_student.php?x=" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_student.php?x=";    
 const loginUrl =  process.env.NODE_ENV === "development" ? "http://localhost/login.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/login.php";
 const mailUrl =  process.env.NODE_ENV === "development" ? "http://localhost/mail_manager.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/mail_manager.php";
- 
-
+const appUrl = process.env.NODE_ENV === "development" ? "http://localhost:5173/app" : "https://cduprojects.spinetail.cdu.edu.au/app";
 
 
 const Login_page = () => {
 
     const lastField = useRef(null);
     const verifyRef = useRef(null);
-    const serviceID = "service_2qo1eeb"
-    const templateID = "template_hbtmtbs"
-    const publicKey = "WjagjhsUVM7RUWDft"
     
 
     // page variables 
@@ -79,7 +75,7 @@ const Login_page = () => {
             console.log(password)
 
             send_mail();
-            onOpen();
+            
         }
         else
         {
@@ -100,19 +96,35 @@ const Login_page = () => {
     //send mail
     function send_mail()
     {
-       console.log(password);
+       
         axios.post(mailUrl, JSON.stringify({
             name: JSON.parse(sessionStorage.getItem("user")).name,
             student_email: JSON.parse(sessionStorage.getItem('user')).email,
+            student_id: JSON.parse(sessionStorage.getItem('user')).studentid,
             password: password
           }))
           .then((res) => {
-            
-            console.log("res", res.data);
+            if (res.data.success == 0)
+            {  
+                toast({
+                    title: 'Error',
+                    description: res.data.msg,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                    position: 'top-right'
+                  }) 
+            }
+            else
+            {
+                onOpen();
+
+            }
           })
           .catch((err) => {
             console.log("err", err);
           });
+
     }
     //check the verification code
     function Verify()
@@ -129,7 +141,20 @@ const Login_page = () => {
                 auth: true
             };
             sessionStorage.setItem('user', JSON.stringify(user));
-            location.replace (addstutUrl + sessionStorage.getItem('user'));
+            axios.post(addstutUrl, JSON.stringify({
+                name: JSON.parse(sessionStorage.getItem("user")).name,
+                student_id: JSON.parse(sessionStorage.getItem('user')).studentid,
+                student_email: JSON.parse(sessionStorage.getItem('user')).email,
+                password: JSON.parse(sessionStorage.getItem('user')).password_token
+              }))
+              .then((res) => {
+                console.log("res", res.data);
+                
+              })
+              .catch((err) => {
+                console.log("err", err);
+              });
+              location.replace(appUrl);
         }
 
         else{

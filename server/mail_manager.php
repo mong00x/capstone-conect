@@ -8,7 +8,28 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 // header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once 'includes.php';
+// get data
+$data = json_decode(file_get_contents("php://input"), true);
 
+$name= $data['name'];
+$password= $data['password'];
+$student_email= $data['student_email'];
+$student_id= $data['student_id'];
+
+// verifing student entry
+//checking if student already exist in database
+$query = "SELECT student_id FROM students WHERE student_id = '$student_id'";
+connectDB();
+$result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "Data: " . $data);
+closeDB();
+$row = mysqli_fetch_assoc($result);
+if ( $row > 0)
+{
+	$success="0";
+	echo json_encode(["success"=>0,"msg"=>"Srudent with this ID has already been resistered"]);
+}
+else
+{
 require_once 'PHPMailer/PHPMailer.php';
 require_once 'PHPMailer/SMTP.php';
 require_once 'PHPMailer/Exception.php';
@@ -16,18 +37,7 @@ require_once 'PHPMailer/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
-
-// get data posted 
-$data = json_decode(file_get_contents("php://input"), true);
 $mail = new PHPMailer();
-
-
-$success=0;
-$name= $data['name'];
-$password= $data['password'];
-$student_email= $data['student_email'];
-
 
 $mail-> isSMTP();
 $mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
@@ -55,5 +65,8 @@ if ($mail->Send()) {
     echo "Error: " . $mail->ErrorInfo;
 }
 
+
+
+}
 
 ?>
