@@ -1,7 +1,7 @@
 //dependencies 
 
 import {useState, useEffect} from "react";
-import emailjs from '@emailjs/browser';
+import axios from "axios";
 import md5 from "md5";
 import {    
     Modal,
@@ -44,31 +44,6 @@ const mailUrl =  process.env.NODE_ENV === "development" ? "http://localhost/mail
 
 
 const Login_page = () => {
-    // mail variables
-    // useEffect(()=>{
-    //     fetch(mailUrl)
-    //     .then(response =>{
-    //         if(response.ok)
-    //         {
-    //             return response.json()
-    //         }
-    //         throw response;
-    //     })
-    //     .then (res =>{
-    //         sessionStorage.setItem('data', JSON.stringify(res));
-    //         console.log(res)
-
-    //     })
-    //     .catch(error=>
-    //         {
-    //             console.error("error", error);
-
-    //         })
-    //     .finally(()=>{
-    //         console.log("emailjs configure")
-    //     })
-
-    // },[]);
 
     const lastField = useRef(null);
     const verifyRef = useRef(null);
@@ -121,21 +96,22 @@ const Login_page = () => {
         
        
     }
+
+    //send mail
     function send_mail()
     {
-        var templateParams = {
-            email: email,
-            password: password,
-            name: fname
-        };
-        //sending mail
-        //  emailjs.send(JSON.parse(sessionStorage.getItem('data')).serviceID, JSON.parse(sessionStorage.getItem('data')).templateID, templateParams, JSON.parse(sessionStorage.getItem('data')).publicKey )
-        emailjs.send(serviceID, templateID, templateParams, publicKey )
-            .then(function(response) {
-               console.log('SUCCESS!', response.status, response.text);
-            }, function(error) {
-               console.log('FAILED...', error);
-            });
+       console.log(password);
+        axios.post(mailUrl, JSON.stringify({
+            name: JSON.parse(sessionStorage.getItem("user")).name,
+            student_email: JSON.parse(sessionStorage.getItem('user')).email,
+            password: password
+          }))
+          .then((res) => {
+            console.log("res", res.data);
+          })
+          .catch((err) => {
+            console.log("err", err);
+          });
     }
     //check the verification code
     function Verify()
