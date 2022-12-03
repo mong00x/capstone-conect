@@ -54,14 +54,13 @@ if (mysqli_num_rows($result_expired_project_requests) > 0) {
          $LECmail = new PHPMailer();
          $LECmail-> isSMTP();
 
-        // $LECmail->Host = 'mail.udlcanada.com';
-        // $LECmail->Port = "587";
-        // $LECmail->SMTPDebug  = 2;
-        // $LECmail->SMTPAuth = true;
-        // $LECmail->SMTPSecure = 'tls';
-        // $LECmail->Username = 'admin@udlcanada.com';
-        // $LECmail->Password = 'BrainDrain';
-        // $LECmail->setFrom('admin@udlcanada.com'); // sender
+//         // $LECmail->Host = 'mail.udlcanada.com';
+//         // $LECmail->Port = "587";
+//         // $LECmail->SMTPDebug  = 2;
+//         // $LECmail->SMTPAuth = true;
+//         // // $LECmail->SMTPSecure = 'tls';
+//         // $LECmail->Username = 'admin@udlcanada.com';
+//         // $LECmail->Password = 'BrainDrain';
 
          $LECmail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
          $LECmail->Port = "587";
@@ -72,20 +71,21 @@ if (mysqli_num_rows($result_expired_project_requests) > 0) {
          $LECmail->Password = 'pRsdKrr8DeHwTY3';
          $LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
         
-         $message = file_get_contents("lecturer_email_template.html");
+         $message = file_get_contents("lecturer_email_template.html", true);
          $message = str_replace("%project_topic%", $project_topic, $message);
          $message = str_replace("%student_name%", $student_name, $message);
          $message = str_replace("%student_id%", $student_id, $message);
-	        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/approve.php?approve=$new_project_id&student_id=$student_id";
-            $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/decline.php?decline=$new_project_id&student_id=$student_id";
+         $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://cduprojects.spinetail.cdu.edu.au/adminpage/approve.php?approve=$new_project_id&student_id=$student_id";
+         $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://cduprojects.spinetail.cdu.edu.au/adminpage/decline.php?decline=$new_project_id&student_id=$student_id";
          $message = str_replace("%accept%", $accept_url, $message);
          $message = str_replace("%decline%", $decline_url, $message);
 
-         $LECmail->Subject = 'New project request';
-         $LECmail->isHTML(true);
-         $LECmail->msgHTML($message);
-         $LECmail->AltBody = 'You have a new project';
 
+         $LECmail->Subject = 'New project request';
+        //  $LECmail->isHTML(true);
+         $LECmail->Body = $message;
+         $LECmail->AltBody = $message;
+         // $LECmail->setFrom('admin@udlcanada.com'); // sender
          $LECmail->addAddress($lecturer_email); // receiver
          if ($LECmail->Send()) {
              $query_update_decline = "UPDATE student_project_requests SET approve = '2', state_changed_time = current_timestamp WHERE student_id = $student_id AND project_id = $project_id AND project_ranking = $project_ranking";
