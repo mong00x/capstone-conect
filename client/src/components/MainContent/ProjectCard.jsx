@@ -52,6 +52,8 @@ const disciplineSwitch = (discipline) => {
 }
 
 
+import "./ProjectCard.css";
+
 
 const ProjectCard = React.memo(({ project, disciplines }) => {
   const Rank = useStore((state) => state.Rank);
@@ -103,22 +105,28 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
       >
         <Flex flexDir="column" gap={2}>
           <Flex
+            className="title"
             flexDir="row"
             justifyContent="space-between"
             alignItems="flex-start"
             minH="50px"
           >
             <Checkbox
+              className="checkbox"
               ref={checkRef}
               size="lg"
               borderColor="#888"
-              alignItems="flex-start"
               checked={checked}
               defaultChecked={checked}
               disabled={Rank.length >= 3 && !checked}
               onChange={handleCheck}
+              pb="6px"
+              pl="6px"
+              pr="6px"
+              borderRadius={4}
+
             >
-              <Text fontSize="1rem" fontWeight="bold" lineHeight={6}>
+              <Text className="title-text" fontSize="1rem" fontWeight="bold" >
                 {project.project_topic}
               </Text>
             </Checkbox>
@@ -173,7 +181,7 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
             {disciplines &&
               disciplines.map((discpline) => (
                 <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)} placement='auto'>
-                  <Tag colorScheme="purple">
+                  <Tag colorScheme="purple" cursor="default">
                     <TagLabel>{discpline}</TagLabel>
                     </Tag>
                 </Tooltip>
@@ -183,13 +191,13 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
             (
               <Flex gap={4} mt={8}>
                 <Tooltip key={project.lecturer_name} borderRadius="full" px="2" label="First Supervisor" placement='bottom'>
-                  <Tag variant="solid">
+                  <Tag variant="solid" cursor="default">
                     <IonIcon name="person-outline"></IonIcon>
                       <TagLabel>{project.lecturer_name}</TagLabel>
                   </Tag>
                 </Tooltip>
                 <Tooltip key={project.lecturer2_name} borderRadius="full" px="2" label="Second Supervisor" placement='bottom'>
-                  <Tag variant="outline">
+                  <Tag variant="outline" cursor="default">
                   <IonIcon name="person-outline"></IonIcon>
                     <TagLabel>{project.lecturer2_name}</TagLabel>
                   </Tag>
