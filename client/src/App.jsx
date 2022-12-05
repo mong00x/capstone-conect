@@ -32,8 +32,11 @@ function App() {
   React.useEffect(() => {
     if(firstTime)
     {
-      onOpen()
-      setFirstTime(false)
+      // settimeout is used to prevent the modal from opening on page load
+      setTimeout(() => {
+        onOpen()
+        setFirstTime(false)
+      }, 1000);
     }
   }, [firstTime])
 
@@ -58,7 +61,7 @@ function App() {
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Welcome to HIT 401 Capstone Project!</ModalHeader>
+          <ModalHeader>👋Welcome to Capstone Connect!</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text mb='1rem'>
