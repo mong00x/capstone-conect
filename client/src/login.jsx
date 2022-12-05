@@ -96,7 +96,7 @@ const Login_page = () => {
     //send mail
     function send_mail()
     {
-       
+        onOpen();
         axios.post(mailUrl, JSON.stringify({
             name: JSON.parse(sessionStorage.getItem("user")).name,
             student_email: JSON.parse(sessionStorage.getItem('user')).email,
@@ -115,11 +115,7 @@ const Login_page = () => {
                     position: 'top-right'
                   }) 
             }
-            else
-            {
-                onOpen();
 
-            }
           })
           .catch((err) => {
             console.log("err", err);
