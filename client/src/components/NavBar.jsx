@@ -14,8 +14,8 @@ const NavBar = () => {
       borderColor="#ddd"
       bg="BG"
     >
-      <Text fontSize="2xl" fontWeight="bold" width="auto">
-        Capstone Project
+      <Text fontSize="xl" fontWeight="bold" width="auto" cursor="default" underline="solid">
+        Capstone Connect
       </Text>
     </Box>
   );
