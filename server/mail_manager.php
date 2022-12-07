@@ -33,7 +33,7 @@ $row = mysqli_fetch_assoc($result);
 if ( $row > 0)
 {
 	$success="0";
-	echo json_encode(["success"=>0,"msg"=>"Srudent with this ID has already been resistered"]);
+	echo json_encode(["success"=>0,"msg"=>"Student with this ID has already been resistered"]);
 }
 else
 {
@@ -67,7 +67,4 @@ if ($mail->Send()) {
     // error
     echo "Error: " . $mail->ErrorInfo;
 }
-
-
-
 ?>
