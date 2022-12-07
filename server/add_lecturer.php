@@ -55,7 +55,6 @@ mail($toaddress_2,$subject,$mailcontent, $headers);
 }}
 ?>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Add a lecturer</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
@@ -70,11 +69,11 @@ mail($toaddress_2,$subject,$mailcontent, $headers);
 		   <h2><?php if (isset($errorArray[0])) echo $errorArray[0];?></h2> 
  
 	 <?php if ($success<>1) { ?>	
-		  <label for="inputPassword" class="sr-only">Lecturer Name</label>
-  <input type="text" id="name" name="name" autocomplete="new-password" class="form-control" placeholder="Your Name" autofocus required value="<?php if (isset($_POST['name'])) echo $_POST['name'];?>" >
-  <label for="inputEmail" class="sr-only">Email address</label>
+		  <label for="inputPassword" class="">Lecturer Name</label>
+  <input type="text" id="name" name="name" autocomplete="new-password" class="form-control" placeholder="Lecturer Full Name" autofocus required value="<?php if (isset($_POST['name'])) echo $_POST['name'];?>" >
+  <label for="inputEmail" class="">Email address</label>
   <input type="email" id="inputEmail" name="inputEmail" autocomplete="new-password" class="form-control" placeholder="Email address" required value="<?php if (isset($_POST['inputEmail'])) echo $_POST['inputEmail'];?>">
-  <label for="inputPassword" class="sr-only">Password</label>
+  <label for="inputPassword" class="">Password</label>
   <input type="password" id="inputPassword" name="inputPassword" autocomplete="new-password" class="form-control" placeholder="Password" required value="<?php if (isset($_POST['inputPassword'])) echo $_POST['inputPassword'];?>">
   
   <br>
@@ -95,4 +94,3 @@ mail($toaddress_2,$subject,$mailcontent, $headers);
 	  
 	  
 		
-    </main>

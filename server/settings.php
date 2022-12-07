@@ -1,4 +1,3 @@
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Settings</h1>
         <div class="btn-toolbar mb-2 mb-md-0"> 
@@ -32,8 +31,8 @@ if ((isset($_POST['submit']))&&($_POST['submit']=="updateProjectExpiry"))
 ?>
 
 <form method="post" action="index.php?p=settings">
-    <label class="sr-only" for="days">Days</label><input type="number" class="form-control" id="day" name="day" required value=<?php echo $expired_project_time_day; ?>>
-    <label class="sr-only" for="hours">Hours</label><input type="number" class="form-control" id="hour" name="hour" required value=<?php echo $expired_project_time_hour; ?>>
-    <label class="sr-only" for="minutes">Minutes</label><input type="number" class="form-control" id="minute" name ="minute" required value=<?php echo $expired_project_time_minute; ?>>
-    <button type="submit" name="submit" value="updateProjectExpiry" class="btn btn-lg btn-primary btn-block" style="margin-top: 1%;">Update</button> 		
+    <label class="" for="days">Days</label><input type="number" class="form-control" id="day" name="day" required value=<?php echo $expired_project_time_day; ?>>
+    <label class="" for="hours">Hours</label><input type="number" class="form-control" id="hour" name="hour" required value=<?php echo $expired_project_time_hour; ?>>
+    <label class="" for="minutes">Minutes</label><input type="number" class="form-control" id="minute" name ="minute" required value=<?php echo $expired_project_time_minute; ?>>
+    <button type="submit" name="submit" value="updateProjectExpiry" class="btn btn-lg btn-primary btn-block mt-3" >Update</button> 		
 </form>

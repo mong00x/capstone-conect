@@ -122,7 +122,8 @@ if (!empty($data['name']) && !empty($data['email']) && !empty($data['studentid']
 
     if ( $data['project_ranking'] == 3)  
     { 
-    
+        echo "hi";
+
         // get student email 
         $query = "SELECT student_email, student_name FROM students WHERE student_id = '$student_id'";
         connectDB();

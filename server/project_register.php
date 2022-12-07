@@ -20,7 +20,6 @@ if (isset($_GET['del']))
 
 if (isset($_GET['approve']))
 {
-	
 	$query="UPDATE student_project_requests SET approve=1, state_changed_time = current_timestamp WHERE project_id=".$_GET['approve']." AND student_id=".$_GET['student_id'];
 	connectDB();
 	$result = mysqli_query($_SESSION['db'],$query) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
@@ -32,7 +31,7 @@ if (isset($_GET['approve']))
 	closeDB();
 	$row_student_email = mysqli_fetch_assoc($result_student_email);
 	$student_email = $row_student_email['student_email'];
-
+	
     $query_project_info = "SELECT lecturers.lecturer_email, projects.project_topic FROM `student_project_requests`
     JOIN projects ON student_project_requests.project_id = projects.project_id
     JOIN lecturers ON projects.lecturer_id = lecturers.lecturer_id
@@ -52,25 +51,14 @@ if (isset($_GET['approve']))
     $mail = new PHPMailer();
     $mail-> isSMTP();
 
-	// Localhost Mail Settings
-	$mail->Host = 'mail.udlcanada.com';
-	$mail->Port = "587";
-	$mail->SMTPDebug  = 2;
-	$mail->SMTPAuth = true;
-	$mail->SMTPSecure = 'tls';
-	$mail->Username = 'admin@udlcanada.com';
-	$mail->Password = 'BrainDrain';
-	$mail->setFrom('admin@udlcanada.com'); // sender
-
-	
 	// Spinetail Mail Settings
-    // $mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
-    // $mail->Port = "587";
-    // $mail->SMTPAuth = true;
-    // $mail->SMTPSecure = 'tls';
-    // $mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
-    // $mail->Password = 'pRsdKrr8DeHwTY3';
-    // $mail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au');
+    $mail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
+    $mail->Port = "587";
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = 'tls';
+    $mail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
+    $mail->Password = 'pRsdKrr8DeHwTY3';
+    $mail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au');
     
 	$mail->addAddress($student_email);     //Add a recipient
     
@@ -124,33 +112,22 @@ if (isset($_GET['decline']))
 		$LECmail = new PHPMailer();
 		$LECmail-> isSMTP();
 
-		// Localhost Mail Settings
-		$LECmail->Host = 'mail.udlcanada.com';
+// 		Spinetail Mail Settings
+		$LECmail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
 		$LECmail->Port = "587";
-		$LECmail->SMTPDebug  = 2;
 		$LECmail->SMTPAuth = true;
-		// $LECmail->SMTPSecure = 'tls';
-		$LECmail->Username = 'admin@udlcanada.com';
-		$LECmail->Password = 'BrainDrain';
-		$LECmail->setFrom('admin@udlcanada.com'); // sender
-
-		// Spinetail Mail Settings
-		// $LECmail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
-		// $LECmail->Port = "587";
-		// $LECmail->SMTPDebug  = 2;
-		// $LECmail->SMTPAuth = true;
-		// $LECmail->SMTPSecure = 'tls';
-		// $LECmail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
-		// $LECmail->Password = 'pRsdKrr8DeHwTY3';
-		// $LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
+		$LECmail->SMTPSecure = 'tls';
+		$LECmail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
+		$LECmail->Password = 'pRsdKrr8DeHwTY3';
+		$LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
 		
 		$message = file_get_contents("lecturer_email_template.html");
 		$message = str_replace("%project_topic%", $project_topic, $message);
 		$message = str_replace("%student_name%", $student_name, $message);
 		$message = str_replace("%student_id%", $_GET['student_id'], $message);
 		
-        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/approve.php?approve=$project_id&student_id=".$_GET['student_id']."";
-        $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/decline.php?decline=$project_id&student_id=".$_GET['student_id']."";
+        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/adminpage/approve.php?approve=$project_id&student_id=".$_GET['student_id']."";
+        $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/adminpage/decline.php?decline=$project_id&student_id=".$_GET['student_id']."";
         $message = str_replace("%accept%", $accept_url, $message);
         $message = str_replace("%decline%", $decline_url, $message);
 
@@ -186,7 +163,7 @@ if (isset($_GET['decline']))
         echo "<script>window.location.href='index.php?p=project_register';</script>";
         exit;
 	}
-
+	
 }
 
 if (isset($_GET['pending']))
@@ -202,7 +179,6 @@ if (isset($_GET['pending']))
 
 ?>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Project Register List</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
@@ -213,17 +189,16 @@ if (isset($_GET['pending']))
 
 
 		
-		<h2>Section title</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
-              <th scope="col">Project Name</th>
-              <th scope="col">Student Name</th>
-              <th scope="col">Student ID</th>
+              <th scope="col" class="col-5">Project Name</th>
+              <th scope="col" class="col-2">Student Name</th>
+              <th scope="col" class="col-2">Student ID</th>
              
-			  <th scope="col">Priority</th>	
-              <th scope="col">Approve / Decline</th>
+		<?php //	  <th scope="col">Priority</th>	?>
+              <th scope="col" class="col-3">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -231,10 +206,11 @@ if (isset($_GET['pending']))
 	<?php 
 			  
 		if ($_SESSION['priv']>1) {	  
-			$query = "SELECT * FROM student_project_requests ORDER BY student_id ASC";
+			$query = "SELECT * FROM student_project_requests ORDER BY student_id, project_ranking ASC";
 		} else {
 			
-			$query = "SELECT * FROM student_project_requests s, projects p WHERE s.project_id=p.project_id AND (p.lecturer_id= ".$_SESSION['userloginID']." OR p.lecturer2_id= ".$_SESSION['userloginID'].") ORDER BY s.project_id ASC";
+			$query = "SELECT * FROM student_project_requests s, projects p WHERE s.project_id=p.project_id AND (p.lecturer_id= ".$_SESSION['userloginID'].") AND (approve = '0' OR approve ='1' OR approve = '2') ORDER BY s.project_id ASC";
+// 			OR p.lecturer2_id= ".$_SESSION['userloginID'].") 
 		}
 		connectDB();
 		$result = mysqli_query($_SESSION['db'],$query) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
@@ -267,23 +243,20 @@ if (isset($_GET['pending']))
 	
 				
 	?>
-		  	
+		  
 			  
             <tr>
               <td><?php echo $row_prj['project_topic'];?>
 				  
 				  
-				  <?php if ($row['approve']==0) echo '<span class="badge bg-warning text-dark">Pending</span>';
-				  		if ($row['approve']==1) echo '<span class="badge bg-primary">Approved</span>';
-						if ($row['approve']==2) echo '<span class="badge bg-danger">Declined</span>';
-				  ?>
+				  
 				  
 				
 				
 				</td>
               <td><?php echo $row_st['student_name'];?></td>
               <td><?php echo $row_st['student_id'];?></td>
-				<td><?php echo $row['project_ranking'];?>
+				<?php //<td><?php echo $row['project_ranking'];?>
 					</td>
               <td>
 				  
@@ -328,9 +301,13 @@ if (isset($_GET['pending']))
 				
 				if ($show==1) {
 				?>
-				  <a href="index.php?p=project_register&approve=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id']?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to APPROVE this project, please.');">Approve</a> | <a href="index.php?p=project_register&decline=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to DECLINE this project, please.');">Decline</a>| <a href="index.php?p=project_register&pending=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to PENDING this project, please.');">Pending</a>
+				  <a href="index.php?p=project_register&approve=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id']?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to APPROVE this project, please.');">Approve</a>  <a href="index.php?p=project_register&decline=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to DECLINE this project, please.');">Decline</a>
+				  <!-- <a href="index.php?p=project_register&pending=<?php echo $row['project_id'];?>&student_id=<?php echo $row['student_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to PENDING this project, please.');">Pending</a>-->
 				
-				<?php }?>
+				<?php }else{
+				  		if ($row['approve']==1) echo '<span class="badge bg-primary text-white">Approved</span>';
+						if ($row['approve']==2) echo '<span class="badge bg-danger text-white">Declined</span>';
+				  }?>
 				
 				</td>
             </tr>
@@ -348,7 +325,4 @@ if (isset($_GET['pending']))
         </table>
       </div>
 
-	 </main>
-	 
-	 		
 	

@@ -36,7 +36,7 @@ import "./login.css";
 const password = Math.floor(Math.random() * (9999 - 1111)) + 1111;
 
 // Url variables
-const addstutUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_student.php?x=" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_student.php?x=";    
+const addstutUrl = process.env.NODE_ENV === "development" ? "http://localhost/add_student.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/add_student.php";    
 const loginUrl =  process.env.NODE_ENV === "development" ? "http://localhost/login.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/login.php";
 const mailUrl =  process.env.NODE_ENV === "development" ? "http://localhost/mail_manager.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/mail_manager.php";
 const appUrl = process.env.NODE_ENV === "development" ? "http://localhost:5173/app" : "https://cduprojects.spinetail.cdu.edu.au/app";
@@ -137,6 +137,7 @@ const Login_page = () => {
                 auth: true
             };
             sessionStorage.setItem('user', JSON.stringify(user));
+            console.log("session storage: ",JSON.parse(sessionStorage.getItem('user')))
             axios.post(addstutUrl, JSON.stringify({
                 name: JSON.parse(sessionStorage.getItem("user")).name,
                 student_id: JSON.parse(sessionStorage.getItem('user')).studentid,

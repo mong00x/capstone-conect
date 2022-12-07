@@ -3,6 +3,16 @@ session_start();
 
 // Connect to the Database
 function connectDB(){
+	// $db_username = "cduprojects";
+	// $db_password = "Webapplication123";
+	// $db_database = "cduprojects_hit401";
+	// $db_host = "localhost";
+
+	// $_SESSION['db'] = mysqli_connect(
+	// $db_host,
+	// $db_username,
+	// $db_password,
+	// $db_database);
 	$db_username = "root";
 	$db_password = "";
 	$db_database = "hit401";
@@ -20,6 +30,18 @@ function connectDB(){
 }
 function closeDB(){
 	mysqli_close($_SESSION['db']);  
+}
+
+function get_project_topic($id)
+{
+	$query = "SELECT project_topic  FROM projects where project_id = '$id'";
+	connectDB();
+	$result=mysqli_query($_SESSION['db'],$query) or die ("<b>A fatal MySQL error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "Data: " . $data);
+	closeDB();
+
+	$row = mysqli_fetch_assoc($result);
+	$project_topic = $row['project_topic'];
+	return $project_topic;
 }
 
 

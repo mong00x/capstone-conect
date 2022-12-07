@@ -20,6 +20,7 @@ if (isset($_GET['decline']))
 	$check_request = $row_check_request['approve'];
 	$project_ranking = $row_check_request['project_ranking'];
 	$student_name = $row_check_request['student_name'];
+	$student_email = $row_check_request['student_email'];
 	
 	if ($check_request != 0) {
 		echo "This project request has either been already been processed or it is now invalid.";
@@ -43,33 +44,21 @@ if (isset($_GET['decline']))
 			// Sending the email to lecturer about new project request
 			$LECmail = new PHPMailer();
 			$LECmail-> isSMTP();
-
-			// Localhost Mail Settings
-			$LECmail->Host = 'mail.udlcanada.com';
+	
+			$LECmail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
 			$LECmail->Port = "587";
-			$LECmail->SMTPDebug  = 2;
 			$LECmail->SMTPAuth = true;
 			$LECmail->SMTPSecure = 'tls';
-			$LECmail->Username = 'admin@udlcanada.com';
-			$LECmail->Password = 'BrainDrain';
-			$LECmail->setFrom('admin@udlcanada.com'); // sender
-	
-			// Spinetail Mail Settings
-			// $LECmail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
-			// $LECmail->Port = "587";
-			// $LECmail->SMTPAuth = true;
-			// $LECmail->SMTPSecure = 'tls';
-			// $LECmail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
-			// $LECmail->Password = 'pRsdKrr8DeHwTY3';
-			// $LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender	
+			$LECmail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
+			$LECmail->Password = 'pRsdKrr8DeHwTY3';
 			
 			$message = file_get_contents("lecturer_email_template.html");
 			$message = str_replace("%project_topic%", $project_topic, $message);
 			$message = str_replace("%student_name%", $student_name, $message);
 			$message = str_replace("%student_id%", $_GET['student_id'], $message);
 			
-	        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/approve.php?approve=$project_id&student_id=".$_GET['student_id']."";
-            $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/decline.php?decline=$project_id&student_id=".$_GET['student_id']."";
+	        $accept_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/adminpage/approve.php?approve=$project_id&student_id=".$_GET['student_id']."";
+            $decline_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/adminpage/decline.php?decline=$project_id&student_id=".$_GET['student_id']."";
             $message = str_replace("%accept%", $accept_url, $message);
             $message = str_replace("%decline%", $decline_url, $message);
 	
@@ -77,6 +66,8 @@ if (isset($_GET['decline']))
 			$LECmail->isHTML(true);
 			$LECmail->Body = $message;
 			$LECmail->AltBody = $message;
+			// $LECmail->setFrom('admin@udlcanada.com'); // sender
+			$LECmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
 			$LECmail->addAddress($lecturer_email); // receiver
 			if ($LECmail->Send()) {
                 $query_update_decline = "UPDATE student_project_requests SET approve = '2', state_changed_time = current_timestamp WHERE project_ranking = $project_ranking AND project_id=".$_GET['decline']." AND student_id=".$_GET['student_id'];
@@ -101,6 +92,39 @@ if (isset($_GET['decline']))
 			connectDB();
 			mysqli_query($_SESSION['db'], $query_update_decline);
 			closeDB();
+
+			// email student that all project requests have been declined
+			$STUmail = new PHPMailer();
+			$STUmail-> isSMTP();
+
+			$STUmail->Host = 'mail.cduprojects.spinetail.cdu.edu.au';
+			$STUmail->Port = "587";
+			$STUmail->SMTPAuth = true;
+			$STUmail->SMTPSecure = 'tls';
+			
+			$STUmail->Username = 'no-reply@cduprojects.spinetail.cdu.edu.au';
+			$STUmail->Password = 'pRsdKrr8DeHwTY3';
+
+			$message = file_get_contents("student_decline_template.html");
+
+
+			$STUmail->Subject = 'Project request declined';
+			$STUmail->isHTML(true);
+			$STUmail->Body = $message;
+			$STUmail->AltBody = $message;
+			$STUmail->setFrom('no-reply@cduprojects.spinetail.cdu.edu.au'); // sender
+			$STUmail->addAddress($student_email); // receiver
+			if ($STUmail->Send()) {
+				// using js
+				echo "<script>alert('The project request has been declined.');</script>";
+			} else {
+				// Student email error
+				echo "<script>alert('Error: " . $STUmail->ErrorInfo . "');</script>";
+				// how can I display the error message in the browser?
+				// maybe I can use javascript to display the error message in the browser
+				// 
+			}
+
 		}
 
 	}

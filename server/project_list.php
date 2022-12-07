@@ -11,9 +11,8 @@ if (isset($_GET['del']))
 
 ?>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Lecturer List</h1>
+        <h1 class="h2">Project List</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
         
           
@@ -22,17 +21,16 @@ if (isset($_GET['del']))
 
 
 		
-		<h2>Section title</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
-              <!-- <th scope="col">Project ID</th> -->
-              <th scope="col">Topic Title</th>
-              <th scope="col">Lecturer Name</th>
+              <!--<th scope="col">Project ID</th>-->
+              <th scope="col" class="col-5">Topic Title</th>
+              <th scope="col" class="col-2">Lecturer Name</th>
              
-			  <th scope="col">Category</th>	
-              <th scope="col">Edit/Delete</th>
+			  <th scope="col" class="col-2">Disciplines</th>	
+              <th scope="col" class="col-3">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -54,13 +52,13 @@ if (isset($_GET['del']))
 			//no results found
 			echo "<p class=\"\">No results found.</p>";
 		}else{
-			$a=0;
+			$a=0; // what is $a for? seems like a counter
 			while($row = mysqli_fetch_assoc($result)){ 
 	?>
 		  
 			  
             <tr>
-              <td><?php echo $row['project_id'];?></td>
+              <!-- <td><?php echo $row['project_id'];?></td> -->
               <td><?php echo $row['project_topic'];?></td>
               <td><?php echo $row['lecturer_name'];?><br>
 <?php echo $row['lecturer2_name'];?></td>
@@ -78,7 +76,7 @@ if (isset($_GET['del']))
 				<?php echo $row4['discipline']; echo "<br>"?>
 				<?php }?>
 					</td>
-              <td><a href="index.php?p=add_project&project_id=<?php echo $row['project_id'];?>"  class="btn btn-primary " role="button">Edit</a> | <a href="index.php?p=project_list&del=<?php echo $row['project_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to delete this project, please.');">Delete</a></td>
+              <td><a href="index.php?p=add_project&project_id=<?php echo $row['project_id'];?>"  class="btn btn-primary mr-3" role="button">Edit</a>  <a href="index.php?p=project_list&del=<?php echo $row['project_id'];?>"  class="btn btn-primary " role="button" onclick="return confirm('Confirm to delete this project, please.');">Delete</a></td>
             </tr>
             
 			  
@@ -94,7 +92,6 @@ if (isset($_GET['del']))
         </table>
       </div>
 
-	 </main>
 	 
 	 		
 	

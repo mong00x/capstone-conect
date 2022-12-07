@@ -23,7 +23,6 @@ $query = "SELECT * FROM projects WHERE project_topic='".$_POST['title']."'"	;
 $dis="";
 $lec=$_SESSION['user_name'];		
 
-
 /*
 if(isset($_POST['lecturer'])){
       foreach($_POST['lecturer'] as $value2){
@@ -181,7 +180,6 @@ if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {
 
 ?>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2"><?php echo $title;?></h1>
 		  
@@ -197,12 +195,12 @@ if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {
 		   <h2><?php if (isset($errorArray[0])) echo $errorArray[0];?></h2> 
  
 	 <?php if ($success<>1) { ?>	
-		  <label for="inputPassword" class="sr-only">Project Title</label>
+		  <label for="inputPassword" class="">Project Title</label>
   <input type="text" id="title" name="title" class="form-control" placeholder="Title" required value="<?php if (isset($_POST['title'])) echo $_POST['title'];?>" >
-  <label for="" class="sr-only">Project Detail</label>
+  <label for="" class="">Project Detail</label>
 <textarea class="form-control" id="detail" name="detail" rows="8"><?php if (isset($_POST['detail'])) echo $_POST['detail'];?></textarea>
    
-  <label for="category" class="sr-only">Discipline</label>
+  <label for="category" class="mt-3">Discipline</label>
 		
   
 			  
@@ -269,7 +267,53 @@ if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {
 
 */?>
 
- <label for="category" class="sr-only">Second Lecturer :</label>
+<label for="category" class="">First Lecturer:</label>
+		
+ 
+		  
+
+		  <select id="lecturer2_name" name="lecturer2_name">
+			  
+			  
+			  
+			  
+		<?php
+							 
+		if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {	  
+		
+			$query3 = "SELECT * FROM lecturers WHERE lecturer_id= ".$row['lecturer_id']."";
+		
+		connectDB();
+		$result3 = mysqli_query($_SESSION['db'],$query3) or die("<p><b>A fatal MySQL error occured</b>.\n<br />Query: " . $query3 . "<br />\nError: (" . mysqli_errno($_SESSION['db']) . ") " . mysqli_error($_SESSION['db']) . "</p>");
+		closeDB();
+			$row3 = mysqli_fetch_assoc($result3);
+				?>
+			    <option value="<?php echo $row3['lecturer_name']?>|<?php echo $row3['lecturer_id']?>"><?php echo $row3['lecturer_name']?></option>
+			  <?php
+							 
+		}
+							 
+		$query = "SELECT * FROM lecturers WHERE priv=0"	;
+		connectDB();
+		$result = mysqli_query($_SESSION['db'],$query);
+		closeDB();
+		$aa=1;					 
+		while($row = mysqli_fetch_assoc($result)){					
+		?>					 
+			
+			  
+
+		  
+  <option value="<?php echo $row['lecturer_name']?>|<?php echo $row['lecturer_id']?>"><?php echo $row['lecturer_name']?></option>
+
+		  
+		  
+		<?php }?>  
+		  
+  
+</select>
+
+ <label for="category" class="">Second Lecturer:</label>
 		
  
 		  
@@ -343,5 +387,3 @@ if ((isset($_GET['project_id']))&&($_GET['project_id']<>""))  {	 	?>
 	
 	  
 	  
-		
-    </main>
