@@ -22,10 +22,10 @@ const queryClient = new QueryClient();
 
 function App() {
   const redirectUrl = process.env.NODE_ENV === "development" ? "http://localhost:5173" : "https://cduprojects.spinetail.cdu.edu.au";
-  if(JSON.parse(sessionStorage.getItem('user')) == null || JSON.parse(sessionStorage.getItem('user')).auth == false)
-  {
-    location.replace(redirectUrl)
-  }
+  // if(JSON.parse(sessionStorage.getItem('user')) == null || JSON.parse(sessionStorage.getItem('user')).auth == false)
+  // {
+  //   location.replace(redirectUrl)
+  // }
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [firstTime, setFirstTime] = React.useState(true)
 

@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `cduprojects_hit401`
+-- Database: `hit401`
 --
 
 -- --------------------------------------------------------
@@ -32,7 +32,7 @@ CREATE TABLE `discipline` (
   `discipline_id` int NOT NULL,
   `discipline` varchar(255) DEFAULT NULL,
   `discipline_code` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 --
 -- Dumping data for table `discipline`
@@ -58,7 +58,7 @@ INSERT INTO `discipline` (`discipline_id`, `discipline`, `discipline_code`) VALU
 CREATE TABLE `discipline_project_mapping` (
   `discipline_id` int NOT NULL,
   `project_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 --
 -- Dumping data for table `discipline_project_mapping`
@@ -445,7 +445,7 @@ CREATE TABLE `lecturers` (
   `lecturer_email` varchar(255) DEFAULT NULL,
   `lecturer_password` varchar(255) DEFAULT NULL,
   `priv` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 --
 -- Dumping data for table `lecturers`
@@ -475,7 +475,7 @@ CREATE TABLE `projects` (
   `lecturer2_id` int NOT NULL,
   `lecturer2_name` varchar(255) NOT NULL,
   `project_number` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 --
 -- Dumping data for table `projects`
@@ -654,7 +654,7 @@ CREATE TABLE `students` (
   `student_email` varchar(255) DEFAULT NULL,
   `student_password_token` varchar(255) DEFAULT NULL,
   `password_creation_time` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 --
 -- Dumping data for table `students`
@@ -676,7 +676,7 @@ CREATE TABLE `student_project_requests` (
   `state` tinyint(1) DEFAULT NULL,
   `state_changed_time` timestamp NULL DEFAULT NULL,
   `approve` int UNSIGNED NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 --
 -- Indexes for dumped tables

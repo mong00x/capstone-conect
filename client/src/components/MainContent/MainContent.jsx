@@ -133,8 +133,6 @@ const MainContent = () => {
                 {
                   search ? (
                     dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase())).length !== 0  ? (
-                    // length < index  
-                      // console.log(dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase())), index)
                       index < dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase())).length ? (
                         <ProjectCard 
                       key={dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase()))[index].project_id}
