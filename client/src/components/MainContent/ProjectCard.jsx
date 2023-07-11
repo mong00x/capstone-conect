@@ -28,6 +28,8 @@ const disciplineSwitch = (discipline) => {
   switch (discipline) {
     case "ChE":
       return "Chemical Engineering"
+    case "COS":
+      return "Computer Science"
     case "CSE":
       return "Civil and Structural Engineering"
     case "EEE":
@@ -153,13 +155,13 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
             {project.lecturer_name && project.lecturer2_name &&
             (
               <Flex flexDir="row" gap={2} flexWrap="wrap">
-                 <Tooltip key={project.lecturer_name} borderRadius="full" px="2" label="First Supervisor" placement='auto' >
+                 <Tooltip key={project.lecturer_name} borderRadius="full" px="2" label="First Supervisor" placement='bottom' >
                   <Tag variant="solid" cursor="default">
                   <IonIcon name="person-outline"></IonIcon>
                     <TagLabel>{project.lecturer_name}</TagLabel>
                   </Tag>
                 </Tooltip>
-                <Tooltip key={project.lecturer2_name} borderRadius="full" px="2" label="Second Supervisor" placement='auto' >
+                <Tooltip key={project.lecturer2_name} borderRadius="full" px="2" label="Second Supervisor" placement='bottom' >
                   <Tag variant="outline" cursor="default">
                   <IonIcon name="person-outline"></IonIcon>
                     <TagLabel>{project.lecturer2_name}</TagLabel>
@@ -180,7 +182,7 @@ const ProjectCard = React.memo(({ project, disciplines }) => {
             <Flex flexDir="row" gap={2} flexWrap="wrap" mt={5}>
             {disciplines &&
               disciplines.map((discpline) => (
-                <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)} placement='auto'>
+                <Tooltip key={discpline} borderRadius="full" px="2" label={disciplineSwitch(discpline)} placement='bottom'>
                   <Tag colorScheme="purple" cursor="default">
                     <TagLabel>{discpline}</TagLabel>
                     </Tag>
