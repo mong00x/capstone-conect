@@ -11,51 +11,72 @@ import { searchStore } from "../../store";
 
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from "react-virtualized-auto-sizer";
+import supabase from "../../api/supabaseClient";
 
 
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 import "./MainContent.css";
 
+const disciplineCode = {
+    6:"CYS",
+    8:"IS",
+    19:"SD",
+    20:"NW",
+    22:"AI",
+    23:"DA"
+}
+
 
 const MainContent = () => {
   const search = searchStore((state) => state.search);
-  const [disciplines, setdisciplines] = React.useState([]);
+  const [projects, setProjects] = React.useState([]);
+  const [disciplines, setDisciplines] = React.useState([]);
   console.log(process.env.NODE_ENV);
-  const projectUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost/all_projects.php"
-      : "https://cduprojects.spinetail.cdu.edu.au/adminpage/all_projects.php";
+  // const projectUrl =
+  //   process.env.NODE_ENV === "development"
+  //     ? "http://localhost/all_projects.php"
+  //     : "https://cduprojects.spinetail.cdu.edu.au/adminpage/all_projects.php";
 
-    const mappingUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost/project_discipline.php"
-      : "https://cduprojects.spinetail.cdu.edu.au/adminpage/project_discipline.php";
+  //   const mappingUrl =
+  //   process.env.NODE_ENV === "development"
+  //     ? "http://localhost/project_discipline.php"
+  //     : "https://cduprojects.spinetail.cdu.edu.au/adminpage/project_discipline.php";
+
+  // supabase url
+
+  // const fetchProjects = async () => {
+     // if in development mode, api url is localhost, else it is the cpanel url
+
+  //   const { data } = await axios.get(projectUrl);
+     // return data.projects.splice(0, 10);
+  //   return data.projects;
+     //error handling
+  // };
 
   const fetchProjects = async () => {
-    // if in development mode, api url is localhost, else it is the cpanel url
+    const {data} = await supabase.from('projects').select('*');
+    setProjects(data);
+    return data;
+  }
 
-    const { data } = await axios.get(projectUrl);
-    // return data.projects.splice(0, 10);
-    return data.projects;
-    //error handling
-  };
+  // const fetchMapping = async () => {
+  //   // if in development mode, api url is localhost, else it is the cpanel url
+
+  //   const { data } = await axios.get(mappingUrl);
+  //   // console.log("fetchMapping", data);
+  //   return data['projects discipline mapping'];
+  //   //error handling
+  // };
+
   const fetchMapping = async () => {
-    // if in development mode, api url is localhost, else it is the cpanel url
-
-    const { data } = await axios.get(mappingUrl);
-    // console.log("fetchMapping", data);
-    return data['projects discipline mapping'];
-    //error handling
-  };
+    const {data} = await supabase.from('discipline_project_mapping').select('*');
+    setDisciplines(data);
+  }
 
 
   React.useEffect (() => {
-    fetchMapping().then((data) => {
-      setdisciplines(data);
-    })
-    ;
+    fetchMapping();
   }, []);
 
   // React.useEffect(() => {
@@ -83,11 +104,11 @@ const MainContent = () => {
   );
 
   const findDiscpline = (projectId, disciplines) => {
-    const result = [];
+    var result = [];
     if (disciplines) {
       disciplines.forEach((discpline) => {
         if (discpline.project_id === projectId) {
-          result.push(discpline.discipline_code);
+          result.push(disciplineCode[discpline.discipline_id]); 
         }
       });
     }

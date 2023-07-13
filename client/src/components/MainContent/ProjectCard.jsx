@@ -26,8 +26,8 @@ import { useStore } from "../../store";
 
 const disciplineSwitch = (discipline) => {
   switch (discipline) {
-    case "ChE":
-      return "Chemical Engineering"
+    case "NW":
+      return "Networking"
     case "COS":
       return "Computer Science"
     case "CSE":
@@ -42,6 +42,8 @@ const disciplineSwitch = (discipline) => {
       return "Cyber Security"
     case "DS":
       return "Data Science"
+    case "DA":
+      return "Data Analysis"
     case "IS":
       return "Information Systems"
     case "ISDS":
