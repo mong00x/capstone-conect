@@ -4,6 +4,8 @@ import {useState, useEffect} from "react";
 import axios from "axios";
 import md5 from "md5";
 import {    
+    Divider,
+    Heading,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -172,9 +174,10 @@ const Login_page = () => {
 return(
     <>
         <div className="logincontainer">
-            <Text fontSize="3xl" fontWeight="bold" mb="32px" alignSelf="left">Login</Text>
-            <FormControl  onSubmit={Send_Password} maxW="420px">
-                <FormLabel >Choose a login type:</FormLabel>
+            <Heading  fontWeight="bold" width="100%" textAlign="center">Login</Heading>
+            <Text px="12px" mb="1rem" fontSize="xl">With your CDU email</Text>
+            <FormControl onSubmit={Send_Password} maxW="420px">
+                <FormLabel >Login as:</FormLabel>
                 <Select mb="16px" value={user_type} onChange={(e) => setType(e.target.value)} >
                     <option value="admin/lecturer">Admin / Lecturer</option>
                     <option value="student">Student</option>
