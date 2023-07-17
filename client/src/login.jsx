@@ -32,6 +32,7 @@ import React, {useRef} from "react";
 
 // file import
 import "./login.css";
+import { motion } from "framer-motion";
 
 
 
@@ -43,6 +44,7 @@ const loginUrl =  process.env.NODE_ENV === "development" ? "http://localhost/log
 const mailUrl =  process.env.NODE_ENV === "development" ? "http://localhost/mail_manager.php" : "https://cduprojects.spinetail.cdu.edu.au/adminpage/mail_manager.php";
 const appUrl = process.env.NODE_ENV === "development" ? "http://localhost:5173/app" : "https://cduprojects.spinetail.cdu.edu.au/app";
 
+const emailRegex = /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+\.)+[a-z0-9]{2,7}$/i;
 
 const Login_page = () => {
 
@@ -53,25 +55,51 @@ const Login_page = () => {
     // page variables 
     const [typedpin,setpin] = useState('');
     const [email,setEmail] = useState('');
-    const [fname,setFname] = useState('');
+    const [name,setName] = useState('');
     const [studentid,setId] = useState("");
-    const [user_type,setType] = useState('student');
+    const [password,setPassword] = useState("");
+    const [userType,setUserType] = useState('');
 
     const toast = useToast();
 
-    const user = {studentid: studentid, name: fname, email: email, password_token: md5(password), auth: false};
+    const user = {studentid: studentid, name: name, email: email, password_token: md5(password), auth: false};
     sessionStorage.setItem('user', JSON.stringify(user));
     
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const onEmailChange = (e) => {
+        setEmail(e.target.value);
+        if (e.target.value.match("@students.cdu.edu.au")) {
+            setUserType("student");
+            console.log(userType)
+        }
+        else if (e.target.value.match("@cdu.edu.au")) {
+            setUserType("lecturer");
+            console.log(userType)
+
+        }
+        else if (emailRegex.test(e.target.value)) {
+            setUserType("guest");
+            console.log(userType)
+
+        }
+        else {
+            setUserType("");
+            console.log(userType)
+
+        }
+        
+    }
+
+
     // sending password to mail
     const Send_Password = (e) =>{
         e.preventDefault();
-        if (studentid!='' && email!=''&& fname!='')
+        if (studentid!='' && email!=''&& name!='')
         {
         
             //change session veriables to latest one 
-            const user = {studentid:studentid, name: fname, email: email, password_token: md5(password), auth: false};
+            const user = {studentid:studentid, name: name, email: email, password_token: md5(password), auth: false};
             sessionStorage.setItem('user', JSON.stringify(user));
             console.log(JSON.parse(sessionStorage.getItem('user')));
             console.log(password)
@@ -124,6 +152,9 @@ const Login_page = () => {
           });
 
     }
+
+    
+
     //check the verification code
     function Verify()
     {
@@ -168,57 +199,99 @@ const Login_page = () => {
         }
         
     }
-
+    const studentLogin = () => {}
+    const lecturerLogin = () => {}
+    const guestLogin = () => {}
 
 
 return(
     <>
         <div className="logincontainer">
             <Heading  fontWeight="bold" width="100%" textAlign="center">Login</Heading>
-            <Text px="12px" mb="1rem" fontSize="xl">With your CDU email</Text>
+            <Text px="12px" mb="1rem" fontSize="xl">Use your Email</Text>
             <FormControl onSubmit={Send_Password} maxW="420px">
-                <FormLabel >Login as:</FormLabel>
-                <Select mb="16px" value={user_type} onChange={(e) => setType(e.target.value)} >
+                {/* <Select mb="16px" value={user_type} onChange={(e) => setType(e.target.value)} >
                     <option value="admin/lecturer">Admin / Lecturer</option>
                     <option value="student">Student</option>
-                </Select>
-                {user_type === "student" ?
+                </Select> */}
+                
                     <>
                         <FormLabel>Email address: </FormLabel>
                         <Input 
-                            mb="16px"
                             type="email"
                             id="email"
                             name="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}/>
-                        <FormLabel>Student ID: </FormLabel>
-                        <Input 
-                            mb="16px"
-                            type="number"
-                            id="studentid"
-                            name="studentid"
-                            value={studentid}
-                            onChange={(e) => setId(parseInt(e.target.value))}/>
-                        <FormLabel>Full name: </FormLabel>
-                        <Input 
-                            mb="32px"
-                            type="text"
-                            id="fname"
-                            name="fname"
-                            value={fname}
-                            onChange={(e) => setFname(e.target.value)}/>
-                        <Button colorScheme="green" w="100%" size="lg" type="submit" m="auto" onClick={Send_Password} >Send One-Time Password</Button>
+                            onChange={onEmailChange}/>
+                            
+                            {/* {
+                                email !== "" && email.match("@") ? <Text color="gray">Login as: {email.match("students") ? "Student" : email.match("@cdu.edu.au") ? "Lecturer" : "Guest"}</Text> : null
+                            } */}
+                            {
+                                 userType !== "" ? <Text color="gray">Login as: {userType}</Text> : null
+                            }
+                        {userType === "student" ? 
+                        (
+                            <motion.div 
+                            initial={{ opacity: 0, x:-10 }}
+                            animate={{ opacity: 1, x:0 }} 
+                            transition={{ease:"easeIn"}} >
+                                <FormLabel mt="16px">Student ID: </FormLabel>
+                                <Input 
+                                    mb="16px"
+                                    type="number"
+                                    id="studentid"
+                                    name="studentid"
+                                    value={studentid}
+                                    onChange={(e) => setId(parseInt(e.target.value))}/>
+                                <FormLabel>Full name: </FormLabel>
+                                <Input 
+                                    mb="32px"
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}/>
+                                <Button colorScheme="teal" w="100%" size="lg" type="submit" mt="24px" onClick={studentLogin} >Send One-Time Password</Button>
+                            </motion.div>  
+                        ) : 
+                            userType === "lecturer" ?
+                            (
+                                <motion.div 
+                                initial={{ opacity: 0, x:-10 }}
+                                animate={{ opacity: 1, x:0 }} 
+                                transition={{ease:"easeIn"}} >
+                                    <FormLabel mt="16px">Password: </FormLabel>
+                                    <Input 
+                                    mb="16px"
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}/>
+                            
+                                    <Button colorScheme="teal" w="100%" size="lg" type="submit" mt="40px" onClick={lecturerLogin}>Login</Button>
+                                </motion.div>  
+                            )
+                            : userType === "guest" && (
+                                <motion.div 
+                                initial={{ opacity: 0, x:-10 }}
+                                animate={{ opacity: 1, x:0 }} 
+                                transition={{ease:"easeIn"}} >
 
+                                    <Button colorScheme="teal" w="100%" size="lg" type="submit" m="24px auto" onClick={guestLogin}>Send One-Time Password</Button>
+                                </motion.div>
+                            )
+                            
+
+                        }
+                        
+                        
+                        
                     </>
-                 :
-                 <Button colorScheme="green" w="100%" size="lg" mt="32px">
-                    <a  href={loginUrl } >Login as {user_type}</a>
-                 </Button>
-                 }
             </FormControl>
         </div>
-        
+
         <Modal 
             closeOnOverlayClick={false} 
             blockScrollOnMount={false} 
