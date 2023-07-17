@@ -160,19 +160,11 @@ const MainContent = () => {
                       project={dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase()))[index]}
                       disciplines={findDiscpline(dataP.filter((project) => Object.values(project).join("").toLowerCase().includes(search.toLowerCase()))[index].project_id, disciplines)}
                     />
-                        
                       ):( 
                         <div style={{height: "0px"}}></div>
                       )
-
-
                     ):(console.log("no match"))
-
-
-                  
-
                   ):(
-
                   <ProjectCard
                     key={dataP[index].project_id}
                     project={dataP[index]}
@@ -180,25 +172,14 @@ const MainContent = () => {
                   />
                 )
                 }
-                
-                
-                
-                
-                
               </div>
             )}
-            
-
-              
+           
           </List>
           
         )}
 
-
       </AutoSizer>
-      
-     
-      
        
       {/* <Grid *original code
     

@@ -99,7 +99,7 @@ const SideMenu = () => {
 useEffect(()=>{
   if(isSubmitted){
     setTimeout(()=>{
-      window.location.href="https://cduprojects.spinetail.cdu.edu.au"
+      window.location.href="https://sage-tapioca-de39e4.netlify.app/"
     }, 20000)
   }
 })
